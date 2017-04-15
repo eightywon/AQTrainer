@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">AQTrainer</string>
+    <string name="action_settings">Settings</string>
+    <string name="stage1header">Stage 1</string>
+    <string name="stage1Body">Standing. 10 rounds in 2 minutes, placed in the 100 yard target</string>
+    <string name="stage2Header">Stage 2</string>
+    <string name="stage3Header">Stage 3</string>
+    <string name="stage4Header">Stage 4</string>
+    <string name="stage2Body">Standing, transition to sitting. 10 rounds in 55 seconds, 5 placed in each of the 200 yard targets, with magazine change</string>
+    <string name="stage3Body">Standing, transition to prone. 10 rounds in 65 seconds, 2 rounds placed in each left and middle, 4 rounds in right, in the 300 yard targets, with magazine change</string>
+    <string name="settingsPlayStageDesc">Play Stage Description</string>
+    <string name="settingsPlayPrep">Play Preparation Announcements</string>
+    <string name="settingsAnnounceStageTime">Announce Stage Time</string>
+    <string name="settingsAnnounceInterval">Interval</string>
+    <string name="settingsPrepTime">Prep Time</string>
+    <string name="settingsPlayStageDescBody">Play stage details prior to each stage, including shooting position number of rounds and magazines, and course of fire</string>
+    <string name="settingsPlayPrepBody">Play preparation announcements prior to each stage and optionally allow prep time</string>
+    <string name="settingsAnnounceStageTimeBody">Announce remaining time of current stage, at set interval</string>
+    <string-array name="prepTimes">
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
+    <string-array name="announceInterval">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
+    <string-array name="listArray">
+        <item>Headings</item>
+        <item>Headings and Details</item>
+        <item>All Data</item>
+    </string-array>
+    <string-array name="listValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+</resources>

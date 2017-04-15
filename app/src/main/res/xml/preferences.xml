@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="chkpPlayStageDesc"
+        android:summary="@string/settingsPlayStageDescBody"
+        android:title="@string/settingsPlayStageDesc" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="chkpPlayPrep"
+        android:summary="@string/settingsPlayPrepBody"
+        android:title="@string/settingsPlayPrep" />
+    <ListPreference
+        android:defaultValue="30"
+        android:dependency="chkpPlayPrep"
+        android:entries="@array/prepTimes"
+        android:entryValues="@array/prepTimes"
+        android:key="lpSettingsPrepTime"
+        android:title="@string/settingsPrepTime"
+        android:summary="%s"/>
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="chkpStageTimerAnnounce"
+        android:summary="@string/settingsAnnounceStageTimeBody"
+        android:title="@string/settingsAnnounceStageTime" />
+    <ListPreference
+        android:defaultValue="1"
+        android:dependency="chkpStageTimerAnnounce"
+        android:entries="@array/announceInterval"
+        android:entryValues="@array/announceInterval"
+        android:key="lpSettingsAnnounceInterval"
+        android:summary="%s"
+        android:title="@string/settingsAnnounceInterval" />
+</PreferenceScreen>
