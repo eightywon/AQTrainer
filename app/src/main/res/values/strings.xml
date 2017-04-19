@@ -16,6 +16,7 @@
     <string name="settingsPlayStageDescBody">Play stage details prior to each stage, including shooting position number of rounds and magazines, and course of fire</string>
     <string name="settingsPlayPrepBody">Play preparation announcements prior to each stage and optionally allow prep time</string>
     <string name="settingsAnnounceStageTimeBody">Announce remaining time of current stage, at set interval</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
     <string-array name="prepTimes">
         <item>30</item>
