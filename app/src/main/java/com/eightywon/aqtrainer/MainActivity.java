@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (previousPage) {
                     case 0:
-                        if (StageOneFragment.mpStage1!=null) {
-                            if (StageOneFragment.mpStage1.isPlaying()) {
-                                StageOneFragment.mpStage1.pause();
+                        if (StageOneFragment.mpStageDescription!=null) {
+                            if (StageOneFragment.mpStageDescription.isPlaying()) {
+                                StageOneFragment.mpStageDescription.pause();
                             }
-                            StageOneFragment.mpStage1.seekTo(0);
+                            StageOneFragment.mpStageDescription.seekTo(0);
+                            StageOneFragment.isPlaying=false;
                             testButton=(ImageButton) findViewById(R.id.btnStage1Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
