@@ -41,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
                 switch (previousPage) {
                     case 0:
                         if (StageOneFragment.mpStage1!=null) {
-                            StageOneFragment.mpStage1.pause();
+                            if (StageOneFragment.mpStage1.isPlaying()) {
+                                StageOneFragment.mpStage1.pause();
+                            }
                             StageOneFragment.mpStage1.seekTo(0);
                             testButton=(ImageButton) findViewById(R.id.btnStage1Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
@@ -49,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 1:
                         if (StageTwoFragment.mpStage2!=null) {
-                            StageTwoFragment.mpStage2.pause();
+                            if (StageTwoFragment.mpStage2.isPlaying()) {
+                                StageTwoFragment.mpStage2.pause();
+                            }
                             StageTwoFragment.mpStage2.seekTo(0);
                             testButton=(ImageButton) findViewById(R.id.btnStage2Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
@@ -57,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 2:
                         if (StageThreeFragment.mpStage3!=null) {
-                            StageThreeFragment.mpStage3.pause();
+                            if (StageThreeFragment.mpStage3.isPlaying()) {
+                                StageThreeFragment.mpStage3.pause();
+                            }
                             StageThreeFragment.mpStage3.seekTo(0);
                             testButton=(ImageButton) findViewById(R.id.btnStage3Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
@@ -65,9 +71,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 3:
                         if (StageFourFragment.mpStage4!=null) {
-                            StageFourFragment.mpStage4.pause();
+                            if (StageFourFragment.mpStage4.isPlaying()) {
+                                StageFourFragment.mpStage4.pause();
+                            }
                             StageFourFragment.mpStage4.seekTo(0);
-                            testButton=(ImageButton) findViewById(R.id.btnStage2Play);
+                            testButton=(ImageButton) findViewById(R.id.btnStage4Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
                         break;
