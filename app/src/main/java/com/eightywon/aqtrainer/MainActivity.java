@@ -1,8 +1,6 @@
 package com.eightywon.aqtrainer;
 
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,63 +8,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
     ViewPager aqtViewPager;
 
     public int previousPage;
-
-    ImageButton testButton;
-
-    MediaPlayer mp1;
-    MediaPlayer mp2;
-    MediaPlayer mp3;
-    MediaPlayer mp4;
-
-    public void playStage(View v) {
-        testButton=(ImageButton) findViewById(v.getId());
-        if (v.getId()==R.id.btnStage1Play) {
-            if (mp1.isPlaying()) {
-                mp1.pause();
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
-            } else {
-                mp1.start();
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_pause","drawable",getPackageName()));
-            }
-        } else if (v.getId()==R.id.btnStage2Play) {
-            if (mp2.isPlaying()) {
-                mp2.pause();
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
-            } else {
-                mp2.start();
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_pause","drawable",getPackageName()));
-            }
-        } else if (v.getId()==R.id.btnStage3Play) {
-            if (mp3.isPlaying()) {
-                mp3.pause();
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
-            } else {
-                mp3.start();
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_pause","drawable",getPackageName()));
-            }
-        } else if (v.getId()==R.id.btnStage4Play) {
-            if (mp4.isPlaying()) {
-                mp4.pause();
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
-            } else {
-                mp4.start();
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_pause","drawable",getPackageName()));
-            }
-        }
-    }
-
+    public ImageButton testButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,94 +40,43 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (previousPage) {
                     case 0:
-                        if (mp1.isPlaying()) {
-                            Toast.makeText(MainActivity.this, "here", Toast.LENGTH_SHORT).show();
-                            mp1.pause();
-                            mp1.seekTo(0);
+                        if (StageOneFragment.mpStage1!=null) {
+                            StageOneFragment.mpStage1.pause();
+                            StageOneFragment.mpStage1.seekTo(0);
                             testButton=(ImageButton) findViewById(R.id.btnStage1Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
+                        break;
                     case 1:
-                        if (mp2.isPlaying()) {
-                            mp2.pause();
-                            mp2.seekTo(0);
+                        if (StageTwoFragment.mpStage2!=null) {
+                            StageTwoFragment.mpStage2.pause();
+                            StageTwoFragment.mpStage2.seekTo(0);
                             testButton=(ImageButton) findViewById(R.id.btnStage2Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
+                        break;
                     case 2:
-                        if (mp3.isPlaying()) {
-                            mp3.pause();
-                            mp3.seekTo(0);
+                        if (StageThreeFragment.mpStage3!=null) {
+                            StageThreeFragment.mpStage3.pause();
+                            StageThreeFragment.mpStage3.seekTo(0);
                             testButton=(ImageButton) findViewById(R.id.btnStage3Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
+                        break;
                     case 3:
-                        if (mp4.isPlaying()) {
-                            mp4.pause();
-                            mp4.seekTo(0);
-                            testButton=(ImageButton) findViewById(R.id.btnStage4Play);
+                        if (StageFourFragment.mpStage4!=null) {
+                            StageFourFragment.mpStage4.pause();
+                            StageFourFragment.mpStage4.seekTo(0);
+                            testButton=(ImageButton) findViewById(R.id.btnStage2Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
+                        break;
                 }
                 previousPage=position;
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-        mp1=new MediaPlayer();
-        mp2=new MediaPlayer();
-        mp3=new MediaPlayer();
-        mp4=new MediaPlayer();
-
-        try {
-            AssetFileDescriptor afd1=getAssets().openFd("DescStage1.mp3");
-            mp1.setDataSource(afd1.getFileDescriptor(),afd1.getStartOffset(),afd1.getLength());
-            AssetFileDescriptor afd2=getAssets().openFd("DescStage2.mp3");
-            mp2.setDataSource(afd2.getFileDescriptor(),afd2.getStartOffset(),afd2.getLength());
-            AssetFileDescriptor afd3=getAssets().openFd("DescStage3.mp3");
-            mp3.setDataSource(afd3.getFileDescriptor(),afd3.getStartOffset(),afd3.getLength());
-            AssetFileDescriptor afd4=getAssets().openFd("DescStage4.mp3");
-            mp4.setDataSource(afd4.getFileDescriptor(),afd4.getStartOffset(),afd4.getLength());
-            mp1.prepare();
-            mp2.prepare();
-            mp3.prepare();
-            mp4.prepare();
-        } catch (IOException e) {
-            Toast.makeText(this, "nope", Toast.LENGTH_SHORT).show();;
-        }
-
-        mp1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer p) {
-                testButton=(ImageButton) findViewById(R.id.btnStage1Play);
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
-            }
-        });
-
-        mp2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer p) {
-                testButton=(ImageButton) findViewById(R.id.btnStage2Play);
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
-            }
-        });
-
-        mp3.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer p) {
-                testButton=(ImageButton) findViewById(R.id.btnStage3Play);
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
-            }
-        });
-
-        mp4.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer p) {
-                testButton=(ImageButton) findViewById(R.id.btnStage4Play);
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
             }
         });
     }
