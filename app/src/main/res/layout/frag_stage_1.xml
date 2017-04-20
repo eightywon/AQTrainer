@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.eightywon.aqtrainer.MainActivity$fragStage1">
+    tools:context="com.eightywon.aqtrainer.MainActivity">
 
     <TextView
         android:id="@+id/section_label_1"
