@@ -3,7 +3,6 @@ package com.eightywon.aqtrainer;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
-import android.widget.TextView;
-
 import java.io.IOException;
-import android.os.Handler;
 import android.widget.Toast;
 
 public class StageOneFragment extends Fragment {
@@ -26,8 +22,11 @@ public class StageOneFragment extends Fragment {
     final static int STEP_FIRE_START=5;
     final static int STEP_FIRE_IN_PROGRESS=6;
     final static int STEP_FIRE_END=7;
-    final static int STEP_STOP=98;
     final static int STEP_DONE=99;
+
+    static String STEP_BREAK_MP3="S2.ogg";
+    static String FIRE_MP3="";
+
     int nextStep;
     boolean playStageDesc;
     boolean playPrep;
@@ -42,18 +41,11 @@ public class StageOneFragment extends Fragment {
     public static MediaPlayer mpFireEnd;
     public static MediaPlayer mpS5;
     public static MediaPlayer mpS3;
+    public static MediaPlayer mpStepBreak;
 
     public ImageButton testButton;
 
     public static boolean isPlaying;
-
-    TextView txt1;
-    TextView txt2;
-    TextView txt3;
-    TextView txt4;
-    TextView txt5;
-
-    Handler hPrepPause;
 
     Switch swPlayStageDesc;
     Switch swPlayPrep;
@@ -73,14 +65,9 @@ public class StageOneFragment extends Fragment {
         mpFireInProgress=new MediaPlayer();
         mpFireEnd=new MediaPlayer();
 
+        mpStepBreak=new MediaPlayer();
         mpS5=new MediaPlayer();
         mpS3=new MediaPlayer();
-
-        txt1=(TextView) rootView.findViewById(R.id.txt1);
-        txt2=(TextView) rootView.findViewById(R.id.txt2);
-        txt3=(TextView) rootView.findViewById(R.id.txt3);
-        txt4=(TextView) rootView.findViewById(R.id.txt4);
-        txt5=(TextView) rootView.findViewById(R.id.txt5);
 
         testButton=(ImageButton) rootView.findViewById(R.id.btnStage1Play);
         swPlayStageDesc=(Switch) rootView.findViewById(R.id.swStageDesc);
@@ -106,51 +93,49 @@ public class StageOneFragment extends Fragment {
                     }
                     playNext(nextStep);
                 } else {
-                    Toast.makeText(getActivity(), String.valueOf(nextStep), Toast.LENGTH_SHORT).show();
-                    switch (nextStep) {
-                        case STEP_STAGE_DESCRIPTION:
-                            mpStageDescription.pause();
-                            mpStageDescription.seekTo(0);
-                            break;
-                        case STEP_PREP_START:
-                            mpPrepStart.pause();
-                            mpPrepStart.seekTo(0);
-                            break;
-                        case STEP_PREP_IN_PROGRESS:
-                            mpPrepInProgress.pause();
-                            mpPrepInProgress.seekTo(0);
-                            break;
-                        case STEP_PREP_END:
-                            mpPrepEnd.pause();
-                            mpPrepEnd.seekTo(0);
-                            break;
-                        case STEP_LOAD:
-                            mpLoad.pause();
-                            mpLoad.seekTo(0);
-                            break;
-                        case STEP_FIRE_START:
-                            mpFireStart.pause();
-                            mpFireStart.seekTo(0);
-                            break;
-                        case STEP_FIRE_IN_PROGRESS:
-                            mpFireInProgress.pause();
-                            mpFireInProgress.seekTo(0);
-                            break;
-                        case STEP_FIRE_END:
-                            mpFireEnd.pause();
-                            mpFireEnd.seekTo(0);
-                            break;
+                    if (mpS3.isPlaying()) {
+                        mpS3.pause();
+                        mpS3.seekTo(0);
+                    } else {
+                        switch (nextStep) {
+                            case STEP_STAGE_DESCRIPTION:
+                                mpStageDescription.pause();
+                                mpStageDescription.seekTo(0);
+                                break;
+                            case STEP_PREP_START:
+                                mpPrepStart.pause();
+                                mpPrepStart.seekTo(0);
+                                break;
+                            case STEP_PREP_IN_PROGRESS:
+                                mpPrepInProgress.pause();
+                                mpPrepInProgress.seekTo(0);
+                                break;
+                            case STEP_PREP_END:
+                                mpPrepEnd.pause();
+                                mpPrepEnd.seekTo(0);
+                                break;
+                            case STEP_LOAD:
+                                mpLoad.pause();
+                                mpLoad.seekTo(0);
+                                break;
+                            case STEP_FIRE_START:
+                                mpFireStart.pause();
+                                mpFireStart.seekTo(0);
+                                break;
+                            case STEP_FIRE_IN_PROGRESS:
+                                mpFireInProgress.pause();
+                                mpFireInProgress.seekTo(0);
+                                break;
+                            case STEP_FIRE_END:
+                                mpFireEnd.pause();
+                                mpFireEnd.seekTo(0);
+                                break;
+                        }
                     }
+                    Toast.makeText(getActivity(), String.valueOf(nextStep), Toast.LENGTH_SHORT).show();
                     testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getActivity().getPackageName()));
                     isPlaying=false;
                 }
-                /**
-                txt1.setText(String.valueOf(mpStageDescription.isPlaying()));
-                txt2.setText(String.valueOf(mpPrepStart.isPlaying()));
-                txt3.setText(String.valueOf(mpPrepEnd.isPlaying()));
-                txt4.setText(String.valueOf(mpLoad.isPlaying()));
-                txt5.setText(String.valueOf(mpFire.isPlaying()));
-                **/
             }
         });
 
@@ -174,13 +159,14 @@ public class StageOneFragment extends Fragment {
             AssetFileDescriptor afd3=getActivity().getAssets().openFd("PrepEnd.mp3");
             AssetFileDescriptor afd4=getActivity().getAssets().openFd("Load10.mp3");
             AssetFileDescriptor afd5=getActivity().getAssets().openFd("Fire.mp3");
-
+            AssetFileDescriptor afd10=getActivity().getAssets().openFd("Cease.mp3");
             AssetFileDescriptor afd6=getActivity().getAssets().openFd("S5.ogg");
             AssetFileDescriptor afd7=getActivity().getAssets().openFd("S3.ogg");
-
             AssetFileDescriptor afd8=getActivity().getAssets().openFd("S10.ogg");
-            AssetFileDescriptor afd9=getActivity().getAssets().openFd("Fire.mp3");
-            AssetFileDescriptor afd10=getActivity().getAssets().openFd("Cease.mp3");
+
+            AssetFileDescriptor afdStepBreakMP3=getActivity().getAssets().openFd(STEP_BREAK_MP3);
+            mpStepBreak.setDataSource(afdStepBreakMP3.getFileDescriptor(),afdStepBreakMP3.getStartOffset(),afdStepBreakMP3.getLength());
+            mpStepBreak.prepare();
 
             mpPrepInProgress.setDataSource(afd8.getFileDescriptor(),afd8.getStartOffset(),afd8.getLength());
             mpPrepInProgress.prepare();
@@ -190,23 +176,18 @@ public class StageOneFragment extends Fragment {
 
             mpS3.setDataSource(afd7.getFileDescriptor(),afd7.getStartOffset(),afd7.getLength());
             mpS3.prepare();
-            //mpStageDescription.setNextMediaPlayer(mpS3);
 
             mpPrepStart.setDataSource(afd2.getFileDescriptor(),afd2.getStartOffset(),afd2.getLength());
             mpPrepStart.prepare();
-            //mpS5.setNextMediaPlayer(mpPrepStart);
 
             mpPrepEnd.setDataSource(afd3.getFileDescriptor(),afd3.getStartOffset(),afd3.getLength());
             mpPrepEnd.prepare();
-            //mpPrepStart.setNextMediaPlayer(mpPrepEnd);
 
             mpLoad.setDataSource(afd4.getFileDescriptor(),afd4.getStartOffset(),afd4.getLength());
             mpLoad.prepare();
-            //mpPrepEnd.setNextMediaPlayer(mpLoad);
 
             mpFireStart.setDataSource(afd5.getFileDescriptor(),afd5.getStartOffset(),afd5.getLength());
             mpFireStart.prepare();
-            //mpLoad.setNextMediaPlayer(mpFire);
 
             mpFireInProgress.setDataSource(afd8.getFileDescriptor(),afd8.getStartOffset(),afd8.getLength());
             mpFireInProgress.prepare();
@@ -227,17 +208,16 @@ public class StageOneFragment extends Fragment {
                 } else {
                     nextStep=STEP_LOAD;
                 }
-                playNext(nextStep);
+                mpStepBreak.seekTo(0);
+                mpStepBreak.start();
             }
         });
 
         mpPrepStart.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer p) {
-                //sb.setMax(mpPrepEnd.getDuration());
                 mpPrepStart.pause();
                 mpPrepStart.seekTo(0);
-                //hPrepPause.postDelayed(prepPause,10000);
                 nextStep=STEP_PREP_IN_PROGRESS;
                 playNext(nextStep);
             }
@@ -246,10 +226,8 @@ public class StageOneFragment extends Fragment {
         mpPrepInProgress.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer p) {
-                //sb.setMax(mpPrepEnd.getDuration());
                 mpPrepInProgress.pause();
                 mpPrepInProgress.seekTo(0);
-                //hPrepPause.postDelayed(prepPause,10000);
                 nextStep=STEP_PREP_END;
                 playNext(nextStep);
             }
@@ -258,24 +236,22 @@ public class StageOneFragment extends Fragment {
         mpPrepEnd.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer p) {
-                //sb.setMax(mpPrepEnd.getDuration());
                 mpPrepEnd.pause();
                 mpPrepEnd.seekTo(0);
-                //hPrepPause.postDelayed(prepPause,10000);
                 nextStep=STEP_LOAD;
-                playNext(nextStep);
+                mpStepBreak.seekTo(0);
+                mpStepBreak.start();
             }
         });
 
         mpLoad.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer p) {
-                //sb.setMax(mpPrepEnd.getDuration());
                 mpLoad.pause();
                 mpLoad.seekTo(0);
-                //hPrepPause.postDelayed(prepPause,10000);
                 nextStep=STEP_FIRE_START;
-                playNext(nextStep);
+                mpStepBreak.seekTo(0);
+                mpStepBreak.start();
             }
         });
 
@@ -284,7 +260,6 @@ public class StageOneFragment extends Fragment {
             public void onCompletion(MediaPlayer p) {
                 mpFireStart.pause();
                 mpFireStart.seekTo(0);
-                //hPrepPause.postDelayed(prepPause,10000);
                 nextStep=STEP_FIRE_IN_PROGRESS;
                 playNext(nextStep);
             }
@@ -295,7 +270,6 @@ public class StageOneFragment extends Fragment {
             public void onCompletion(MediaPlayer p) {
                 mpFireInProgress.pause();
                 mpFireInProgress.seekTo(0);
-                //hPrepPause.postDelayed(prepPause,10000);
                 nextStep=STEP_FIRE_END;
                 playNext(nextStep);
             }
@@ -306,21 +280,21 @@ public class StageOneFragment extends Fragment {
             public void onCompletion(MediaPlayer p) {
                 mpFireEnd.pause();
                 mpFireEnd.seekTo(0);
-                //hPrepPause.postDelayed(prepPause,10000);
                 nextStep=STEP_DONE;
                 playNext(nextStep);
             }
         });
 
-        hPrepPause=new Handler();
+        mpStepBreak.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer p) {
+                mpStepBreak.pause();
+                mpStepBreak.seekTo(0);
+                playNext(nextStep);
+            }
+        });
         return rootView;
     }
-
-    private Runnable prepPause = new Runnable() {
-        public void run() {
-            mpPrepEnd.start();
-        }
-    };
 
     public void playNext (int nextStep) {
         switch (nextStep) {
