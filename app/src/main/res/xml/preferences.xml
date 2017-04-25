@@ -24,7 +24,7 @@
         android:summary="@string/settingsAnnounceStageTimeBody"
         android:title="@string/settingsAnnounceStageTime" />
     <ListPreference
-        android:defaultValue="1"
+        android:defaultValue="5"
         android:dependency="chkpStageTimerAnnounce"
         android:entries="@array/announceInterval"
         android:entryValues="@array/announceInterval"
