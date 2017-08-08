@@ -1,7 +1,6 @@
 package com.eightywon.aqtrainer;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,17 +23,7 @@ public class MainActivity extends AppCompatActivity {
     final static int STEP_FIRE_END=7;
     final static int STEP_DONE=99;
 
-    public static MediaPlayer mpStageDescription;
-    public static MediaPlayer mpPrepStart;
-    public static MediaPlayer mpPrepInProgress;
-    public static MediaPlayer mpPrepEnd;
-    public static MediaPlayer mpLoad;
-    public static MediaPlayer mpFireStart;
-    public static MediaPlayer mpFireInProgress;
-    public static MediaPlayer mpFireEnd;
-    public static MediaPlayer mpS5;
-    public static MediaPlayer mpS3;
-    public static MediaPlayer mpStepBreak;
+    static String STEP_BREAK_MP3="S2.ogg";
 
     public static int nextStep;
 
@@ -174,44 +163,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void stopPlaying(int step) {
-        if (mpStepBreak.isPlaying()) {
-            MainActivity.mpStepBreak.pause();
-            MainActivity.mpStepBreak.seekTo(0);
-        } else {
-            switch (step) {
-                case STEP_STAGE_DESCRIPTION:
-                    mpStageDescription.pause();
-                    mpStageDescription.seekTo(0);
-                    break;
-                case STEP_PREP_START:
-                    mpPrepStart.pause();
-                    mpPrepStart.seekTo(0);
-                    break;
-                case STEP_PREP_IN_PROGRESS:
-                    mpPrepInProgress.pause();
-                    mpPrepInProgress.seekTo(0);
-                    break;
-                case STEP_PREP_END:
-                    mpPrepEnd.pause();
-                    mpPrepEnd.seekTo(0);
-                    break;
-                case STEP_LOAD:
-                    mpLoad.pause();
-                    mpLoad.seekTo(0);
-                    break;
-                case STEP_FIRE_START:
-                    mpFireStart.pause();
-                    mpFireStart.seekTo(0);
-                    break;
-                case STEP_FIRE_IN_PROGRESS:
-                    mpFireInProgress.pause();
-                    mpFireInProgress.seekTo(0);
-                    break;
-                case STEP_FIRE_END:
-                    mpFireEnd.pause();
-                    mpFireEnd.seekTo(0);
-                    break;
-            }
-        }
+        MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
+        mediaPlayer.pause();
+        mediaPlayer.seekTo(0);
+        mediaPlayer.stop();
+        mediaPlayer.reset();
     }
 }
