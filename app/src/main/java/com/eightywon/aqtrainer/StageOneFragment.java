@@ -17,14 +17,9 @@ import java.io.IOException;
 import java.util.Locale;
 import android.os.Handler;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class StageOneFragment extends Fragment implements TextToSpeech.OnInitListener {
 
-    static String STEP_BREAK_MP3="S2.ogg";
-    static String FIRE_MP3="S30.ogg";
-
-    //int nextStep;
     boolean playStageDesc;
     boolean playPrep;
 
@@ -152,132 +147,46 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
         MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
 
         String announceInterval;
-        AssetFileDescriptor afd = null;
         switch (nextStep) {
             case MainActivity.STEP_STAGE_DESCRIPTION:
-
-                try {
-                    afd = getActivity().getAssets().openFd("DescStage1.mp3");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    assert afd != null;
-                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                    afd.close();
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MainActivity.audioFile=MainActivity.STEP_STAGE_DESC_1_MP3;
+                openAudioFile(mediaPlayer);
                 mediaPlayer.seekTo(0);
                 mediaPlayer.start();
                 break;
             case MainActivity.STEP_PREP_START:
-                try {
-                    afd = getActivity().getAssets().openFd("PrepBegin.mp3");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    assert afd != null;
-                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                    afd.close();
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MainActivity.audioFile=MainActivity.STEP_STAGE_PREP_START_MP3;
+                openAudioFile(mediaPlayer);
                 mediaPlayer.seekTo(0);
                 mediaPlayer.start();
                 break;
             case MainActivity.STEP_PREP_IN_PROGRESS:
-                try {
-                    afd = getActivity().getAssets().openFd("S10.ogg");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    assert afd != null;
-                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                    afd.close();
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MainActivity.audioFile=MainActivity.S15_MP3;
+                openAudioFile(mediaPlayer);
                 mediaPlayer.seekTo(0);
                 mediaPlayer.start();
                 break;
             case MainActivity.STEP_PREP_END:
-                try {
-                    afd = getActivity().getAssets().openFd("PrepEnd.mp3");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    assert afd != null;
-                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                    afd.close();
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MainActivity.audioFile=MainActivity.STEP_STAGE_PREP_END_MP3;
+                openAudioFile(mediaPlayer);
                 mediaPlayer.seekTo(0);
                 mediaPlayer.start();
                 break;
             case MainActivity.STEP_LOAD:
-                try {
-                    afd = getActivity().getAssets().openFd("Load10.mp3");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    assert afd != null;
-                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                    afd.close();
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MainActivity.audioFile=MainActivity.STEP_STAGE_LOAD_MP3;
+                openAudioFile(mediaPlayer);
                 mediaPlayer.seekTo(0);
                 mediaPlayer.start();
                 break;
             case MainActivity.STEP_FIRE_START:
-                try {
-                    afd = getActivity().getAssets().openFd("Fire.mp3");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    assert afd != null;
-                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                    afd.close();
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MainActivity.audioFile=MainActivity.STEP_STAGE_FIRE_START_MP3;
+                openAudioFile(mediaPlayer);
                 mediaPlayer.seekTo(0);
                 mediaPlayer.start();
                 break;
             case MainActivity.STEP_FIRE_IN_PROGRESS:
-                try {
-                    afd = getActivity().getAssets().openFd(FIRE_MP3);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    assert afd != null;
-                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                    afd.close();
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MainActivity.audioFile=MainActivity.S30_MP3;
+                openAudioFile(mediaPlayer);
                 mediaPlayer.seekTo(0);
                 mediaPlayer.start();
                 SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -287,20 +196,8 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
                 hCountDownFireStage.post(countDownFireStage);
                 break;
             case MainActivity.STEP_FIRE_END:
-                try {
-                    afd = getActivity().getAssets().openFd("Cease.mp3");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    assert afd != null;
-                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                    afd.close();
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MainActivity.audioFile=MainActivity.STEP_FIRE_END_MP3;
+                openAudioFile(mediaPlayer);
                 mediaPlayer.seekTo(0);
                 mediaPlayer.start();
                 break;
@@ -310,6 +207,24 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
         }
         if (isPlaying) {
             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
+        }
+    }
+
+    public void openAudioFile(MediaPlayer mp) {
+        AssetFileDescriptor afd = null;
+        try {
+            afd = getActivity().getAssets().openFd(MainActivity.audioFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            assert afd != null;
+            mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            afd.close();
+            mp.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

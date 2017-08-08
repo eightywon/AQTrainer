@@ -23,6 +23,32 @@ public class MainActivity extends AppCompatActivity {
     final static int STEP_FIRE_END=7;
     final static int STEP_DONE=99;
 
+    final static String STEP_FIRE_END_MP3="Cease.mp3";
+    final static String STEP_STAGE_DESC_1_MP3="DescStage1.mp3";
+    final static String STEP_STAGE_DESC_2_MP3="DescStage2.mp3";
+    final static String STEP_STAGE_DESC_3_MP3="DescStage3.mp3";
+    final static String STEP_STAGE_DESC_4_MP3="DescStage4.mp3";
+    final static String STEP_STAGE_FIRE_START_MP3="Fire.mp3";
+    final static String STEP_STAGE_LOAD_MP3="Load10.mp3";
+    final static String STEP_STAGE_PREP_START_MP3="PrepBegin.mp3";
+    final static String STEP_STAGE_PREP_IN_PROGRESS_MP3="S30.ogg";
+    final static String STEP_STAGE_PREP_END_MP3="PrepEnd.mp3";
+    final static String S1_MP3="S1.ogg";
+    final static String S2_MP3="S1.ogg";
+    final static String S3_MP3="S3.ogg";
+    final static String S5_MP3="S5.ogg";
+    final static String S10_MP3="S10.ogg";
+    final static String S15_MP3="S15.ogg";
+    final static String S30_MP3="S30.ogg";
+    final static String S45_MP3="S45.ogg";
+    final static String S55_MP3="S55.ogg";
+    final static String S60_MP3="S60.ogg";
+    final static String S65_MP3="S65.ogg";
+    final static String S120_MP3="S120.ogg";
+    final static String S300_MP3="S300.ogg";
+
+    static String audioFile;
+
     static String STEP_BREAK_MP3="S2.ogg";
 
     public static int nextStep;
@@ -60,31 +86,25 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case 1:
-                        if (StageTwoFragment.mpStage2!=null) {
-                            if (StageTwoFragment.mpStage2.isPlaying()) {
-                                StageTwoFragment.mpStage2.pause();
-                            }
-                            StageTwoFragment.mpStage2.seekTo(0);
+                        if (StageTwoFragment.isPlaying) {
+                            stopPlaying(nextStep);
+                            StageTwoFragment.isPlaying=false;
                             testButton=(ImageButton) findViewById(R.id.btnStage2Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
                         break;
                     case 2:
-                        if (StageThreeFragment.mpStage3!=null) {
-                            if (StageThreeFragment.mpStage3.isPlaying()) {
-                                StageThreeFragment.mpStage3.pause();
-                            }
-                            StageThreeFragment.mpStage3.seekTo(0);
+                        if (StageThreeFragment.isPlaying) {
+                            stopPlaying(nextStep);
+                            StageThreeFragment.isPlaying=false;
                             testButton=(ImageButton) findViewById(R.id.btnStage3Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
                         break;
                     case 3:
-                        if (StageFourFragment.mpStage4!=null) {
-                            if (StageFourFragment.mpStage4.isPlaying()) {
-                                StageFourFragment.mpStage4.pause();
-                            }
-                            StageFourFragment.mpStage4.seekTo(0);
+                        if (StageFourFragment.isPlaying) {
+                            stopPlaying(nextStep);
+                            StageFourFragment.isPlaying=false;
                             testButton=(ImageButton) findViewById(R.id.btnStage4Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
