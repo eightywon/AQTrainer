@@ -76,35 +76,33 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
+                boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 switch (previousPage) {
                     case 0:
-                        if (StageOneFragment.isPlaying) {
-                            stopPlaying(nextStep);
-                            StageOneFragment.isPlaying=false;
+                        if (isPlaying) {
+                            MediaPlayerSingleton.stopPlaying();
                             testButton=(ImageButton) findViewById(R.id.btnStage1Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
                         break;
                     case 1:
-                        if (StageTwoFragment.isPlaying) {
-                            stopPlaying(nextStep);
-                            StageTwoFragment.isPlaying=false;
+                        if (isPlaying) {
+                            MediaPlayerSingleton.stopPlaying();
                             testButton=(ImageButton) findViewById(R.id.btnStage2Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
                         break;
                     case 2:
-                        if (StageThreeFragment.isPlaying) {
-                            stopPlaying(nextStep);
-                            StageThreeFragment.isPlaying=false;
+                        if (isPlaying) {
+                            MediaPlayerSingleton.stopPlaying();
                             testButton=(ImageButton) findViewById(R.id.btnStage3Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
                         break;
                     case 3:
-                        if (StageFourFragment.isPlaying) {
-                            stopPlaying(nextStep);
-                            StageFourFragment.isPlaying=false;
+                        if (isPlaying) {
+                            MediaPlayerSingleton.stopPlaying();
                             testButton=(ImageButton) findViewById(R.id.btnStage4Play);
                             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                         }
@@ -180,13 +178,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public static void stopPlaying(int step) {
-        MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
-        mediaPlayer.pause();
-        mediaPlayer.seekTo(0);
-        mediaPlayer.stop();
-        mediaPlayer.reset();
     }
 }

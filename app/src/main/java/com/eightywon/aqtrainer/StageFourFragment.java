@@ -27,8 +27,6 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
 
     public ImageButton testButton;
 
-    public static boolean isPlaying;
-
     int countDownFireStageInterval;
     Switch swPlayStageDesc;
     Switch swPlayPrep;
@@ -47,7 +45,6 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
         swPlayStageDesc=(Switch) rootView.findViewById(R.id.swStageDesc);
         swPlayPrep=(Switch) rootView.findViewById(R.id.swPrepPeriod);
 
-        isPlaying=false;
         playStageDesc=swPlayStageDesc.isChecked();
         playPrep=swPlayPrep.isChecked();
 
@@ -58,8 +55,9 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
-                    isPlaying=true;
+                    MediaPlayerSingleton.togglePlayingState();
                     if (playStageDesc) {
                         MainActivity.nextStep=MainActivity.STEP_STAGE_DESCRIPTION;
                     } else {
@@ -71,8 +69,7 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
                     }
                     playNext(MainActivity.nextStep);
                 } else {
-                    MainActivity.stopPlaying(MainActivity.nextStep);
-                    isPlaying=false;
+                    MediaPlayerSingleton.stopPlaying();
                     hCountDownFireStage.removeCallbacks(countDownFireStage);
                     testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getActivity().getPackageName()));
                 }
@@ -137,7 +134,7 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
                 break;
             case MainActivity.STEP_FIRE_END:
                 MainActivity.nextStep=MainActivity.STEP_DONE;
-                isPlaying=false;
+                MediaPlayerSingleton.togglePlayingState();
                 break;
         }
     }
@@ -203,9 +200,9 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
                 break;
             case MainActivity.STEP_DONE:
                 testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play", "drawable", getActivity().getPackageName()));
-                isPlaying = false;
+                MediaPlayerSingleton.togglePlayingState();
         }
-        if (isPlaying) {
+        if (MediaPlayerSingleton.getPlayingState()) {
             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
         }
     }
