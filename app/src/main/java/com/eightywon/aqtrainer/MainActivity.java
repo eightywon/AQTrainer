@@ -1,5 +1,7 @@
 package com.eightywon.aqtrainer;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,14 +15,15 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
-    final static int STEP_STAGE_DESCRIPTION=0;
-    final static int STEP_PREP_START=1;
-    final static int STEP_PREP_IN_PROGRESS=2;
-    final static int STEP_PREP_END=3;
-    final static int STEP_LOAD=4;
-    final static int STEP_FIRE_START=5;
-    final static int STEP_FIRE_IN_PROGRESS=6;
-    final static int STEP_FIRE_END=7;
+    final static int STEP_BEGIN=0;
+    final static int STEP_STAGE_DESCRIPTION=1;
+    final static int STEP_PREP_START=2;
+    final static int STEP_PREP_IN_PROGRESS=3;
+    final static int STEP_PREP_END=4;
+    final static int STEP_LOAD=5;
+    final static int STEP_FIRE_START=6;
+    final static int STEP_FIRE_IN_PROGRESS=7;
+    final static int STEP_FIRE_END=8;
     final static int STEP_DONE=99;
 
     final static String STEP_FIRE_END_MP3="Cease.mp3";
@@ -58,12 +61,15 @@ public class MainActivity extends AppCompatActivity {
     public int previousPage;
     public ImageButton testButton;
 
+    private static MainActivity instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        instance=this;
 
         aqtViewPager=(ViewPager) findViewById(R.id.container);
         aqtViewPager.setAdapter(new AQTPagerAdapter(
@@ -115,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+    }
+
+    public static Context getContext() {
+        return instance.getApplicationContext();
     }
 
     private class AQTPagerAdapter extends FragmentPagerAdapter {

@@ -1,12 +1,10 @@
 package com.eightywon.aqtrainer;
 
-import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,7 @@ import java.io.IOException;
 import java.util.Locale;
 import android.os.Handler;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class StageOneFragment extends Fragment implements TextToSpeech.OnInitListener {
 
@@ -27,7 +26,7 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
 
     public ImageButton testButton;
 
-    int countDownFireStageInterval;
+    static int countDownFireStageInterval;
     Switch swPlayStageDesc;
     Switch swPlayPrep;
 
@@ -55,9 +54,11 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(), "HERE", Toast.LENGTH_SHORT).show();
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
                     MediaPlayerSingleton.togglePlayingState();
+                    testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
                     if (playStageDesc) {
                         MainActivity.nextStep=MainActivity.STEP_STAGE_DESCRIPTION;
                     } else {
@@ -67,7 +68,7 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
                             MainActivity.nextStep=MainActivity.STEP_LOAD;
                         }
                     }
-                    playNext(MainActivity.nextStep);
+                    MediaPlayerSingleton.playNext(MainActivity.nextStep);
                 } else {
                     MediaPlayerSingleton.stopPlaying();
                     hCountDownFireStage.removeCallbacks(countDownFireStage);
@@ -93,136 +94,43 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
         MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
+            public void onCompletion(MediaPlayer mp) {
+                Toast.makeText(getActivity().getApplicationContext(), "FIRED", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+        /*
+        mediaPlayer.setOnCompletionListener(new MediaPlayerSingleton.OnCompletionListener() {
+
+            @Override
             public void onCompletion(MediaPlayer p) {
+                Toast.makeText(getActivity().getApplicationContext(), "HERE", Toast.LENGTH_SHORT).show();
+                Log.d("DEBUGGING","Next Step: "+MainActivity.nextStep);
                 p.pause();
                 p.seekTo(0);
                 p.stop();
                 p.reset();
-                getNext(MainActivity.nextStep);
-                playNext(MainActivity.nextStep);
+                MediaPlayerSingleton.getNext(MainActivity.nextStep);
+                Log.d("DEBUGGING","Next Step: "+MainActivity.nextStep);
+                if (MainActivity.nextStep!=MainActivity.STEP_DONE) {
+                    MediaPlayerSingleton.playNext(MainActivity.nextStep);
+                    if (MediaPlayerSingleton.getPlayingState()) {
+                        testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop", "drawable", getActivity().getPackageName()));
+                    }
+                } else {
+                    Log.d("DEBUGGING","Step: "+MainActivity.nextStep+", here we are!");
+                    testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getActivity().getPackageName()));
+                }
             }
         });
+        */
 
         hCountDownFireStage=new Handler();
 
         return rootView;
-    }
-
-    public void getNext (int lastStep) {
-        switch (lastStep) {
-            case MainActivity.STEP_STAGE_DESCRIPTION:
-                MainActivity.nextStep=MainActivity.STEP_PREP_START;
-                break;
-            case MainActivity.STEP_PREP_START:
-                MainActivity.nextStep=MainActivity.STEP_PREP_IN_PROGRESS;
-                break;
-            case MainActivity.STEP_PREP_IN_PROGRESS:
-                MainActivity.nextStep=MainActivity.STEP_PREP_END;
-                break;
-            case MainActivity.STEP_PREP_END:
-                MainActivity.nextStep=MainActivity.STEP_LOAD;
-                break;
-            case MainActivity.STEP_LOAD:
-                MainActivity.nextStep=MainActivity.STEP_FIRE_START;
-                break;
-            case MainActivity.STEP_FIRE_START:
-                MainActivity.nextStep=MainActivity.STEP_FIRE_IN_PROGRESS;
-                break;
-            case MainActivity.STEP_FIRE_IN_PROGRESS:
-                hCountDownFireStage.removeCallbacks(countDownFireStage);
-                MainActivity.nextStep=MainActivity.STEP_FIRE_END;
-                break;
-            case MainActivity.STEP_FIRE_END:
-                MainActivity.nextStep=MainActivity.STEP_DONE;
-                MediaPlayerSingleton.togglePlayingState();
-                break;
-        }
-    }
-
-    public void playNext (int nextStep) {
-
-        MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
-
-        String announceInterval;
-        switch (nextStep) {
-            case MainActivity.STEP_STAGE_DESCRIPTION:
-                MainActivity.audioFile=MainActivity.STEP_STAGE_DESC_1_MP3;
-                openAudioFile(mediaPlayer);
-                mediaPlayer.seekTo(0);
-                mediaPlayer.start();
-                break;
-            case MainActivity.STEP_PREP_START:
-                MainActivity.audioFile=MainActivity.STEP_STAGE_PREP_START_MP3;
-                openAudioFile(mediaPlayer);
-                mediaPlayer.seekTo(0);
-                mediaPlayer.start();
-                break;
-            case MainActivity.STEP_PREP_IN_PROGRESS:
-                MainActivity.audioFile=MainActivity.S15_MP3;
-                openAudioFile(mediaPlayer);
-                mediaPlayer.seekTo(0);
-                mediaPlayer.start();
-                break;
-            case MainActivity.STEP_PREP_END:
-                MainActivity.audioFile=MainActivity.STEP_STAGE_PREP_END_MP3;
-                openAudioFile(mediaPlayer);
-                mediaPlayer.seekTo(0);
-                mediaPlayer.start();
-                break;
-            case MainActivity.STEP_LOAD:
-                MainActivity.audioFile=MainActivity.STEP_STAGE_LOAD_MP3;
-                openAudioFile(mediaPlayer);
-                mediaPlayer.seekTo(0);
-                mediaPlayer.start();
-                break;
-            case MainActivity.STEP_FIRE_START:
-                MainActivity.audioFile=MainActivity.STEP_STAGE_FIRE_START_MP3;
-                openAudioFile(mediaPlayer);
-                mediaPlayer.seekTo(0);
-                mediaPlayer.start();
-                break;
-            case MainActivity.STEP_FIRE_IN_PROGRESS:
-                MainActivity.audioFile=MainActivity.S30_MP3;
-                openAudioFile(mediaPlayer);
-                mediaPlayer.seekTo(0);
-                mediaPlayer.start();
-                SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(getContext());
-                announceInterval=prefs.getString("lpSettingsAnnounceInterval","");
-                announceInterval=announceInterval.substring(0,announceInterval.indexOf(" "));
-                countDownFireStageInterval=Integer.parseInt(announceInterval);
-                hCountDownFireStage.post(countDownFireStage);
-                break;
-            case MainActivity.STEP_FIRE_END:
-                MainActivity.audioFile=MainActivity.STEP_FIRE_END_MP3;
-                openAudioFile(mediaPlayer);
-                mediaPlayer.seekTo(0);
-                mediaPlayer.start();
-                break;
-            case MainActivity.STEP_DONE:
-                testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play", "drawable", getActivity().getPackageName()));
-                MediaPlayerSingleton.togglePlayingState();
-        }
-        if (MediaPlayerSingleton.getPlayingState()) {
-            testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
-        }
-    }
-
-    public void openAudioFile(MediaPlayer mp) {
-        AssetFileDescriptor afd = null;
-        try {
-            afd = getActivity().getAssets().openFd(MainActivity.audioFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            assert afd != null;
-            mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-            afd.close();
-            mp.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private Runnable countDownFireStage = new Runnable() {
