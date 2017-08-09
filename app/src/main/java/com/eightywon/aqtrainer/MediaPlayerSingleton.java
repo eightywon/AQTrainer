@@ -1,16 +1,19 @@
 package com.eightywon.aqtrainer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.ImageButton;
 
 class MediaPlayerSingleton {
     private static MediaPlayerSingleton mediaPlayerSingleton;
     private static int currentStep;
     private static MediaPlayer mediaPlayer;
     private static int stage;
+    private static Activity act;
 
     static MediaPlayerSingleton getInstance() {
         if (mediaPlayerSingleton==null) {
@@ -19,7 +22,7 @@ class MediaPlayerSingleton {
         return mediaPlayerSingleton;
     }
 
-    //private MediaPlayer mediaPlayer;
+    private static ImageButton testButton;
 
     int getRemaining() {
         return Math.round((mediaPlayer.getDuration()-mediaPlayer.getCurrentPosition())/1000);
@@ -56,14 +59,30 @@ class MediaPlayerSingleton {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    switch (stage) {
+                        case 1:
+                            testButton=(ImageButton) act.findViewById(R.id.btnStage1Play);
+                            break;
+                        case 2:
+                            testButton=(ImageButton) act.findViewById(R.id.btnStage2Play);
+                            break;
+                        case 3:
+                            testButton=(ImageButton) act.findViewById(R.id.btnStage3Play);
+                            break;
+                        case 4:
+                            testButton=(ImageButton) act.findViewById(R.id.btnStage4Play);
+                            break;
+                    }
+
                     if (currentStep!=MainActivity.STEP_FIRE_END && currentStep!=MainActivity.STEP_DONE) {
                         MediaPlayerSingleton.getInstance().play(context,MediaPlayerSingleton.playNext(currentStep,false,false),false);
                         if (MediaPlayerSingleton.getPlayingState()) {
-                            //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop", "drawable", getActivity().getPackageName()));
+                            testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_stop", "drawable", act.getPackageName()));
                         }
                     } else {
                         stopPlaying(context);
                         currentStep=MainActivity.STEP_BEGIN;
+                        testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_play", "drawable", act.getPackageName()));
                     }
                 }
             });
@@ -85,6 +104,10 @@ class MediaPlayerSingleton {
 
     static void setStage(int s) {
         stage=s;
+    }
+
+    static void setActivity(Activity a) {
+        act=a;
     }
 
     static int getCurrentStep() {
@@ -178,7 +201,6 @@ class MediaPlayerSingleton {
                 currentStep=MainActivity.STEP_DONE;
                 break;
             case MainActivity.STEP_DONE:
-                //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play", "drawable", getActivity().getPackageName()));
                 break;
         }
         return source;

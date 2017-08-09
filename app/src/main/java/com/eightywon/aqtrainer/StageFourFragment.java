@@ -54,6 +54,7 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
                 if (!isPlaying) {
                     testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
                     MediaPlayerSingleton.setStage(4);
+                    MediaPlayerSingleton.setActivity(getActivity());
                     MediaPlayerSingleton.getInstance().play(getContext(),MediaPlayerSingleton.playNext(MediaPlayerSingleton.getCurrentStep(),playStageDesc,playPrep),false);
                 } else {
                     MediaPlayerSingleton.stopPlaying(getContext());
