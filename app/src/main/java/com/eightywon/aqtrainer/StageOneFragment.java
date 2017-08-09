@@ -1,5 +1,6 @@
 package com.eightywon.aqtrainer;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
@@ -52,19 +53,9 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
             public void onClick(View v) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
-                    MediaPlayerSingleton.togglePlayingState();
                     testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
-                    if (playStageDesc) {
-                        MainActivity.nextStep=MainActivity.STEP_STAGE_DESCRIPTION;
-                    } else {
-                        if (playPrep) {
-                            MainActivity.nextStep=MainActivity.STEP_PREP_START;
-                        } else {
-                            MainActivity.nextStep=MainActivity.STEP_LOAD;
-                        }
-                    }
-                    MediaPlayerSingleton.playNext(MainActivity.nextStep);
-                    MediaPlayerSingleton.getInstance().play(getContext(),MainActivity.audioFile,false);
+                    MediaPlayerSingleton.setStage(1);
+                    MediaPlayerSingleton.getInstance().play(getContext(),MediaPlayerSingleton.playNext(MediaPlayerSingleton.getCurrentStep(),playStageDesc,playPrep),false);
                 } else {
                     MediaPlayerSingleton.stopPlaying(getContext());
                     hCountDownFireStage.removeCallbacks(countDownFireStage);
