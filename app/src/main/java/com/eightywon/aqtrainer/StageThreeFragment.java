@@ -55,6 +55,7 @@ public class StageThreeFragment extends Fragment implements TextToSpeech.OnInitL
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
                     MediaPlayerSingleton.togglePlayingState();
@@ -73,6 +74,7 @@ public class StageThreeFragment extends Fragment implements TextToSpeech.OnInitL
                     hCountDownFireStage.removeCallbacks(countDownFireStage);
                     testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getActivity().getPackageName()));
                 }
+                */
             }
         });
 
@@ -90,6 +92,7 @@ public class StageThreeFragment extends Fragment implements TextToSpeech.OnInitL
             }
         });
 
+        /*
         MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -102,6 +105,7 @@ public class StageThreeFragment extends Fragment implements TextToSpeech.OnInitL
                 playNext(MainActivity.nextStep);
             }
         });
+        */
 
         hCountDownFireStage=new Handler();
 
@@ -134,11 +138,12 @@ public class StageThreeFragment extends Fragment implements TextToSpeech.OnInitL
                 break;
             case MainActivity.STEP_FIRE_END:
                 MainActivity.nextStep=MainActivity.STEP_DONE;
-                MediaPlayerSingleton.togglePlayingState();
+                //MediaPlayerSingleton.togglePlayingState();
                 break;
         }
     }
 
+    /*
     public void playNext (int nextStep) {
 
         MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
@@ -206,7 +211,9 @@ public class StageThreeFragment extends Fragment implements TextToSpeech.OnInitL
             testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
         }
     }
+    */
 
+    /*
     public void openAudioFile(MediaPlayer mp) {
         AssetFileDescriptor afd = null;
         try {
@@ -224,15 +231,18 @@ public class StageThreeFragment extends Fragment implements TextToSpeech.OnInitL
             e.printStackTrace();
         }
     }
+    */
 
     private Runnable countDownFireStage = new Runnable() {
         @Override
         public void run() {
             MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
+            /*
             int remaining=Math.round((mediaPlayer.getDuration()-mediaPlayer.getCurrentPosition())/1000);
             if (remaining>1) {
                 textToSpeech.speak(String.valueOf(remaining),TextToSpeech.QUEUE_FLUSH,null,"");
             }
+            */
             hCountDownFireStage.postDelayed(countDownFireStage,countDownFireStageInterval*1000);
         }
     };
