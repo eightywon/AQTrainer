@@ -31,4 +31,9 @@
         android:key="lpSettingsAnnounceInterval"
         android:summary="%s"
         android:title="@string/settingsAnnounceInterval" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="chkpRedAlertMode"
+        android:summary="@string/settingsRedAlertModeBody"
+        android:title="@string/settingsRedAlertMode" />
 </PreferenceScreen>

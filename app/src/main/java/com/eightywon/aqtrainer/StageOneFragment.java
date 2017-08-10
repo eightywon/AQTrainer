@@ -1,35 +1,29 @@
 package com.eightywon.aqtrainer;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import java.util.Locale;
 import android.os.Handler;
 import android.widget.TextView;
 
 public class StageOneFragment extends Fragment implements TextToSpeech.OnInitListener {
 
-    boolean playStageDesc;
-    boolean playPrep;
-
     static TextToSpeech textToSpeech;
 
     public ImageButton testButton;
 
     public static int countDownFireStageInterval;
-    Switch swPlayStageDesc;
-    Switch swPlayPrep;
 
     public static Handler hCountDownFireStage;
 
-    TextView txtStageDescTimer;
+    static int lastSec=0;
+
+    static TextView txtStageDescTimer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,11 +32,6 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
                 false);
 
         testButton=(ImageButton) rootView.findViewById(R.id.btnStage1Play);
-        swPlayStageDesc=(Switch) rootView.findViewById(R.id.swStageDesc);
-        swPlayPrep=(Switch) rootView.findViewById(R.id.swPrepPeriod);
-
-        playStageDesc=swPlayStageDesc.isChecked();
-        playPrep=swPlayPrep.isChecked();
 
         textToSpeech = new TextToSpeech(getActivity(),this);
 
@@ -56,7 +45,7 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
                     testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
                     MediaPlayerSingleton.setStage(1);
                     MediaPlayerSingleton.setActivity(getActivity());
-                    MediaPlayerSingleton.getInstance().play(getContext(),MediaPlayerSingleton.playNext(MediaPlayerSingleton.getCurrentStep(),playStageDesc,playPrep),false);
+                    MediaPlayerSingleton.getInstance().play(getContext(),0,false);
                 } else {
                     MediaPlayerSingleton.stopPlaying(getContext());
                     hCountDownFireStage.removeCallbacks(countDownFireStage);
@@ -64,21 +53,6 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
                 }
             }
         });
-
-        swPlayStageDesc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            playStageDesc=isChecked;
-            }
-        });
-
-        swPlayPrep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                playPrep=isChecked;
-            }
-        });
-
 
         hCountDownFireStage=new Handler();
 
@@ -90,10 +64,39 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
         public void run() {
             MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
             int remaining=mediaPlayer.getRemaining();
-            if (remaining>1) {
-                textToSpeech.speak(String.valueOf(remaining),TextToSpeech.QUEUE_FLUSH,null,"");
+
+            boolean redAlertMode=MainActivity.getRedAlertMode();
+            int secs=0;
+            int mins=0;
+            String howLong="";
+            if (remaining>=1) {
+                if (remaining>=60) {
+                    mins=remaining/60;
+                    secs=remaining%60;
+                    howLong=String.valueOf(mins)+" minutes ";
+                    if (secs>0) howLong+=String.valueOf(secs)+" seconds.";
+                    if (secs!=lastSec) {
+                        StageOneFragment.txtStageDescTimer.setText(mins+"m "+secs+"s");
+                    }
+                } else {
+                    secs=remaining%60;
+                    if (remaining<=10 && redAlertMode) {
+                        howLong=String.valueOf(secs);
+                    } else {
+                        howLong=String.valueOf(secs)+" seconds.";
+                    }
+                    if (secs!=lastSec) {
+                        StageOneFragment.txtStageDescTimer.setText(secs+"s");
+                    }
+                }
+                if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0)) {
+                    if (secs!=lastSec) {
+                        textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
+                    }
+                }
             }
-            hCountDownFireStage.postDelayed(countDownFireStage,countDownFireStageInterval*1000);
+            lastSec=secs;
+            hCountDownFireStage.postDelayed(countDownFireStage,200);
         }
     };
 

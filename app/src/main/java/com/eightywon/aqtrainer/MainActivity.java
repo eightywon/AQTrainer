@@ -2,7 +2,9 @@ package com.eightywon.aqtrainer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,15 +21,18 @@ public class MainActivity extends AppCompatActivity {
     final static int STEP_PREP_START=2;
     final static int STEP_PREP_IN_PROGRESS=3;
     final static int STEP_PREP_END=4;
-    final static int STEP_LOAD=5;
-    final static int STEP_FIRE_START=6;
-    final static int STEP_FIRE_IN_PROGRESS=7;
-    final static int STEP_FIRE_END=8;
-    final static int STEP_DONE=99;
+    final static int STEP_SAFTIES_ON_STAND=5;
+    final static int STEP_LOAD=6;
+    final static int STEP_FIRE_START=7;
+    final static int STEP_FIRE_IN_PROGRESS=8;
+    final static int STEP_FIRE_END=9;
+    final static int STEP_DONE=10;
 
     ViewPager aqtViewPager;
     public int previousPage;
     public ImageButton testButton;
+
+    static int[] sources=new int[100];
 
     private static MainActivity instance;
 
@@ -156,5 +161,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static boolean getPlayStageDescription() {
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
+        return prefs.getBoolean("chkpPlayStageDesc",false);
+    }
+
+    public static boolean getPlayPrepAnnouncements() {
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
+        return prefs.getBoolean("chkpPlayPrep",false);
+    }
+
+    public static int getPrepTime() {
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
+        String prepTime=prefs.getString("lpSettingsPrepTime","");
+        prepTime=prepTime.substring(0,prepTime.indexOf(" "));
+        return Integer.parseInt(prepTime);
+    }
+
+    public static boolean getAnnounceStageTime() {
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
+        return prefs.getBoolean("chkpStageTimerAnnounce",true);
+    }
+
+    public static boolean getRedAlertMode() {
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
+        return prefs.getBoolean("chkpRedAlertMode",false);
     }
 }
