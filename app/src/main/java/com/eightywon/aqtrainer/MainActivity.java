@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,26 +16,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Locale;
+
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     final static int STEP_BEGIN=0;
     final static int STEP_STAGE_DESCRIPTION=1;
     final static int STEP_PREP_START=2;
     final static int STEP_PREP_IN_PROGRESS=3;
     final static int STEP_PREP_END=4;
     final static int STEP_SAFTIES_ON_STAND=5;
-    final static int STEP_LOAD=6;
-    final static int STEP_FIRE_START=7;
-    final static int STEP_FIRE_IN_PROGRESS=8;
-    final static int STEP_FIRE_END=9;
-    final static int STEP_DONE=10;
+    final static int STEP_PAUSE_1=6;
+    final static int STEP_LOAD=7;
+    final static int STEP_PAUSE_2=8;
+    final static int STEP_FIRE_START=9;
+    final static int STEP_FIRE_IN_PROGRESS=10;
+    final static int STEP_FIRE_END=11;
+    final static int STEP_DONE=12;
 
     ViewPager aqtViewPager;
     public int previousPage;
     public ImageButton testButton;
 
-    static int[] sources=new int[100];
+    public static TextToSpeech textToSpeech;
+    //textToSpeech = new TextToSpeech(getActivity(),this);
 
+    static int lastSec=0;
+    static boolean firstTime=false;
+    public static Handler hCountDownPrepStage=new Handler();
+    public static Handler hCountDownFireStage=new Handler();
+    public static int countDownFireStageInterval;
+
+    static int[] sources=new int[100];
     private static MainActivity instance;
 
     @Override
@@ -94,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+        textToSpeech = new TextToSpeech(MainActivity.this,this);
     }
 
     public static Context getContext() {
@@ -188,5 +204,97 @@ public class MainActivity extends AppCompatActivity {
     public static boolean getRedAlertMode() {
         SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
         return prefs.getBoolean("chkpRedAlertMode",false);
+    }
+
+    public static Runnable countDownPrepStage = new Runnable() {
+        @Override
+        public void run() {
+            MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
+            int remaining=mediaPlayer.getRemaining();
+
+            int secs=0;
+            int mins=0;
+            if (remaining>=0) {
+                if (remaining>=60) {
+                    mins=remaining/60;
+                    secs=remaining%60;
+                    if (secs!=lastSec) {
+                        StageOneFragment.txtStageDescTimer.setText(mins+"m "+secs+"s");
+                    }
+                } else {
+                    secs=remaining%60;
+                    if (secs!=lastSec) {
+                        StageOneFragment.txtStageDescTimer.setText(secs+"s");
+                    }
+                }
+            }
+            lastSec=secs;
+            hCountDownPrepStage.postDelayed(countDownPrepStage,200);
+        }
+    };
+
+    public static Runnable countDownFireStage = new Runnable() {
+        @Override
+        public void run() {
+            TextView txtStageDescTimer = null;
+            switch (MediaPlayerSingleton.getStage()) {
+                case 1:
+                    txtStageDescTimer=StageOneFragment.txtStageDescTimer;
+                    break;
+                case 2:
+                    txtStageDescTimer=StageTwoFragment.txtStageDescTimer;
+                    break;
+                case 3:
+                    txtStageDescTimer=StageThreeFragment.txtStageDescTimer;
+                    break;
+                case 4:
+                    txtStageDescTimer=StageFourFragment.txtStageDescTimer;
+                    break;
+            }
+
+            MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
+            int remaining=mediaPlayer.getRemaining();
+
+            boolean redAlertMode=MainActivity.getRedAlertMode();
+            int secs=0;
+            int mins=0;
+            String howLong="";
+            if (remaining>=0) {
+                if (remaining>=60) {
+                    mins=remaining/60;
+                    secs=remaining%60;
+                    howLong=String.valueOf(mins)+" minutes ";
+                    if (secs>0) howLong+=String.valueOf(secs)+" seconds.";
+                    if (secs!=lastSec) {
+                        txtStageDescTimer.setText(mins+"m "+secs+"s");
+                    }
+                } else {
+                    secs=remaining%60;
+                    if (remaining<=10 && redAlertMode) {
+                        howLong=String.valueOf(secs);
+                    } else {
+                        howLong=String.valueOf(secs)+" seconds.";
+                    }
+                    if (secs!=lastSec) {
+                        txtStageDescTimer.setText(secs+"s");
+                    }
+                }
+                if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0) || (MainActivity.firstTime)) {
+                    if (secs!=lastSec && !(mins==0 && secs==0)) {
+                        textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
+                    }
+                }
+            }
+            lastSec=secs;
+            MainActivity.firstTime=false;
+            hCountDownFireStage.postDelayed(countDownFireStage,200);
+        }
+    };
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            textToSpeech.setLanguage(Locale.US);
+        }
     }
 }

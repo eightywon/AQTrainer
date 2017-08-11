@@ -24,7 +24,6 @@ class MediaPlayerSingleton {
     }
 
     int getRemaining() {
-        //return (int) Math.round((((mediaPlayer.getDuration()-mediaPlayer.getCurrentPosition())+200)/1000));
         return (int) Math.round(((float)(mediaPlayer.getDuration()-mediaPlayer.getCurrentPosition())/(float) 1000));
     }
 
@@ -81,7 +80,12 @@ class MediaPlayerSingleton {
             MainActivity.sources[MainActivity.STEP_SAFTIES_ON_STAND]=R.raw.safetiesonstand;
         }
 
+        if (MainActivity.getPlayPrepAnnouncements() || MainActivity.getPlayStageDescription() || stage==2 || stage==3) {
+            MainActivity.sources[MainActivity.STEP_PAUSE_1]=R.raw.s2;
+        }
+
         MainActivity.sources[MainActivity.STEP_LOAD]=R.raw.load10;
+        MainActivity.sources[MainActivity.STEP_PAUSE_2]=R.raw.s5;
         MainActivity.sources[MainActivity.STEP_FIRE_START]=R.raw.fire;
 
         switch (stage) {
@@ -163,22 +167,24 @@ class MediaPlayerSingleton {
     }
 
     static void stopPlaying(final Context context) {
+        MainActivity.hCountDownFireStage.removeCallbacks(MainActivity.countDownFireStage);
+        MainActivity.hCountDownPrepStage.removeCallbacks(MainActivity.countDownPrepStage);
         switch (stage) {
             case 1:
-                StageOneFragment.hCountDownFireStage.removeCallbacks(StageOneFragment.countDownFireStage);
-                StageOneFragment.txtStageDescTimer.setText("0m 0s");
+                StageOneFragment.txtStageDescTimer.setText("");
+                StageOneFragment.txtStepDesc.setText("");
                 break;
             case 2:
-                StageTwoFragment.hCountDownFireStage.removeCallbacks(StageTwoFragment.countDownFireStage);
-                StageTwoFragment.txtStageDescTimer.setText("0m 0s");
+                StageTwoFragment.txtStageDescTimer.setText("");
+                StageTwoFragment.txtStepDesc.setText("");
                 break;
             case 3:
-                StageThreeFragment.hCountDownFireStage.removeCallbacks(StageThreeFragment.countDownFireStage);
-                StageThreeFragment.txtStageDescTimer.setText("0m 0s");
+                StageThreeFragment.txtStageDescTimer.setText("");
+                StageThreeFragment.txtStepDesc.setText("");
                 break;
             case 4:
-                StageFourFragment.hCountDownFireStage.removeCallbacks(StageFourFragment.countDownFireStage);
-                StageFourFragment.txtStageDescTimer.setText("0m 0s");
+                StageFourFragment.txtStageDescTimer.setText("");
+                StageFourFragment.txtStepDesc.setText("");
                 break;
 
         }
@@ -199,6 +205,8 @@ class MediaPlayerSingleton {
         stage=s;
     }
 
+    static int getStage() {return stage;}
+
     static void setActivity(Activity a) {
         act=a;
     }
@@ -208,52 +216,109 @@ class MediaPlayerSingleton {
             currentStep++;
         }
 
+        if (currentStep==MainActivity.STEP_PREP_IN_PROGRESS) {
+            MainActivity.firstTime=true;
+            MainActivity.lastSec=0;
+            MainActivity.hCountDownPrepStage.post(MainActivity.countDownPrepStage);
+            switch (stage) {
+                case 1:
+                    StageOneFragment.txtStepDesc.setText("PREPARING");
+                    break;
+                case 2:
+                    StageTwoFragment.txtStepDesc.setText("PREPARING");
+                    break;
+                case 3:
+                    StageThreeFragment.txtStepDesc.setText("PREPARING");
+                    break;
+                case 4:
+                    StageFourFragment.txtStepDesc.setText("PREPARING");
+                    break;
+            }
+        } else if (currentStep==MainActivity.STEP_PREP_END) {
+            MainActivity.firstTime=true;
+            MainActivity.lastSec=0;
+            MainActivity.hCountDownPrepStage.removeCallbacks(MainActivity.countDownPrepStage);
+            switch (stage) {
+                case 1:
+                    StageOneFragment.txtStepDesc.setText("");
+                    StageOneFragment.txtStageDescTimer.setText("");
+                    break;
+                case 2:
+                    StageTwoFragment.txtStepDesc.setText("");
+                    StageTwoFragment.txtStageDescTimer.setText("");
+                    break;
+                case 3:
+                    StageThreeFragment.txtStepDesc.setText("");
+                    StageThreeFragment.txtStageDescTimer.setText("");
+                    break;
+                case 4:
+                    StageFourFragment.txtStepDesc.setText("");
+                    StageFourFragment.txtStageDescTimer.setText("");
+                    break;
+            }
+        }
         if (currentStep==MainActivity.STEP_FIRE_IN_PROGRESS) {
             if (MainActivity.getAnnounceStageTime()) {
                 String announceInterval;
                 SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
                 announceInterval=prefs.getString("lpSettingsAnnounceInterval","");
                 announceInterval=announceInterval.substring(0,announceInterval.indexOf(" "));
+                MainActivity.countDownFireStageInterval=Integer.parseInt(announceInterval);
+                MainActivity.hCountDownFireStage.post(MainActivity.countDownFireStage);
                 switch (stage) {
                     case 1:
-                        StageOneFragment.countDownFireStageInterval=Integer.parseInt(announceInterval);
-                        StageOneFragment.hCountDownFireStage.post(StageOneFragment.countDownFireStage);
+                        StageOneFragment.txtStepDesc.setText("FIRE IN PROGRESS");
                         break;
                     case 2:
-                        StageTwoFragment.countDownFireStageInterval=Integer.parseInt(announceInterval);
-                        StageTwoFragment.hCountDownFireStage.post(StageTwoFragment.countDownFireStage);
+                        StageTwoFragment.txtStepDesc.setText("FIRE IN PROGRESS");
                         break;
                     case 3:
-                        StageThreeFragment.countDownFireStageInterval=Integer.parseInt(announceInterval);
-                        StageThreeFragment.hCountDownFireStage.post(StageThreeFragment.countDownFireStage);
+                        StageThreeFragment.txtStepDesc.setText("FIRE IN PROGRESS");
                         break;
                     case 4:
-                        StageFourFragment.countDownFireStageInterval=Integer.parseInt(announceInterval);
-                        StageFourFragment.hCountDownFireStage.post(StageFourFragment.countDownFireStage);
+                        StageFourFragment.txtStepDesc.setText("FIRE IN PROGRESS");
                         break;
                 }
             }
         } else if (currentStep==MainActivity.STEP_FIRE_END) {
+            MainActivity.hCountDownFireStage.removeCallbacks(MainActivity.countDownFireStage);
             switch (stage) {
                 case 1:
-                    StageOneFragment.hCountDownFireStage.removeCallbacks(StageOneFragment.countDownFireStage);
-                    StageOneFragment.txtStageDescTimer.setText("0m 0s");
+                    StageOneFragment.txtStageDescTimer.setText("CEASE FIRE");
                     break;
                 case 2:
-                    StageTwoFragment.hCountDownFireStage.removeCallbacks(StageTwoFragment.countDownFireStage);
-                    StageTwoFragment.txtStageDescTimer.setText("0m 0s");
+                    StageTwoFragment.txtStageDescTimer.setText("CEASE FIRE");
                     break;
                 case 3:
-                    StageThreeFragment.hCountDownFireStage.removeCallbacks(StageThreeFragment.countDownFireStage);
-                    StageThreeFragment.txtStageDescTimer.setText("0m 0s");
+                    StageThreeFragment.txtStageDescTimer.setText("CEASE FIRE");
                     break;
                 case 4:
-                    StageFourFragment.hCountDownFireStage.removeCallbacks(StageFourFragment.countDownFireStage);
-                    StageFourFragment.txtStageDescTimer.setText("0m 0s");
+                    StageFourFragment.txtStageDescTimer.setText("CEASE FIRE");
+                    break;
+
+            }
+        } else if (currentStep==MainActivity.STEP_DONE){
+            switch (stage) {
+                case 1:
+                    StageOneFragment.txtStageDescTimer.setText("");
+                    StageOneFragment.txtStepDesc.setText("");
+                    break;
+                case 2:
+                    StageTwoFragment.txtStageDescTimer.setText("");
+                    StageTwoFragment.txtStepDesc.setText("");
+                    break;
+                case 3:
+                    StageThreeFragment.txtStageDescTimer.setText("");
+                    StageThreeFragment.txtStepDesc.setText("");
+                    break;
+                case 4:
+                    StageFourFragment.txtStageDescTimer.setText("");
+                    StageFourFragment.txtStepDesc.setText("");
                     break;
 
             }
         }
+
         return MainActivity.sources[currentStep];
     }
 }

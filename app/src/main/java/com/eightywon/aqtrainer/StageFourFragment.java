@@ -21,7 +21,10 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
 
     public static Handler hCountDownFireStage;
 
+    static int lastSec=0;
+
     static TextView txtStageDescTimer;
+    static TextView txtStepDesc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +37,7 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
         textToSpeech = new TextToSpeech(getActivity(),this);
 
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
+        txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
 
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +77,9 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
                     secs=remaining%60;
                     howLong=String.valueOf(mins)+" minutes ";
                     if (secs>0) howLong+=String.valueOf(secs)+" seconds.";
-                    StageFourFragment.txtStageDescTimer.setText(mins+"m "+secs+"s");
+                    if (secs!=lastSec) {
+                        StageFourFragment.txtStageDescTimer.setText(mins+"m "+secs+"s");
+                    }
                 } else {
                     secs=remaining%60;
                     if (remaining<=10 && redAlertMode) {
@@ -81,14 +87,18 @@ public class StageFourFragment extends Fragment implements TextToSpeech.OnInitLi
                     } else {
                         howLong=String.valueOf(secs)+" seconds.";
                     }
-                    StageFourFragment.txtStageDescTimer.setText(secs+"s");
+                    if (secs!=lastSec) {
+                        StageFourFragment.txtStageDescTimer.setText(secs+"s");
+                    }
                 }
-                if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0)) {
-                    textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
+                if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0) || lastSec==0) {
+                    if (secs!=lastSec) {
+                        textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
+                    }
                 }
             }
-
-            hCountDownFireStage.postDelayed(countDownFireStage,1000);
+            lastSec=secs;
+            hCountDownFireStage.postDelayed(countDownFireStage,200);
         }
     };
 

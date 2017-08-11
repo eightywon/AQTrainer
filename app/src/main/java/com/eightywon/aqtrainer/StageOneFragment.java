@@ -24,6 +24,7 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
     static int lastSec=0;
 
     static TextView txtStageDescTimer;
+    static TextView txtStepDesc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,6 +37,7 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
         textToSpeech = new TextToSpeech(getActivity(),this);
 
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
+        txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
 
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +50,7 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
                     MediaPlayerSingleton.getInstance().play(getContext(),0,false);
                 } else {
                     MediaPlayerSingleton.stopPlaying(getContext());
-                    hCountDownFireStage.removeCallbacks(countDownFireStage);
+                    //hCountDownFireStage.removeCallbacks(countDownFireStage);
                     testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getActivity().getPackageName()));
                 }
             }
@@ -89,7 +91,7 @@ public class StageOneFragment extends Fragment implements TextToSpeech.OnInitLis
                         StageOneFragment.txtStageDescTimer.setText(secs+"s");
                     }
                 }
-                if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0)) {
+                if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0) || (lastSec==0 && mins==0)) {
                     if (secs!=lastSec) {
                         textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
                     }
