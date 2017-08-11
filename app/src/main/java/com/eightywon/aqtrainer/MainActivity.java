@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
             }
             lastSec=secs;
-            MainActivity.firstTime=false;
+            firstTime=false;
             hCountDownFireStage.postDelayed(countDownFireStage,200);
         }
     };
