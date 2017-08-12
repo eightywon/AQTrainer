@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.ImageButton;
 
 class MediaPlayerSingleton {
@@ -24,12 +24,12 @@ class MediaPlayerSingleton {
     }
 
     int getRemaining() {
-        return (int) Math.round(((float)(mediaPlayer.getDuration()-mediaPlayer.getCurrentPosition())/(float) 1000));
+        return Math.round(((float)(mediaPlayer.getDuration()-mediaPlayer.getCurrentPosition())/(float) 1000));
     }
 
     void play(Context context, int resId, boolean stop) {
 
-        int i=0;
+        int i=MainActivity.STEP_BEGIN;
         while (i<MainActivity.sources.length) {
             MainActivity.sources[i]=0;
             i++;
@@ -158,7 +158,7 @@ class MediaPlayerSingleton {
                         }
                     } else {
                         stopPlaying(context);
-                        currentStep=0;
+                        currentStep=MainActivity.STEP_BEGIN;
                         testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_play", "drawable", act.getPackageName()));
                     }
                 }
@@ -169,6 +169,21 @@ class MediaPlayerSingleton {
     static void stopPlaying(final Context context) {
         MainActivity.hCountDownFireStage.removeCallbacks(MainActivity.countDownFireStage);
         MainActivity.hCountDownPrepStage.removeCallbacks(MainActivity.countDownPrepStage);
+        MainActivity.hCountDownDescStage.remove3Callbacks(MainActivity.countDownDescStage);
+        StageTwoFragment.leftShot1.setVisibility(View.INVISIBLE);
+        StageTwoFragment.leftShot2.setVisibility(View.INVISIBLE);
+        StageTwoFragment.leftShot3.setVisibility(View.INVISIBLE);
+        StageTwoFragment.leftShot4.setVisibility(View.INVISIBLE);
+        StageTwoFragment.leftShot5.setVisibility(View.INVISIBLE);
+        StageTwoFragment.rightShot1.setVisibility(View.INVISIBLE);
+        StageTwoFragment.rightShot2.setVisibility(View.INVISIBLE);
+        StageTwoFragment.rightShot3.setVisibility(View.INVISIBLE);
+        StageTwoFragment.rightShot4.setVisibility(View.INVISIBLE);
+        StageTwoFragment.rightShot5.setVisibility(View.INVISIBLE);
+        StageTwoFragment.imageView1.setBackgroundResource(0);
+        StageTwoFragment.imageView1.setPadding(0,0,0,0);
+        StageTwoFragment.imageView2.setBackgroundResource(0);
+        StageTwoFragment.imageView2.setPadding(0,0,0,0);
         switch (stage) {
             case 1:
                 StageOneFragment.txtStageDescTimer.setText("");
@@ -190,7 +205,7 @@ class MediaPlayerSingleton {
         }
 
         MediaPlayerSingleton.getInstance().play(context,0,null,null,true);
-        currentStep=0;
+        currentStep=MainActivity.STEP_BEGIN;
     }
 
     static boolean getPlayingState() {
@@ -211,9 +226,30 @@ class MediaPlayerSingleton {
         act=a;
     }
 
-    static int getNextResId() {
+    private static int getNextResId() {
         while (MainActivity.sources[currentStep]==0) {
             currentStep++;
+        }
+
+        if (currentStep==MainActivity.STEP_STAGE_DESCRIPTION) {
+            MainActivity.hCountDownDescStage.post(MainActivity.countDownDescStage);
+        } else {
+            MainActivity.hCountDownDescStage.removeCallbacks(MainActivity.countDownDescStage);
+            StageTwoFragment.leftShot1.setVisibility(View.INVISIBLE);
+            StageTwoFragment.leftShot2.setVisibility(View.INVISIBLE);
+            StageTwoFragment.leftShot3.setVisibility(View.INVISIBLE);
+            StageTwoFragment.leftShot4.setVisibility(View.INVISIBLE);
+            StageTwoFragment.leftShot5.setVisibility(View.INVISIBLE);
+            StageTwoFragment.rightShot1.setVisibility(View.INVISIBLE);
+            StageTwoFragment.rightShot2.setVisibility(View.INVISIBLE);
+            StageTwoFragment.rightShot3.setVisibility(View.INVISIBLE);
+            StageTwoFragment.rightShot4.setVisibility(View.INVISIBLE);
+            StageTwoFragment.rightShot5.setVisibility(View.INVISIBLE);
+
+            StageTwoFragment.imageView1.setBackgroundResource(0);
+            StageTwoFragment.imageView1.setPadding(0,0,0,0);
+            StageTwoFragment.imageView2.setBackgroundResource(0);
+            StageTwoFragment.imageView2.setPadding(0,0,0,0);
         }
 
         if (currentStep==MainActivity.STEP_PREP_IN_PROGRESS) {
@@ -222,21 +258,19 @@ class MediaPlayerSingleton {
             MainActivity.hCountDownPrepStage.post(MainActivity.countDownPrepStage);
             switch (stage) {
                 case 1:
-                    StageOneFragment.txtStepDesc.setText("PREPARING");
+                    StageOneFragment.txtStepDesc.setText(R.string.StepDescPreparing);
                     break;
                 case 2:
-                    StageTwoFragment.txtStepDesc.setText("PREPARING");
+                    StageTwoFragment.txtStepDesc.setText(R.string.StepDescPreparing);
                     break;
                 case 3:
-                    StageThreeFragment.txtStepDesc.setText("PREPARING");
+                    StageThreeFragment.txtStepDesc.setText(R.string.StepDescPreparing);
                     break;
                 case 4:
-                    StageFourFragment.txtStepDesc.setText("PREPARING");
+                    StageFourFragment.txtStepDesc.setText(R.string.StepDescPreparing);
                     break;
             }
         } else if (currentStep==MainActivity.STEP_PREP_END) {
-            MainActivity.firstTime=true;
-            MainActivity.lastSec=0;
             MainActivity.hCountDownPrepStage.removeCallbacks(MainActivity.countDownPrepStage);
             switch (stage) {
                 case 1:
@@ -264,19 +298,21 @@ class MediaPlayerSingleton {
                 announceInterval=prefs.getString("lpSettingsAnnounceInterval","");
                 announceInterval=announceInterval.substring(0,announceInterval.indexOf(" "));
                 MainActivity.countDownFireStageInterval=Integer.parseInt(announceInterval);
+                MainActivity.firstTime=true;
+                MainActivity.lastSec=0;
                 MainActivity.hCountDownFireStage.post(MainActivity.countDownFireStage);
                 switch (stage) {
                     case 1:
-                        StageOneFragment.txtStepDesc.setText("FIRE IN PROGRESS");
+                        StageOneFragment.txtStepDesc.setText(R.string.StepDescFireInProgress);
                         break;
                     case 2:
-                        StageTwoFragment.txtStepDesc.setText("FIRE IN PROGRESS");
+                        StageTwoFragment.txtStepDesc.setText(R.string.StepDescFireInProgress);
                         break;
                     case 3:
-                        StageThreeFragment.txtStepDesc.setText("FIRE IN PROGRESS");
+                        StageThreeFragment.txtStepDesc.setText(R.string.StepDescFireInProgress);
                         break;
                     case 4:
-                        StageFourFragment.txtStepDesc.setText("FIRE IN PROGRESS");
+                        StageFourFragment.txtStepDesc.setText(R.string.StepDescFireInProgress);
                         break;
                 }
             }
@@ -284,16 +320,16 @@ class MediaPlayerSingleton {
             MainActivity.hCountDownFireStage.removeCallbacks(MainActivity.countDownFireStage);
             switch (stage) {
                 case 1:
-                    StageOneFragment.txtStageDescTimer.setText("CEASE FIRE");
+                    StageOneFragment.txtStageDescTimer.setText(R.string.StepDescCeaseFire);
                     break;
                 case 2:
-                    StageTwoFragment.txtStageDescTimer.setText("CEASE FIRE");
+                    StageTwoFragment.txtStageDescTimer.setText(R.string.StepDescCeaseFire);
                     break;
                 case 3:
-                    StageThreeFragment.txtStageDescTimer.setText("CEASE FIRE");
+                    StageThreeFragment.txtStageDescTimer.setText(R.string.StepDescCeaseFire);
                     break;
                 case 4:
-                    StageFourFragment.txtStageDescTimer.setText("CEASE FIRE");
+                    StageFourFragment.txtStageDescTimer.setText(R.string.StepDescCeaseFire);
                     break;
 
             }

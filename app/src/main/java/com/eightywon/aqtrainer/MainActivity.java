@@ -15,7 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -43,10 +45,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     //textToSpeech = new TextToSpeech(getActivity(),this);
 
     static int lastSec=0;
-    static boolean firstTime=false;
+    public static boolean firstTime=false;
     public static Handler hCountDownPrepStage=new Handler();
     public static Handler hCountDownFireStage=new Handler();
     public static int countDownFireStageInterval;
+
+    public static Handler hCountDownDescStage=new Handler();
 
     static int[] sources=new int[100];
     private static MainActivity instance;
@@ -70,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             @Override
             public void onPageSelected(int position) {
-                MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 switch (previousPage) {
                     case 0:
@@ -209,6 +212,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public static Runnable countDownPrepStage = new Runnable() {
         @Override
         public void run() {
+            TextView txtStageDescTimer = null;
+            switch (MediaPlayerSingleton.getStage()) {
+                case 1:
+                    txtStageDescTimer=StageOneFragment.txtStageDescTimer;
+                    break;
+                case 2:
+                    txtStageDescTimer=StageTwoFragment.txtStageDescTimer;
+                    break;
+                case 3:
+                    txtStageDescTimer=StageThreeFragment.txtStageDescTimer;
+                    break;
+                case 4:
+                    txtStageDescTimer=StageFourFragment.txtStageDescTimer;
+                    break;
+            }
             MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
             int remaining=mediaPlayer.getRemaining();
 
@@ -219,12 +237,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     mins=remaining/60;
                     secs=remaining%60;
                     if (secs!=lastSec) {
-                        StageOneFragment.txtStageDescTimer.setText(mins+"m "+secs+"s");
+                        if (txtStageDescTimer!=null) {
+                            txtStageDescTimer.setText(String.format(Locale.US,"%dm %ds",mins,secs));
+                        }
                     }
                 } else {
                     secs=remaining%60;
                     if (secs!=lastSec) {
-                        StageOneFragment.txtStageDescTimer.setText(secs+"s");
+                        if (txtStageDescTimer!=null) {
+                            txtStageDescTimer.setText(String.format(Locale.US,"%ds",secs));
+                        }
                     }
                 }
             }
@@ -258,15 +280,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             boolean redAlertMode=MainActivity.getRedAlertMode();
             int secs=0;
             int mins=0;
-            String howLong="";
+            String howLong;
             if (remaining>=0) {
                 if (remaining>=60) {
                     mins=remaining/60;
                     secs=remaining%60;
                     howLong=String.valueOf(mins)+" minutes ";
                     if (secs>0) howLong+=String.valueOf(secs)+" seconds.";
-                    if (secs!=lastSec) {
-                        txtStageDescTimer.setText(mins+"m "+secs+"s");
+                    if (secs!=lastSec || firstTime) {
+                        if (txtStageDescTimer!=null) {
+                            txtStageDescTimer.setText(String.format(Locale.US,"%dm %ds",mins,secs));
+                        }
                     }
                 } else {
                     secs=remaining%60;
@@ -275,12 +299,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     } else {
                         howLong=String.valueOf(secs)+" seconds.";
                     }
-                    if (secs!=lastSec) {
-                        txtStageDescTimer.setText(secs+"s");
+                    if (secs!=lastSec || firstTime) {
+                        if (txtStageDescTimer!=null) {
+                            txtStageDescTimer.setText(String.format(Locale.US,"%ds",secs));
+                        }
                     }
                 }
-                if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0) || (MainActivity.firstTime)) {
-                    if (secs!=lastSec && !(mins==0 && secs==0)) {
+                if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0) || firstTime) {
+                    if ((secs!=lastSec || firstTime) && remaining>0) {
                         textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
                     }
                 }
@@ -288,6 +314,68 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             lastSec=secs;
             firstTime=false;
             hCountDownFireStage.postDelayed(countDownFireStage,200);
+        }
+    };
+
+    public static Runnable countDownDescStage = new Runnable() {
+        @Override
+        public void run() {
+
+            ImageView imageView1=null;
+            ImageView imageView2=null;
+            switch (MediaPlayerSingleton.getStage()) {
+                case 1:
+                    imageView1=StageOneFragment.imageView;
+                    break;
+                case 2:
+                    imageView1=StageTwoFragment.imageView1;
+                    imageView2=StageTwoFragment.imageView2;
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+
+            MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
+            int remaining=mediaPlayer.getRemaining();
+
+            switch (MediaPlayerSingleton.getStage()) {
+                case 2:
+                    if (remaining==13) {
+                        imageView1.setBackgroundResource(R.color.colorRed);
+                        imageView1.setPadding(1, 1, 1, 1);
+                        StageTwoFragment.leftShot1.setVisibility(View.VISIBLE);
+                    } else if (remaining==12) {
+                        StageTwoFragment.leftShot2.setVisibility(View.VISIBLE);
+                    } else if (remaining==11) {
+                        StageTwoFragment.leftShot3.setVisibility(View.VISIBLE);
+                    } else if (remaining==10) {
+                        StageTwoFragment.leftShot4.setVisibility(View.VISIBLE);
+                    } else if (remaining==9) {
+                        StageTwoFragment.leftShot5.setVisibility(View.VISIBLE);
+                    } else if (remaining==8) {
+                        imageView1.setBackgroundResource(0);
+                        imageView1.setPadding(0,0,0,0);
+                    } else if (remaining==7) {
+                        imageView2.setBackgroundResource(R.color.colorRed);
+                        imageView2.setPadding(1,1,1,1);
+                        StageTwoFragment.rightShot1.setVisibility(View.VISIBLE);
+                    } else if (remaining==6) {
+                        StageTwoFragment.rightShot2.setVisibility(View.VISIBLE);
+                    } else if (remaining==5) {
+                        StageTwoFragment.rightShot3.setVisibility(View.VISIBLE);
+                    } else if (remaining==4) {
+                        StageTwoFragment.rightShot4.setVisibility(View.VISIBLE);
+                    } else if (remaining==3) {
+                        StageTwoFragment.rightShot5.setVisibility(View.VISIBLE);
+                        imageView2.setBackgroundResource(0);
+                        imageView2.setPadding(0,0,0,0);
+                    }
+                    break;
+            }
+
+            hCountDownDescStage.postDelayed(countDownDescStage,200);
         }
     };
 

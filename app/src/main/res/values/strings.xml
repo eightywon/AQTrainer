@@ -19,7 +19,11 @@
     <string name="settingsAnnounceStageTimeBody">Announce remaining time of current stage, at set interval</string>
     <string name="settingsRedAlertMode">Red Alert Mode</string>
     <string name="settingsRedAlertModeBody">Count down last 10 seconds of stage out loud</string>
-
+    <string name="StepDescPreparing">PREPARING</string>
+    <string name="StepDescFireInProgress">FIRE IN PROGRESS</string>
+    <string name="StepDescCeaseFire">CEASE FIRE</string>
+    <string name="btnStartStopStage">Start/Stop Stage</string>
+    <string name="imgStageTarget">Stage Target</string>
 
     <string-array name="prepTimes">
         <item>30 Seconds</item>
