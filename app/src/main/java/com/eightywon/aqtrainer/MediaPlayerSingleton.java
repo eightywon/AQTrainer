@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageButton;
@@ -169,21 +170,79 @@ class MediaPlayerSingleton {
     static void stopPlaying(final Context context) {
         MainActivity.hCountDownFireStage.removeCallbacks(MainActivity.countDownFireStage);
         MainActivity.hCountDownPrepStage.removeCallbacks(MainActivity.countDownPrepStage);
-        MainActivity.hCountDownDescStage.remove3Callbacks(MainActivity.countDownDescStage);
-        StageTwoFragment.leftShot1.setVisibility(View.INVISIBLE);
-        StageTwoFragment.leftShot2.setVisibility(View.INVISIBLE);
-        StageTwoFragment.leftShot3.setVisibility(View.INVISIBLE);
-        StageTwoFragment.leftShot4.setVisibility(View.INVISIBLE);
-        StageTwoFragment.leftShot5.setVisibility(View.INVISIBLE);
-        StageTwoFragment.rightShot1.setVisibility(View.INVISIBLE);
-        StageTwoFragment.rightShot2.setVisibility(View.INVISIBLE);
-        StageTwoFragment.rightShot3.setVisibility(View.INVISIBLE);
-        StageTwoFragment.rightShot4.setVisibility(View.INVISIBLE);
-        StageTwoFragment.rightShot5.setVisibility(View.INVISIBLE);
-        StageTwoFragment.imageView1.setBackgroundResource(0);
-        StageTwoFragment.imageView1.setPadding(0,0,0,0);
-        StageTwoFragment.imageView2.setBackgroundResource(0);
-        StageTwoFragment.imageView2.setPadding(0,0,0,0);
+        MainActivity.hCountDownDescStage.removeCallbacks(MainActivity.countDownDescStage);
+
+        switch (stage) {
+            case 1:
+                StageOneFragment.shot1.setVisibility(View.INVISIBLE);
+                StageOneFragment.shot2.setVisibility(View.INVISIBLE);
+                StageOneFragment.shot3.setVisibility(View.INVISIBLE);
+                StageOneFragment.shot4.setVisibility(View.INVISIBLE);
+                StageOneFragment.shot5.setVisibility(View.INVISIBLE);
+                StageOneFragment.shot6.setVisibility(View.INVISIBLE);
+                StageOneFragment.shot7.setVisibility(View.INVISIBLE);
+                StageOneFragment.shot8.setVisibility(View.INVISIBLE);
+                StageOneFragment.shot9.setVisibility(View.INVISIBLE);
+                StageOneFragment.shot10.setVisibility(View.INVISIBLE);
+                StageOneFragment.imageView.setBackgroundResource(0);
+                StageOneFragment.imageView.setPadding(0,0,0,0);
+                break;
+            case 2:
+                StageTwoFragment.leftShot1.setVisibility(View.INVISIBLE);
+                StageTwoFragment.leftShot2.setVisibility(View.INVISIBLE);
+                StageTwoFragment.leftShot3.setVisibility(View.INVISIBLE);
+                StageTwoFragment.leftShot4.setVisibility(View.INVISIBLE);
+                StageTwoFragment.leftShot5.setVisibility(View.INVISIBLE);
+                StageTwoFragment.rightShot1.setVisibility(View.INVISIBLE);
+                StageTwoFragment.rightShot2.setVisibility(View.INVISIBLE);
+                StageTwoFragment.rightShot3.setVisibility(View.INVISIBLE);
+                StageTwoFragment.rightShot4.setVisibility(View.INVISIBLE);
+                StageTwoFragment.rightShot5.setVisibility(View.INVISIBLE);
+                StageTwoFragment.imageView1.setBackgroundResource(0);
+                StageTwoFragment.imageView1.setPadding(0,0,0,0);
+                StageTwoFragment.imageView2.setBackgroundResource(0);
+                StageTwoFragment.imageView2.setPadding(0,0,0,0);
+                break;
+            case 3:
+                StageThreeFragment.shot1.setVisibility(View.INVISIBLE);
+                StageThreeFragment.shot2.setVisibility(View.INVISIBLE);
+                StageThreeFragment.shot3.setVisibility(View.INVISIBLE);
+                StageThreeFragment.shot4.setVisibility(View.INVISIBLE);
+                StageThreeFragment.shot5.setVisibility(View.INVISIBLE);
+                StageThreeFragment.shot6.setVisibility(View.INVISIBLE);
+                StageThreeFragment.shot7.setVisibility(View.INVISIBLE);
+                StageThreeFragment.shot8.setVisibility(View.INVISIBLE);
+                StageThreeFragment.shot9.setVisibility(View.INVISIBLE);
+                StageThreeFragment.shot10.setVisibility(View.INVISIBLE);
+                StageThreeFragment.imageView1.setBackgroundResource(0);
+                StageThreeFragment.imageView1.setPadding(0,0,0,0);
+                StageThreeFragment.imageView2.setBackgroundResource(0);
+                StageThreeFragment.imageView2.setPadding(0,0,0,0);
+                StageThreeFragment.imageView3.setBackgroundResource(0);
+                StageThreeFragment.imageView3.setPadding(0,0,0,0);
+                break;
+            case 4:
+                StageFourFragment.shot1.setVisibility(View.INVISIBLE);
+                StageFourFragment.shot2.setVisibility(View.INVISIBLE);
+                StageFourFragment.shot3.setVisibility(View.INVISIBLE);
+                StageFourFragment.shot4.setVisibility(View.INVISIBLE);
+                StageFourFragment.shot5.setVisibility(View.INVISIBLE);
+                StageFourFragment.shot6.setVisibility(View.INVISIBLE);
+                StageFourFragment.shot7.setVisibility(View.INVISIBLE);
+                StageFourFragment.shot8.setVisibility(View.INVISIBLE);
+                StageFourFragment.shot9.setVisibility(View.INVISIBLE);
+                StageFourFragment.shot10.setVisibility(View.INVISIBLE);
+                StageFourFragment.imageView1.setBackgroundResource(0);
+                StageFourFragment.imageView1.setPadding(0,0,0,0);
+                StageFourFragment.imageView2.setBackgroundResource(0);
+                StageFourFragment.imageView2.setPadding(0,0,0,0);
+                StageFourFragment.imageView3.setBackgroundResource(0);
+                StageFourFragment.imageView3.setPadding(0,0,0,0);
+                StageFourFragment.imageView4.setBackgroundResource(0);
+                StageFourFragment.imageView4.setPadding(0,0,0,0);
+                break;
+        }
+
         switch (stage) {
             case 1:
                 StageOneFragment.txtStageDescTimer.setText("");
@@ -235,21 +294,77 @@ class MediaPlayerSingleton {
             MainActivity.hCountDownDescStage.post(MainActivity.countDownDescStage);
         } else {
             MainActivity.hCountDownDescStage.removeCallbacks(MainActivity.countDownDescStage);
-            StageTwoFragment.leftShot1.setVisibility(View.INVISIBLE);
-            StageTwoFragment.leftShot2.setVisibility(View.INVISIBLE);
-            StageTwoFragment.leftShot3.setVisibility(View.INVISIBLE);
-            StageTwoFragment.leftShot4.setVisibility(View.INVISIBLE);
-            StageTwoFragment.leftShot5.setVisibility(View.INVISIBLE);
-            StageTwoFragment.rightShot1.setVisibility(View.INVISIBLE);
-            StageTwoFragment.rightShot2.setVisibility(View.INVISIBLE);
-            StageTwoFragment.rightShot3.setVisibility(View.INVISIBLE);
-            StageTwoFragment.rightShot4.setVisibility(View.INVISIBLE);
-            StageTwoFragment.rightShot5.setVisibility(View.INVISIBLE);
 
-            StageTwoFragment.imageView1.setBackgroundResource(0);
-            StageTwoFragment.imageView1.setPadding(0,0,0,0);
-            StageTwoFragment.imageView2.setBackgroundResource(0);
-            StageTwoFragment.imageView2.setPadding(0,0,0,0);
+            switch (stage) {
+                case 1:
+                    StageOneFragment.shot1.setVisibility(View.INVISIBLE);
+                    StageOneFragment.shot2.setVisibility(View.INVISIBLE);
+                    StageOneFragment.shot3.setVisibility(View.INVISIBLE);
+                    StageOneFragment.shot4.setVisibility(View.INVISIBLE);
+                    StageOneFragment.shot5.setVisibility(View.INVISIBLE);
+                    StageOneFragment.shot6.setVisibility(View.INVISIBLE);
+                    StageOneFragment.shot7.setVisibility(View.INVISIBLE);
+                    StageOneFragment.shot8.setVisibility(View.INVISIBLE);
+                    StageOneFragment.shot9.setVisibility(View.INVISIBLE);
+                    StageOneFragment.shot10.setVisibility(View.INVISIBLE);
+                    StageOneFragment.imageView.setBackgroundResource(0);
+                    StageOneFragment.imageView.setPadding(0,0,0,0);
+                    break;
+                case 2:
+                    StageTwoFragment.leftShot1.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.leftShot2.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.leftShot3.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.leftShot4.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.leftShot5.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.rightShot1.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.rightShot2.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.rightShot3.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.rightShot4.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.rightShot5.setVisibility(View.INVISIBLE);
+                    StageTwoFragment.imageView1.setBackgroundResource(0);
+                    StageTwoFragment.imageView1.setPadding(0,0,0,0);
+                    StageTwoFragment.imageView2.setBackgroundResource(0);
+                    StageTwoFragment.imageView2.setPadding(0,0,0,0);
+                    break;
+                case 3:
+                    StageThreeFragment.shot1.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.shot2.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.shot3.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.shot4.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.shot5.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.shot6.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.shot7.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.shot8.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.shot9.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.shot10.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.imageView1.setBackgroundResource(0);
+                    StageThreeFragment.imageView1.setPadding(0,0,0,0);
+                    StageThreeFragment.imageView2.setBackgroundResource(0);
+                    StageThreeFragment.imageView2.setPadding(0,0,0,0);
+                    StageThreeFragment.imageView3.setBackgroundResource(0);
+                    StageThreeFragment.imageView3.setPadding(0,0,0,0);
+                    break;
+                case 4:
+                    StageFourFragment.shot1.setVisibility(View.INVISIBLE);
+                    StageFourFragment.shot2.setVisibility(View.INVISIBLE);
+                    StageFourFragment.shot3.setVisibility(View.INVISIBLE);
+                    StageFourFragment.shot4.setVisibility(View.INVISIBLE);
+                    StageFourFragment.shot5.setVisibility(View.INVISIBLE);
+                    StageFourFragment.shot6.setVisibility(View.INVISIBLE);
+                    StageFourFragment.shot7.setVisibility(View.INVISIBLE);
+                    StageFourFragment.shot8.setVisibility(View.INVISIBLE);
+                    StageFourFragment.shot9.setVisibility(View.INVISIBLE);
+                    StageFourFragment.shot10.setVisibility(View.INVISIBLE);
+                    StageFourFragment.imageView1.setBackgroundResource(0);
+                    StageFourFragment.imageView1.setPadding(0,0,0,0);
+                    StageFourFragment.imageView2.setBackgroundResource(0);
+                    StageFourFragment.imageView2.setPadding(0,0,0,0);
+                    StageFourFragment.imageView3.setBackgroundResource(0);
+                    StageFourFragment.imageView3.setPadding(0,0,0,0);
+                    StageFourFragment.imageView4.setBackgroundResource(0);
+                    StageFourFragment.imageView4.setPadding(0,0,0,0);
+                    break;
+            }
         }
 
         if (currentStep==MainActivity.STEP_PREP_IN_PROGRESS) {

@@ -321,8 +321,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         @Override
         public void run() {
 
-            ImageView imageView1=null;
-            ImageView imageView2=null;
+            ImageView imageView1=StageFourFragment.imageView1;
+            ImageView imageView2=StageFourFragment.imageView2;
+            ImageView imageView3=StageFourFragment.imageView3;
+            ImageView imageView4=StageFourFragment.imageView4;
+
             switch (MediaPlayerSingleton.getStage()) {
                 case 1:
                     imageView1=StageOneFragment.imageView;
@@ -332,8 +335,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     imageView2=StageTwoFragment.imageView2;
                     break;
                 case 3:
+                    imageView1=StageThreeFragment.imageView1;
+                    imageView2=StageThreeFragment.imageView2;
+                    imageView3=StageThreeFragment.imageView3;
                     break;
                 case 4:
+                    imageView1=StageFourFragment.imageView1;
+                    imageView2=StageFourFragment.imageView2;
+                    imageView3=StageFourFragment.imageView3;
+                    imageView4=StageFourFragment.imageView4;
                     break;
             }
 
@@ -341,6 +351,43 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             int remaining=mediaPlayer.getRemaining();
 
             switch (MediaPlayerSingleton.getStage()) {
+                case 1:
+                    if (remaining==10) {
+                        StageOneFragment.shot1.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (remaining==9) {
+                        StageOneFragment.shot2.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (remaining==8) {
+                        StageOneFragment.shot3.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (remaining==7) {
+                        StageOneFragment.shot4.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (remaining==6) {
+                        StageOneFragment.shot5.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (remaining==5) {
+                        imageView1.setBackgroundResource(R.color.colorRed);
+                        imageView1.setPadding(1, 1, 1, 1);
+                        StageOneFragment.shot6.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (remaining==4) {
+                        StageOneFragment.shot7.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (remaining==3) {
+                        StageOneFragment.shot8.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (remaining==2) {
+                        imageView1.setBackgroundResource(0);
+                        imageView1.setPadding(0, 0, 0, 0);
+                        StageOneFragment.shot9.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (remaining==1) {
+                        StageOneFragment.shot10.setVisibility(View.VISIBLE);
+                        break;
+                    }
+                    break;
                 case 2:
                     if (remaining==13) {
                         imageView1.setBackgroundResource(R.color.colorRed);
@@ -373,8 +420,84 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         imageView2.setPadding(0,0,0,0);
                     }
                     break;
+                case 3:
+                    if (remaining==18) {
+                        imageView1.setBackgroundResource(R.color.colorRed);
+                        imageView1.setPadding(1, 1, 1, 1);
+                    } else if (remaining==12) {
+                        imageView1.setBackgroundResource(0);
+                        imageView1.setPadding(0, 0, 0, 0);
+                    } else if (remaining==17) {
+                        StageThreeFragment.shot1.setVisibility(View.VISIBLE);
+                    } else if (remaining==16) {
+                        StageThreeFragment.shot2.setVisibility(View.VISIBLE);
+                    } else if (remaining==13) {
+                        StageThreeFragment.shot3.setVisibility(View.VISIBLE);
+                    } else if (remaining==10) {
+                        imageView2.setBackgroundResource(R.color.colorRed);
+                        imageView2.setPadding(1, 1, 1, 1);
+                        StageThreeFragment.shot4.setVisibility(View.VISIBLE);
+                    } else if (remaining==9) {
+                        StageThreeFragment.shot5.setVisibility(View.VISIBLE);
+                    } else if (remaining==8) {
+                        StageThreeFragment.shot6.setVisibility(View.VISIBLE);
+                    } else if (remaining==7) {
+                        imageView2.setBackgroundResource(0);
+                        imageView2.setPadding(0, 0, 0, 0);
+                    } else if (remaining==6) {
+                        imageView3.setBackgroundResource(R.color.colorRed);
+                        imageView3.setPadding(1, 1, 1, 1);
+                        StageThreeFragment.shot7.setVisibility(View.VISIBLE);
+                    } else if (remaining==5) {
+                        StageThreeFragment.shot8.setVisibility(View.VISIBLE);
+                    } else if (remaining==4) {
+                        StageThreeFragment.shot9.setVisibility(View.VISIBLE);
+                    } else if (remaining==3) {
+                        imageView3.setBackgroundResource(0);
+                        imageView3.setPadding(0, 0, 0, 0);
+                        StageThreeFragment.shot10.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case 4:
+                    if (remaining==12) {
+                        imageView1.setBackgroundResource(R.color.colorRed);
+                        imageView1.setPadding(1, 1, 1, 1);
+                        imageView2.setBackgroundResource(R.color.colorRed);
+                        imageView2.setPadding(1, 1, 1, 1);
+                        StageFourFragment.shot1.setVisibility(View.VISIBLE);
+                    } else if (remaining==11) {
+                        StageFourFragment.shot2.setVisibility(View.VISIBLE);
+                    } else if (remaining==10) {
+                        StageFourFragment.shot3.setVisibility(View.VISIBLE);
+                    } else if (remaining==9) {
+                        StageFourFragment.shot4.setVisibility(View.VISIBLE);
+                        imageView1.setBackgroundResource(0);
+                        imageView1.setPadding(0, 0, 0, 0);
+                        imageView2.setBackgroundResource(0);
+                        imageView2.setPadding(0, 0, 0, 0);
+                    } else if (remaining==8) {
+                        imageView3.setBackgroundResource(R.color.colorRed);
+                        imageView3.setPadding(1, 1, 1, 1);
+                        imageView4.setBackgroundResource(R.color.colorRed);
+                        imageView4.setPadding(1, 1, 1, 1);
+                        StageFourFragment.shot5.setVisibility(View.VISIBLE);
+                    } else if (remaining==7) {
+                        StageFourFragment.shot6.setVisibility(View.VISIBLE);
+                    } else if (remaining==6) {
+                        StageFourFragment.shot7.setVisibility(View.VISIBLE);
+                    } else if (remaining==5) {
+                        StageFourFragment.shot8.setVisibility(View.VISIBLE);
+                        imageView3.setBackgroundResource(0);
+                        imageView3.setPadding(0, 0, 0, 0);
+                        imageView4.setBackgroundResource(0);
+                        imageView4.setPadding(0, 0, 0, 0);
+                    } else if (remaining==4) {
+                        StageFourFragment.shot9.setVisibility(View.VISIBLE);
+                    } else if (remaining==3) {
+                        StageFourFragment.shot10.setVisibility(View.VISIBLE);
+                    }
+                    break;
             }
-
             hCountDownDescStage.postDelayed(countDownDescStage,200);
         }
     };
