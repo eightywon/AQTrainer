@@ -236,14 +236,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 if (remaining>=60) {
                     mins=remaining/60;
                     secs=remaining%60;
-                    if (secs!=lastSec) {
+                    if (secs!=lastSec || firstTime) {
                         if (txtStageDescTimer!=null) {
                             txtStageDescTimer.setText(String.format(Locale.US,"%dm %ds",mins,secs));
                         }
                     }
                 } else {
                     secs=remaining%60;
-                    if (secs!=lastSec) {
+                    if (secs!=lastSec || firstTime) {
                         if (txtStageDescTimer!=null) {
                             txtStageDescTimer.setText(String.format(Locale.US,"%ds",secs));
                         }
@@ -251,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
             }
             lastSec=secs;
+            firstTime=false;
             hCountDownPrepStage.postDelayed(countDownPrepStage,200);
         }
     };
@@ -258,6 +259,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public static Runnable countDownFireStage = new Runnable() {
         @Override
         public void run() {
+            String announceInterval;
+            SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
+            announceInterval=prefs.getString("lpSettingsAnnounceInterval","");
+            announceInterval=announceInterval.substring(0,announceInterval.indexOf(" "));
+            MainActivity.countDownFireStageInterval=Integer.parseInt(announceInterval);
+
             TextView txtStageDescTimer = null;
             switch (MediaPlayerSingleton.getStage()) {
                 case 1:
@@ -306,14 +313,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     }
                 }
                 if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0) || firstTime) {
-                    if ((secs!=lastSec || firstTime) && remaining>0) {
+                    if ((secs!=lastSec || firstTime) && remaining>0 && (MainActivity.getAnnounceStageTime() || (redAlertMode && remaining<=10))) {
                         textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
                     }
                 }
             }
             lastSec=secs;
             firstTime=false;
-            hCountDownFireStage.postDelayed(countDownFireStage,200);
+            hCountDownFireStage.postDelayed(countDownFireStage, 200);
         }
     };
 
