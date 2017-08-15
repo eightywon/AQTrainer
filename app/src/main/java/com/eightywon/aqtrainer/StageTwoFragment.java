@@ -13,18 +13,22 @@ public class StageTwoFragment extends Fragment {
     public ImageButton testButton;
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
-    static ImageView imageView1;
-    static ImageView imageView2;
-    static ImageView rightShot1;
-    static ImageView rightShot2;
-    static ImageView rightShot3;
-    static ImageView rightShot4;
-    static ImageView rightShot5;
-    static ImageView leftShot1;
-    static ImageView leftShot2;
-    static ImageView leftShot3;
-    static ImageView leftShot4;
-    static ImageView leftShot5;
+
+    static ImageView target1;
+    static ImageView target2;
+    static ImageView target1Highlight;
+    static ImageView target2Highlight;
+
+    static ImageView shot1;
+    static ImageView shot2;
+    static ImageView shot3;
+    static ImageView shot4;
+    static ImageView shot5;
+    static ImageView shot6;
+    static ImageView shot7;
+    static ImageView shot8;
+    static ImageView shot9;
+    static ImageView shot10;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,38 +38,44 @@ public class StageTwoFragment extends Fragment {
         testButton=(ImageButton) rootView.findViewById(R.id.btnStage2Play);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
-        imageView1=(ImageView) rootView.findViewById(R.id.imageView1);
-        imageView2=(ImageView) rootView.findViewById(R.id.imageView2);
 
-        leftShot1=(ImageView) rootView.findViewById(R.id.leftShot1);
-        leftShot1.setVisibility(View.INVISIBLE);
+        target1=(ImageView) rootView.findViewById(R.id.target1);
+        target2=(ImageView) rootView.findViewById(R.id.target2);
+        target1Highlight=(ImageView) rootView.findViewById(R.id.target2Highlight);
+        target2Highlight=(ImageView) rootView.findViewById(R.id.target1Highlight);
 
-        leftShot2=(ImageView) rootView.findViewById(R.id.leftShot2);
-        leftShot2.setVisibility(View.INVISIBLE);
+        target1Highlight.setVisibility(View.INVISIBLE);
+        target2Highlight.setVisibility(View.INVISIBLE);
 
-        leftShot3=(ImageView) rootView.findViewById(R.id.leftShot3);
-        leftShot3.setVisibility(View.INVISIBLE);
+        shot1=(ImageView) rootView.findViewById(R.id.shot1);
+        shot1.setVisibility(View.INVISIBLE);
 
-        leftShot4=(ImageView) rootView.findViewById(R.id.leftShot4);
-        leftShot4.setVisibility(View.INVISIBLE);
+        shot2=(ImageView) rootView.findViewById(R.id.shot2);
+        shot2.setVisibility(View.INVISIBLE);
 
-        leftShot5=(ImageView) rootView.findViewById(R.id.leftShot5);
-        leftShot5.setVisibility(View.INVISIBLE);
+        shot3=(ImageView) rootView.findViewById(R.id.shot3);
+        shot3.setVisibility(View.INVISIBLE);
 
-        rightShot1=(ImageView) rootView.findViewById(R.id.rightShot1);
-        rightShot1.setVisibility(View.INVISIBLE);
+        shot4=(ImageView) rootView.findViewById(R.id.shot4);
+        shot4.setVisibility(View.INVISIBLE);
 
-        rightShot2=(ImageView) rootView.findViewById(R.id.rightShot2);
-        rightShot2.setVisibility(View.INVISIBLE);
+        shot5=(ImageView) rootView.findViewById(R.id.shot5);
+        shot5.setVisibility(View.INVISIBLE);
 
-        rightShot3=(ImageView) rootView.findViewById(R.id.rightShot3);
-        rightShot3.setVisibility(View.INVISIBLE);
+        shot6=(ImageView) rootView.findViewById(R.id.shot6);
+        shot6.setVisibility(View.INVISIBLE);
 
-        rightShot4=(ImageView) rootView.findViewById(R.id.rightShot4);
-        rightShot4.setVisibility(View.INVISIBLE);
+        shot7=(ImageView) rootView.findViewById(R.id.shot7);
+        shot7.setVisibility(View.INVISIBLE);
 
-        rightShot5=(ImageView) rootView.findViewById(R.id.rightShot5);
-        rightShot5.setVisibility(View.INVISIBLE);
+        shot8=(ImageView) rootView.findViewById(R.id.shot8);
+        shot8.setVisibility(View.INVISIBLE);
+
+        shot9=(ImageView) rootView.findViewById(R.id.shot9);
+        shot9.setVisibility(View.INVISIBLE);
+
+        shot10=(ImageView) rootView.findViewById(R.id.shot10);
+        shot10.setVisibility(View.INVISIBLE);
 
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override

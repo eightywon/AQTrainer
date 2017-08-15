@@ -1,8 +1,10 @@
 package com.eightywon.aqtrainer;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -10,12 +12,15 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,6 +62,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
+        setTaskDescription(new ActivityManager.TaskDescription("Appleseed Qualification Trainer",BitmapFactory.decodeResource(getResources(), R.drawable.icon_round_96),ContextCompat.getColor(this, R.color.colorNavBar)));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -259,11 +270,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public static Runnable countDownFireStage = new Runnable() {
         @Override
         public void run() {
-            String announceInterval;
-            SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
-            announceInterval=prefs.getString("lpSettingsAnnounceInterval","");
-            announceInterval=announceInterval.substring(0,announceInterval.indexOf(" "));
-            MainActivity.countDownFireStageInterval=Integer.parseInt(announceInterval);
+            if (MainActivity.getAnnounceStageTime()) {
+                String announceInterval;
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
+                announceInterval = prefs.getString("lpSettingsAnnounceInterval", "");
+                announceInterval = announceInterval.substring(0, announceInterval.indexOf(" "));
+                MainActivity.countDownFireStageInterval = Integer.parseInt(announceInterval);
+            }
 
             TextView txtStageDescTimer = null;
             switch (MediaPlayerSingleton.getStage()) {
@@ -312,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         }
                     }
                 }
-                if ((remaining<=10 && redAlertMode) || (remaining%countDownFireStageInterval==0) || firstTime) {
+                if ((remaining<=10 && redAlertMode) || (MainActivity.getAnnounceStageTime() && remaining%countDownFireStageInterval==0) || firstTime) {
                     if ((secs!=lastSec || firstTime) && remaining>0 && (MainActivity.getAnnounceStageTime() || (redAlertMode && remaining<=10))) {
                         textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
                     }
@@ -332,19 +345,28 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             ImageView imageView2=StageFourFragment.imageView2;
             ImageView imageView3=StageFourFragment.imageView3;
             ImageView imageView4=StageFourFragment.imageView4;
+            ImageView imageView5=StageFourFragment.imageView4;
+            ImageView imageView6=StageFourFragment.imageView4;
 
             switch (MediaPlayerSingleton.getStage()) {
                 case 1:
                     imageView1=StageOneFragment.imageView;
+                    imageView2=StageOneFragment.imageView1;
                     break;
                 case 2:
-                    imageView1=StageTwoFragment.imageView1;
-                    imageView2=StageTwoFragment.imageView2;
+                    imageView1=StageTwoFragment.target1;
+                    imageView2=StageTwoFragment.target2;
+                    imageView3=StageTwoFragment.target1Highlight;
+                    imageView4=StageTwoFragment.target2Highlight;
                     break;
                 case 3:
-                    imageView1=StageThreeFragment.imageView1;
-                    imageView2=StageThreeFragment.imageView2;
-                    imageView3=StageThreeFragment.imageView3;
+                    imageView1=StageThreeFragment.target1;
+                    imageView2=StageThreeFragment.target2;
+                    imageView3=StageThreeFragment.target3;
+
+                    imageView4=StageThreeFragment.target1Highlight;
+                    imageView5=StageThreeFragment.target2Highlight;
+                    imageView6=StageThreeFragment.target3Highlight;
                     break;
                 case 4:
                     imageView1=StageFourFragment.imageView1;
@@ -375,7 +397,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         StageOneFragment.shot5.setVisibility(View.VISIBLE);
                         break;
                     } else if (remaining==5) {
-                        imageView1.setBackgroundResource(R.color.colorRed);
+                        imageView2.setVisibility(View.VISIBLE);
+                        imageView1.setVisibility(View.INVISIBLE);
                         imageView1.setPadding(1, 1, 1, 1);
                         StageOneFragment.shot6.setVisibility(View.VISIBLE);
                         break;
@@ -386,7 +409,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         StageOneFragment.shot8.setVisibility(View.VISIBLE);
                         break;
                     } else if (remaining==2) {
-                        imageView1.setBackgroundResource(0);
+                        imageView1.setVisibility(View.VISIBLE);
+                        imageView2.setVisibility(View.INVISIBLE);
+                        //imageView1.setBackgroundResource(0);
                         imageView1.setPadding(0, 0, 0, 0);
                         StageOneFragment.shot9.setVisibility(View.VISIBLE);
                         break;
@@ -396,44 +421,62 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     }
                     break;
                 case 2:
-                    if (remaining==13) {
-                        imageView1.setBackgroundResource(R.color.colorRed);
-                        imageView1.setPadding(1, 1, 1, 1);
-                        StageTwoFragment.leftShot1.setVisibility(View.VISIBLE);
+                    if (remaining==14) {
+                        //imageView1.setBackgroundResource(R.color.colorRed);
+                        imageView3.setVisibility(View.VISIBLE);
+                        imageView1.setVisibility(View.INVISIBLE);
+                        //imageView1.setPadding(1, 1, 1, 1);
+                    } else if (remaining==13) {
+                        StageTwoFragment.shot1.setVisibility(View.VISIBLE);
                     } else if (remaining==12) {
-                        StageTwoFragment.leftShot2.setVisibility(View.VISIBLE);
+                        StageTwoFragment.shot2.setVisibility(View.VISIBLE);
                     } else if (remaining==11) {
-                        StageTwoFragment.leftShot3.setVisibility(View.VISIBLE);
+                        StageTwoFragment.shot3.setVisibility(View.VISIBLE);
                     } else if (remaining==10) {
-                        StageTwoFragment.leftShot4.setVisibility(View.VISIBLE);
+                        StageTwoFragment.shot4.setVisibility(View.VISIBLE);
                     } else if (remaining==9) {
-                        StageTwoFragment.leftShot5.setVisibility(View.VISIBLE);
+                        StageTwoFragment.shot5.setVisibility(View.VISIBLE);
                     } else if (remaining==8) {
-                        imageView1.setBackgroundResource(0);
-                        imageView1.setPadding(0,0,0,0);
+                        //imageView1.setBackgroundResource(0);
+                        imageView1.setVisibility(View.VISIBLE);
+                        imageView3.setVisibility(View.INVISIBLE);
+                        imageView4.setVisibility(View.VISIBLE);
+                        imageView2.setVisibility(View.INVISIBLE);
+                        //imageView1.setPadding(0,0,0,0);
                     } else if (remaining==7) {
-                        imageView2.setBackgroundResource(R.color.colorRed);
-                        imageView2.setPadding(1,1,1,1);
-                        StageTwoFragment.rightShot1.setVisibility(View.VISIBLE);
+                        //imageView2.setBackgroundResource(R.color.colorRed);
+                        //imageView1.setVisibility(View.VISIBLE);
+                        //imageView3.setVisibility(View.INVISIBLE);
+                        //imageView2.setPadding(1,1,1,1);
+                        StageTwoFragment.shot6.setVisibility(View.VISIBLE);
                     } else if (remaining==6) {
-                        StageTwoFragment.rightShot2.setVisibility(View.VISIBLE);
+                        imageView4.setVisibility(View.VISIBLE);
+                        imageView2.setVisibility(View.INVISIBLE);
+                        StageTwoFragment.shot7.setVisibility(View.VISIBLE);
                     } else if (remaining==5) {
-                        StageTwoFragment.rightShot3.setVisibility(View.VISIBLE);
+                        StageTwoFragment.shot8.setVisibility(View.VISIBLE);
                     } else if (remaining==4) {
-                        StageTwoFragment.rightShot4.setVisibility(View.VISIBLE);
+                        StageTwoFragment.shot9.setVisibility(View.VISIBLE);
                     } else if (remaining==3) {
-                        StageTwoFragment.rightShot5.setVisibility(View.VISIBLE);
-                        imageView2.setBackgroundResource(0);
-                        imageView2.setPadding(0,0,0,0);
+                        StageTwoFragment.shot10.setVisibility(View.VISIBLE);
+                        //imageView2.setBackgroundResource(0);
+                        //imageView2.setPadding(0,0,0,0);
+                    } else if (remaining==2) {
+                        imageView2.setVisibility(View.VISIBLE);
+                        imageView4.setVisibility(View.INVISIBLE);
                     }
                     break;
                 case 3:
                     if (remaining==18) {
-                        imageView1.setBackgroundResource(R.color.colorRed);
-                        imageView1.setPadding(1, 1, 1, 1);
+                        //imageView1.setBackgroundResource(R.color.colorRed);
+                        imageView4.setVisibility(View.VISIBLE);
+                        imageView1.setVisibility(View.INVISIBLE);
+                        //imageView1.setPadding(1, 1, 1, 1);
                     } else if (remaining==12) {
-                        imageView1.setBackgroundResource(0);
-                        imageView1.setPadding(0, 0, 0, 0);
+                        //imageView1.setBackgroundResource(0);
+                        imageView1.setVisibility(View.VISIBLE);
+                        imageView4.setVisibility(View.INVISIBLE);
+                        //imageView1.setPadding(0, 0, 0, 0);
                     } else if (remaining==17) {
                         StageThreeFragment.shot1.setVisibility(View.VISIBLE);
                     } else if (remaining==16) {
@@ -441,28 +484,37 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     } else if (remaining==13) {
                         StageThreeFragment.shot3.setVisibility(View.VISIBLE);
                     } else if (remaining==10) {
-                        imageView2.setBackgroundResource(R.color.colorRed);
-                        imageView2.setPadding(1, 1, 1, 1);
+                        //imageView2.setBackgroundResource(R.color.colorRed);
+                        //imageView2.setPadding(1, 1, 1, 1);
+                        imageView5.setVisibility(View.VISIBLE);
+                        imageView2.setVisibility(View.INVISIBLE);
                         StageThreeFragment.shot4.setVisibility(View.VISIBLE);
                     } else if (remaining==9) {
                         StageThreeFragment.shot5.setVisibility(View.VISIBLE);
                     } else if (remaining==8) {
                         StageThreeFragment.shot6.setVisibility(View.VISIBLE);
                     } else if (remaining==7) {
-                        imageView2.setBackgroundResource(0);
-                        imageView2.setPadding(0, 0, 0, 0);
+                        //imageView2.setBackgroundResource(0);
+                        //imageView2.setPadding(0, 0, 0, 0);
+                        imageView2.setVisibility(View.VISIBLE);
+                        imageView5.setVisibility(View.INVISIBLE);
                     } else if (remaining==6) {
-                        imageView3.setBackgroundResource(R.color.colorRed);
-                        imageView3.setPadding(1, 1, 1, 1);
+                        //imageView3.setBackgroundResource(R.color.colorRed);
+                        //imageView3.setPadding(1, 1, 1, 1);
+                        imageView6.setVisibility(View.VISIBLE);
+                        imageView3.setVisibility(View.INVISIBLE);
                         StageThreeFragment.shot7.setVisibility(View.VISIBLE);
                     } else if (remaining==5) {
                         StageThreeFragment.shot8.setVisibility(View.VISIBLE);
                     } else if (remaining==4) {
                         StageThreeFragment.shot9.setVisibility(View.VISIBLE);
                     } else if (remaining==3) {
-                        imageView3.setBackgroundResource(0);
-                        imageView3.setPadding(0, 0, 0, 0);
+                        //imageView3.setBackgroundResource(0);
+                        //imageView3.setPadding(0, 0, 0, 0);
                         StageThreeFragment.shot10.setVisibility(View.VISIBLE);
+                    } else if (remaining==2) {
+                        imageView3.setVisibility(View.VISIBLE);
+                        imageView6.setVisibility(View.INVISIBLE);
                     }
                     break;
                 case 4:

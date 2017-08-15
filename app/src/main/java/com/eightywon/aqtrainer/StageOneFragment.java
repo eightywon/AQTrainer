@@ -1,7 +1,6 @@
 package com.eightywon.aqtrainer;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ public class StageOneFragment extends Fragment {
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
     static ImageView imageView;
+    static ImageView imageView1;
     static ImageView shot1;
     static ImageView shot2;
     static ImageView shot3;
@@ -36,6 +36,9 @@ public class StageOneFragment extends Fragment {
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
         imageView=(ImageView) rootView.findViewById(R.id.imageView);
+        imageView1=(ImageView) rootView.findViewById(R.id.target1);
+
+        imageView1.setVisibility(View.INVISIBLE);
 
         shot1=(ImageView) rootView.findViewById(R.id.shot1);
         shot1.setVisibility(View.INVISIBLE);

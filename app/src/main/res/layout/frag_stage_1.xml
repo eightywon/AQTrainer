@@ -17,6 +17,17 @@
         app:srcCompat="@drawable/stage1" />
 
     <ImageView
+        android:id="@+id/target1"
+        android:layout_width="195dp"
+        android:layout_height="174dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtStageDesc"
+        app:srcCompat="@drawable/stage1highlight" />
+
+    <ImageView
         android:id="@+id/shot1"
         android:layout_width="12dp"
         android:layout_height="15dp"

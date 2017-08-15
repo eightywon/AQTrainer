@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorRed">#FF0000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorStatusBar">#000000</color>
+    <color name="colorNavBar">#202020</color>
+    <color name="colorPageBar">#ffcc0000</color>
 </resources>

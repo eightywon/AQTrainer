@@ -40,10 +40,10 @@ public class StageFourFragment extends Fragment {
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
 
-        imageView1=(ImageView) rootView.findViewById(R.id.imageView1);
-        imageView2=(ImageView) rootView.findViewById(R.id.imageView2);
-        imageView3=(ImageView) rootView.findViewById(R.id.imageView3);
-        imageView4=(ImageView) rootView.findViewById(R.id.imageView4);
+        imageView1=(ImageView) rootView.findViewById(R.id.target1);
+        imageView2=(ImageView) rootView.findViewById(R.id.target2);
+        imageView3=(ImageView) rootView.findViewById(R.id.target2Highlight);
+        imageView4=(ImageView) rootView.findViewById(R.id.target1Highlight);
 
         shot1=(ImageView) rootView.findViewById(R.id.shot1);
         shot1.setVisibility(View.INVISIBLE);

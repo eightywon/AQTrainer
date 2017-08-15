@@ -13,9 +13,12 @@ public class StageThreeFragment extends Fragment {
     public ImageButton testButton;
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
-    static ImageView imageView1;
-    static ImageView imageView2;
-    static ImageView imageView3;
+    static ImageView target1;
+    static ImageView target2;
+    static ImageView target3;
+    static ImageView target1Highlight;
+    static ImageView target2Highlight;
+    static ImageView target3Highlight;
 
     static ImageView shot1;
     static ImageView shot2;
@@ -38,9 +41,16 @@ public class StageThreeFragment extends Fragment {
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
 
-        imageView1=(ImageView) rootView.findViewById(R.id.imageView1);
-        imageView2=(ImageView) rootView.findViewById(R.id.imageView2);
-        imageView3=(ImageView) rootView.findViewById(R.id.imageView3);
+        target1=(ImageView) rootView.findViewById(R.id.target1);
+        target2=(ImageView) rootView.findViewById(R.id.target2);
+        target3=(ImageView) rootView.findViewById(R.id.target3);
+        target1Highlight=(ImageView) rootView.findViewById(R.id.target1Highlight);
+        target2Highlight=(ImageView) rootView.findViewById(R.id.target2Highlight);
+        target3Highlight=(ImageView) rootView.findViewById(R.id.target3Highlight);
+
+        target1Highlight.setVisibility(View.INVISIBLE);
+        target2Highlight.setVisibility(View.INVISIBLE);
+        target3Highlight.setVisibility(View.INVISIBLE);
 
         shot1=(ImageView) rootView.findViewById(R.id.shot1);
         shot1.setVisibility(View.INVISIBLE);
