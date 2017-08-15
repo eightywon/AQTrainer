@@ -341,17 +341,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         @Override
         public void run() {
 
-            ImageView imageView1=StageFourFragment.imageView1;
-            ImageView imageView2=StageFourFragment.imageView2;
-            ImageView imageView3=StageFourFragment.imageView3;
-            ImageView imageView4=StageFourFragment.imageView4;
-            ImageView imageView5=StageFourFragment.imageView4;
-            ImageView imageView6=StageFourFragment.imageView4;
+            ImageView imageView1=StageFourFragment.target1;
+            ImageView imageView2=StageFourFragment.target2;
+            ImageView imageView3=StageFourFragment.target3;
+            ImageView imageView4=StageFourFragment.target4;
+            ImageView imageView5=StageFourFragment.target1Highlight;
+            ImageView imageView6=StageFourFragment.target2Highlight;
+            ImageView imageView7=StageFourFragment.target3Highlight;
+            ImageView imageView8=StageFourFragment.target4Highlight;
 
             switch (MediaPlayerSingleton.getStage()) {
                 case 1:
-                    imageView1=StageOneFragment.imageView;
-                    imageView2=StageOneFragment.imageView1;
+                    imageView1=StageOneFragment.target1;
+                    imageView2=StageOneFragment.target1Highlight;
                     break;
                 case 2:
                     imageView1=StageTwoFragment.target1;
@@ -369,10 +371,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     imageView6=StageThreeFragment.target3Highlight;
                     break;
                 case 4:
-                    imageView1=StageFourFragment.imageView1;
-                    imageView2=StageFourFragment.imageView2;
-                    imageView3=StageFourFragment.imageView3;
-                    imageView4=StageFourFragment.imageView4;
+                    imageView1=StageFourFragment.target1;
+                    imageView2=StageFourFragment.target2;
+                    imageView3=StageFourFragment.target3;
+                    imageView4=StageFourFragment.target4;
+
+                    imageView5=StageFourFragment.target1Highlight;
+                    imageView6=StageFourFragment.target2Highlight;
+                    imageView7=StageFourFragment.target3Highlight;
+                    imageView8=StageFourFragment.target4Highlight;
                     break;
             }
 
@@ -518,11 +525,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     }
                     break;
                 case 4:
-                    if (remaining==12) {
-                        imageView1.setBackgroundResource(R.color.colorRed);
-                        imageView1.setPadding(1, 1, 1, 1);
-                        imageView2.setBackgroundResource(R.color.colorRed);
-                        imageView2.setPadding(1, 1, 1, 1);
+                    if (remaining==13) {
+                        imageView5.setVisibility(View.VISIBLE);
+                        imageView1.setVisibility(View.INVISIBLE);
+                        imageView6.setVisibility(View.VISIBLE);
+                        imageView2.setVisibility(View.INVISIBLE);
+                    } else if (remaining==12) {
                         StageFourFragment.shot1.setVisibility(View.VISIBLE);
                     } else if (remaining==11) {
                         StageFourFragment.shot2.setVisibility(View.VISIBLE);
@@ -530,30 +538,32 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         StageFourFragment.shot3.setVisibility(View.VISIBLE);
                     } else if (remaining==9) {
                         StageFourFragment.shot4.setVisibility(View.VISIBLE);
-                        imageView1.setBackgroundResource(0);
-                        imageView1.setPadding(0, 0, 0, 0);
-                        imageView2.setBackgroundResource(0);
-                        imageView2.setPadding(0, 0, 0, 0);
                     } else if (remaining==8) {
-                        imageView3.setBackgroundResource(R.color.colorRed);
-                        imageView3.setPadding(1, 1, 1, 1);
-                        imageView4.setBackgroundResource(R.color.colorRed);
-                        imageView4.setPadding(1, 1, 1, 1);
                         StageFourFragment.shot5.setVisibility(View.VISIBLE);
+                        imageView1.setVisibility(View.VISIBLE);
+                        imageView5.setVisibility(View.INVISIBLE);
+                        imageView2.setVisibility(View.VISIBLE);
+                        imageView6.setVisibility(View.INVISIBLE);
+
+                        imageView7.setVisibility(View.VISIBLE);
+                        imageView3.setVisibility(View.INVISIBLE);
+                        imageView8.setVisibility(View.VISIBLE);
+                        imageView4.setVisibility(View.INVISIBLE);
                     } else if (remaining==7) {
                         StageFourFragment.shot6.setVisibility(View.VISIBLE);
                     } else if (remaining==6) {
                         StageFourFragment.shot7.setVisibility(View.VISIBLE);
                     } else if (remaining==5) {
                         StageFourFragment.shot8.setVisibility(View.VISIBLE);
-                        imageView3.setBackgroundResource(0);
-                        imageView3.setPadding(0, 0, 0, 0);
-                        imageView4.setBackgroundResource(0);
-                        imageView4.setPadding(0, 0, 0, 0);
                     } else if (remaining==4) {
                         StageFourFragment.shot9.setVisibility(View.VISIBLE);
                     } else if (remaining==3) {
                         StageFourFragment.shot10.setVisibility(View.VISIBLE);
+                    } else if (remaining==2) {
+                        imageView3.setVisibility(View.VISIBLE);
+                        imageView7.setVisibility(View.INVISIBLE);
+                        imageView4.setVisibility(View.VISIBLE);
+                        imageView8.setVisibility(View.INVISIBLE);
                     }
                     break;
             }

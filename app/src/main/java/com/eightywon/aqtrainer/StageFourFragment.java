@@ -14,10 +14,15 @@ public class StageFourFragment extends Fragment {
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
 
-    static ImageView imageView1;
-    static ImageView imageView2;
-    static ImageView imageView3;
-    static ImageView imageView4;
+    static ImageView target1;
+    static ImageView target2;
+    static ImageView target3;
+    static ImageView target4;
+    static ImageView target1Highlight;
+    static ImageView target2Highlight;
+    static ImageView target3Highlight;
+    static ImageView target4Highlight;
+
 
     static ImageView shot1;
     static ImageView shot2;
@@ -40,10 +45,20 @@ public class StageFourFragment extends Fragment {
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
 
-        imageView1=(ImageView) rootView.findViewById(R.id.target1);
-        imageView2=(ImageView) rootView.findViewById(R.id.target2);
-        imageView3=(ImageView) rootView.findViewById(R.id.target2Highlight);
-        imageView4=(ImageView) rootView.findViewById(R.id.target1Highlight);
+        target1=(ImageView) rootView.findViewById(R.id.target1);
+        target2=(ImageView) rootView.findViewById(R.id.target2);
+        target3=(ImageView) rootView.findViewById(R.id.target3);
+        target4=(ImageView) rootView.findViewById(R.id.target4);
+
+        target1Highlight=(ImageView) rootView.findViewById(R.id.target1Highlight);
+        target2Highlight=(ImageView) rootView.findViewById(R.id.target2Highlight);
+        target3Highlight=(ImageView) rootView.findViewById(R.id.target3Highlight);
+        target4Highlight=(ImageView) rootView.findViewById(R.id.target4Highlight);
+
+        target1Highlight.setVisibility(View.INVISIBLE);
+        target2Highlight.setVisibility(View.INVISIBLE);
+        target3Highlight.setVisibility(View.INVISIBLE);
+        target4Highlight.setVisibility(View.INVISIBLE);
 
         shot1=(ImageView) rootView.findViewById(R.id.shot1);
         shot1.setVisibility(View.INVISIBLE);

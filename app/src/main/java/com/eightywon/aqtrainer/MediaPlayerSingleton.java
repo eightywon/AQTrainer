@@ -184,8 +184,8 @@ class MediaPlayerSingleton {
                 StageOneFragment.shot8.setVisibility(View.INVISIBLE);
                 StageOneFragment.shot9.setVisibility(View.INVISIBLE);
                 StageOneFragment.shot10.setVisibility(View.INVISIBLE);
-                StageOneFragment.imageView.setBackgroundResource(0);
-                StageOneFragment.imageView.setPadding(0,0,0,0);
+                StageOneFragment.target1.setVisibility(View.VISIBLE);
+                StageOneFragment.target1Highlight.setVisibility(View.INVISIBLE);
                 break;
             case 2:
                 StageTwoFragment.shot1.setVisibility(View.INVISIBLE);
@@ -236,14 +236,14 @@ class MediaPlayerSingleton {
                 StageFourFragment.shot8.setVisibility(View.INVISIBLE);
                 StageFourFragment.shot9.setVisibility(View.INVISIBLE);
                 StageFourFragment.shot10.setVisibility(View.INVISIBLE);
-                StageFourFragment.imageView1.setBackgroundResource(0);
-                StageFourFragment.imageView1.setPadding(0,0,0,0);
-                StageFourFragment.imageView2.setBackgroundResource(0);
-                StageFourFragment.imageView2.setPadding(0,0,0,0);
-                StageFourFragment.imageView3.setBackgroundResource(0);
-                StageFourFragment.imageView3.setPadding(0,0,0,0);
-                StageFourFragment.imageView4.setBackgroundResource(0);
-                StageFourFragment.imageView4.setPadding(0,0,0,0);
+                StageFourFragment.target1.setVisibility(View.VISIBLE);
+                StageFourFragment.target2.setVisibility(View.VISIBLE);
+                StageFourFragment.target3.setVisibility(View.VISIBLE);
+                StageFourFragment.target4.setVisibility(View.VISIBLE);
+                StageFourFragment.target1Highlight.setVisibility(View.INVISIBLE);
+                StageFourFragment.target2Highlight.setVisibility(View.INVISIBLE);
+                StageFourFragment.target3Highlight.setVisibility(View.INVISIBLE);
+                StageFourFragment.target4Highlight.setVisibility(View.INVISIBLE);
                 break;
         }
 
@@ -311,8 +311,8 @@ class MediaPlayerSingleton {
                     StageOneFragment.shot8.setVisibility(View.INVISIBLE);
                     StageOneFragment.shot9.setVisibility(View.INVISIBLE);
                     StageOneFragment.shot10.setVisibility(View.INVISIBLE);
-                    StageOneFragment.imageView.setBackgroundResource(0);
-                    StageOneFragment.imageView.setPadding(0,0,0,0);
+                    StageOneFragment.target1.setVisibility(View.VISIBLE);
+                    StageOneFragment.target1Highlight.setVisibility(View.INVISIBLE);
                     break;
                 case 2:
                     StageTwoFragment.shot1.setVisibility(View.INVISIBLE);
@@ -341,12 +341,12 @@ class MediaPlayerSingleton {
                     StageThreeFragment.shot8.setVisibility(View.INVISIBLE);
                     StageThreeFragment.shot9.setVisibility(View.INVISIBLE);
                     StageThreeFragment.shot10.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.target1.setBackgroundResource(0);
-                    StageThreeFragment.target1.setPadding(0,0,0,0);
-                    StageThreeFragment.target2.setBackgroundResource(0);
-                    StageThreeFragment.target2.setPadding(0,0,0,0);
-                    StageThreeFragment.target3.setBackgroundResource(0);
-                    StageThreeFragment.target3.setPadding(0,0,0,0);
+                    StageThreeFragment.target1.setVisibility(View.VISIBLE);
+                    StageThreeFragment.target2.setVisibility(View.VISIBLE);
+                    StageThreeFragment.target3.setVisibility(View.VISIBLE);
+                    StageThreeFragment.target1Highlight.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.target2Highlight.setVisibility(View.INVISIBLE);
+                    StageThreeFragment.target3Highlight.setVisibility(View.INVISIBLE);
                     break;
                 case 4:
                     StageFourFragment.shot1.setVisibility(View.INVISIBLE);
@@ -359,14 +359,14 @@ class MediaPlayerSingleton {
                     StageFourFragment.shot8.setVisibility(View.INVISIBLE);
                     StageFourFragment.shot9.setVisibility(View.INVISIBLE);
                     StageFourFragment.shot10.setVisibility(View.INVISIBLE);
-                    StageFourFragment.imageView1.setBackgroundResource(0);
-                    StageFourFragment.imageView1.setPadding(0,0,0,0);
-                    StageFourFragment.imageView2.setBackgroundResource(0);
-                    StageFourFragment.imageView2.setPadding(0,0,0,0);
-                    StageFourFragment.imageView3.setBackgroundResource(0);
-                    StageFourFragment.imageView3.setPadding(0,0,0,0);
-                    StageFourFragment.imageView4.setBackgroundResource(0);
-                    StageFourFragment.imageView4.setPadding(0,0,0,0);
+                    StageFourFragment.target1.setVisibility(View.VISIBLE);
+                    StageFourFragment.target2.setVisibility(View.VISIBLE);
+                    StageFourFragment.target3.setVisibility(View.VISIBLE);
+                    StageFourFragment.target4.setVisibility(View.VISIBLE);
+                    StageFourFragment.target1Highlight.setVisibility(View.INVISIBLE);
+                    StageFourFragment.target2Highlight.setVisibility(View.INVISIBLE);
+                    StageFourFragment.target3Highlight.setVisibility(View.INVISIBLE);
+                    StageFourFragment.target4Highlight.setVisibility(View.INVISIBLE);
                     break;
             }
         }

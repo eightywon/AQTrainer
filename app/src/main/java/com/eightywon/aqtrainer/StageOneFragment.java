@@ -13,8 +13,8 @@ public class StageOneFragment extends Fragment {
     public ImageButton testButton;
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
-    static ImageView imageView;
-    static ImageView imageView1;
+    static ImageView target1;
+    static ImageView target1Highlight;
     static ImageView shot1;
     static ImageView shot2;
     static ImageView shot3;
@@ -35,10 +35,10 @@ public class StageOneFragment extends Fragment {
         testButton=(ImageButton) rootView.findViewById(R.id.btnStage1Play);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
-        imageView=(ImageView) rootView.findViewById(R.id.imageView);
-        imageView1=(ImageView) rootView.findViewById(R.id.target1);
+        target1=(ImageView) rootView.findViewById(R.id.target1);
+        target1Highlight=(ImageView) rootView.findViewById(R.id.target1Highlight);
 
-        imageView1.setVisibility(View.INVISIBLE);
+        target1Highlight.setVisibility(View.INVISIBLE);
 
         shot1=(ImageView) rootView.findViewById(R.id.shot1);
         shot1.setVisibility(View.INVISIBLE);

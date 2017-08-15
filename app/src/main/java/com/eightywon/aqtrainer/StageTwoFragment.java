@@ -41,8 +41,8 @@ public class StageTwoFragment extends Fragment {
 
         target1=(ImageView) rootView.findViewById(R.id.target1);
         target2=(ImageView) rootView.findViewById(R.id.target2);
-        target1Highlight=(ImageView) rootView.findViewById(R.id.target2Highlight);
-        target2Highlight=(ImageView) rootView.findViewById(R.id.target1Highlight);
+        target1Highlight=(ImageView) rootView.findViewById(R.id.target1Highlight);
+        target2Highlight=(ImageView) rootView.findViewById(R.id.target2Highlight);
 
         target1Highlight.setVisibility(View.INVISIBLE);
         target2Highlight.setVisibility(View.INVISIBLE);
