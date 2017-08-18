@@ -4,9 +4,11 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
@@ -21,9 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -44,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     ViewPager aqtViewPager;
     public int previousPage;
-    public ImageButton testButton;
+    //public ImageButton testButton;
+    Button stageButton;
 
     public static TextToSpeech textToSpeech;
     //textToSpeech = new TextToSpeech(getActivity(),this);
@@ -74,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         setSupportActionBar(toolbar);
         instance=this;
 
+        Toast.makeText(this.getBaseContext(), MainActivity.getSizeName(this), Toast.LENGTH_LONG).show();
+
         aqtViewPager=(ViewPager) findViewById(R.id.container);
         aqtViewPager.setAdapter(new AQTPagerAdapter(
                 getSupportFragmentManager()));
@@ -90,29 +97,37 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     case 0:
                         if (isPlaying) {
                             MediaPlayerSingleton.stopPlaying(getContext());
-                            testButton=(ImageButton) findViewById(R.id.btnStage1Play);
-                            testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
+                            //testButton=(ImageButton) findViewById(R.id.btnStage1Play);
+                            stageButton=(Button) findViewById(R.id.btnStage1Play);
+                            //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
+                            stageButton.setText(R.string.btnStopStage);
                         }
                         break;
                     case 1:
                         if (isPlaying) {
                             MediaPlayerSingleton.stopPlaying(getContext());
-                            testButton=(ImageButton) findViewById(R.id.btnStage2Play);
-                            testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
+                            //testButton=(ImageButton) findViewById(R.id.btnStage2Play);
+                            //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
+                            stageButton=(Button) findViewById(R.id.btnStage2Play);
+                            stageButton.setText(R.string.btnStopStage);
                         }
                         break;
                     case 2:
                         if (isPlaying) {
                             MediaPlayerSingleton.stopPlaying(getContext());
-                            testButton=(ImageButton) findViewById(R.id.btnStage3Play);
-                            testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
+                            //testButton=(ImageButton) findViewById(R.id.btnStage3Play);
+                            //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
+                            stageButton=(Button) findViewById(R.id.btnStage3Play);
+                            stageButton.setText(R.string.btnStopStage);
                         }
                         break;
                     case 3:
                         if (isPlaying) {
                             MediaPlayerSingleton.stopPlaying(getContext());
-                            testButton=(ImageButton) findViewById(R.id.btnStage4Play);
-                            testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
+                            //testButton=(ImageButton) findViewById(R.id.btnStage4Play);
+                            //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
+                            stageButton=(Button) findViewById(R.id.btnStage4Play);
+                            stageButton.setText(R.string.btnStopStage);
                         }
                         break;
                 }
@@ -220,6 +235,24 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         return prefs.getBoolean("chkpRedAlertMode",false);
     }
 
+    public static String getSizeName(Context context) {
+        int screenLayout = context.getResources().getConfiguration().screenLayout;
+        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        switch (screenLayout) {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                return "small";
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return "normal";
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                return "large";
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+                return "xlarge";
+            default:
+                return "undefined";
+        }
+    }
+
     public static Runnable countDownPrepStage = new Runnable() {
         @Override
         public void run() {
@@ -249,14 +282,22 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     secs=remaining%60;
                     if (secs!=lastSec || firstTime) {
                         if (txtStageDescTimer!=null) {
-                            txtStageDescTimer.setText(String.format(Locale.US,"%dm %ds",mins,secs));
+                            if (secs>=10) {
+                                txtStageDescTimer.setText(String.format(Locale.US,"%d:%d",mins,secs));
+                            } else {
+                                txtStageDescTimer.setText(String.format(Locale.US,"%d:0%d",mins,secs));
+                            }
                         }
                     }
                 } else {
                     secs=remaining%60;
                     if (secs!=lastSec || firstTime) {
                         if (txtStageDescTimer!=null) {
-                            txtStageDescTimer.setText(String.format(Locale.US,"%ds",secs));
+                            if (secs>=10) {
+                                txtStageDescTimer.setText(String.format(Locale.US,"0:%d",secs));
+                            } else {
+                                txtStageDescTimer.setText(String.format(Locale.US,"0:0%d",secs));
+                            }
                         }
                     }
                 }
@@ -309,7 +350,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     if (secs>0) howLong+=String.valueOf(secs)+" seconds.";
                     if (secs!=lastSec || firstTime) {
                         if (txtStageDescTimer!=null) {
-                            txtStageDescTimer.setText(String.format(Locale.US,"%dm %ds",mins,secs));
+                            if (secs>=10) {
+                                txtStageDescTimer.setText(String.format(Locale.US,"%d:%d",mins,secs));
+                            } else {
+                                txtStageDescTimer.setText(String.format(Locale.US,"%d:0%d",mins,secs));
+                            }
                         }
                     }
                 } else {
@@ -321,7 +366,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     }
                     if (secs!=lastSec || firstTime) {
                         if (txtStageDescTimer!=null) {
-                            txtStageDescTimer.setText(String.format(Locale.US,"%ds",secs));
+                            if (secs>=10) {
+                                txtStageDescTimer.setText(String.format(Locale.US,"0:%d",secs));
+                            } else {
+                                txtStageDescTimer.setText(String.format(Locale.US,"0:0%d",secs));
+                            }
                         }
                     }
                 }
@@ -340,7 +389,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public static Runnable countDownDescStage = new Runnable() {
         @Override
         public void run() {
-
             ImageView imageView1=StageFourFragment.target1;
             ImageView imageView2=StageFourFragment.target2;
             ImageView imageView3=StageFourFragment.target3;

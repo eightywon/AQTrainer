@@ -5,12 +5,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class StageOneFragment extends Fragment {
-    public ImageButton testButton;
+    //public ImageButton testButton;
+    public Button stageButton;
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
     static ImageView target1;
@@ -32,7 +34,8 @@ public class StageOneFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.frag_stage_1, container,
                 false);
 
-        testButton=(ImageButton) rootView.findViewById(R.id.btnStage1Play);
+        //testButton=(ImageButton) rootView.findViewById(R.id.btnStage1Play);
+        stageButton=(Button) rootView.findViewById(R.id.btnStage1Play);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
         target1=(ImageView) rootView.findViewById(R.id.target1);
@@ -70,18 +73,19 @@ public class StageOneFragment extends Fragment {
         shot10=(ImageView) rootView.findViewById(R.id.shot10);
         shot10.setVisibility(View.INVISIBLE);
 
-        testButton.setOnClickListener(new View.OnClickListener() {
+        stageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
-                    testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
+                    //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
+                    stageButton.setText(R.string.btnStopStage);
                     MediaPlayerSingleton.setStage(1);
                     MediaPlayerSingleton.setActivity(getActivity());
                     MediaPlayerSingleton.getInstance().play(getContext(),0,false);
                 } else {
                     MediaPlayerSingleton.stopPlaying(getContext());
-                    testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getActivity().getPackageName()));
+                    stageButton.setText(R.string.btnStartStage);
                 }
             }
         });

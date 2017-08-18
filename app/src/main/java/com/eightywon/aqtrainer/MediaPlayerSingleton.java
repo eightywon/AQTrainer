@@ -7,7 +7,9 @@ import android.media.MediaPlayer;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 class MediaPlayerSingleton {
     private static MediaPlayerSingleton mediaPlayerSingleton;
@@ -16,6 +18,7 @@ class MediaPlayerSingleton {
     private static int stage;
     private static Activity act;
     private static ImageButton testButton;
+    private static Button stageButton;
 
     static MediaPlayerSingleton getInstance() {
         if (mediaPlayerSingleton==null) {
@@ -139,28 +142,33 @@ class MediaPlayerSingleton {
                     currentStep++;
                     switch (stage) {
                         case 1:
-                            testButton=(ImageButton) act.findViewById(R.id.btnStage1Play);
+                            stageButton=(Button) act.findViewById(R.id.btnStage1Play);
                             break;
                         case 2:
-                            testButton=(ImageButton) act.findViewById(R.id.btnStage2Play);
+                            //testButton=(ImageButton) act.findViewById(R.id.btnStage2Play);
+                            stageButton=(Button) act.findViewById(R.id.btnStage2Play);
                             break;
                         case 3:
-                            testButton=(ImageButton) act.findViewById(R.id.btnStage3Play);
+                            //testButton=(ImageButton) act.findViewById(R.id.btnStage3Play);
+                            stageButton=(Button) act.findViewById(R.id.btnStage3Play);
                             break;
                         case 4:
-                            testButton=(ImageButton) act.findViewById(R.id.btnStage4Play);
+                            //testButton=(ImageButton) act.findViewById(R.id.btnStage4Play);
+                            stageButton=(Button) act.findViewById(R.id.btnStage4Play);
                             break;
                     }
 
                     if (currentStep!=MainActivity.STEP_DONE) {
                         MediaPlayerSingleton.getInstance().play(context,getNextResId(),null,null,false);
                         if (MediaPlayerSingleton.getPlayingState()) {
-                            testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_stop", "drawable", act.getPackageName()));
+                            //testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_stop", "drawable", act.getPackageName()));
+                            stageButton.setText(R.string.btnStopStage);
                         }
                     } else {
                         stopPlaying(context);
                         currentStep=MainActivity.STEP_BEGIN;
-                        testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_play", "drawable", act.getPackageName()));
+                        //testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_play", "drawable", act.getPackageName()));
+                        stageButton.setText(R.string.btnStartStage);
                     }
                 }
             });
@@ -186,6 +194,8 @@ class MediaPlayerSingleton {
                 StageOneFragment.shot10.setVisibility(View.INVISIBLE);
                 StageOneFragment.target1.setVisibility(View.VISIBLE);
                 StageOneFragment.target1Highlight.setVisibility(View.INVISIBLE);
+                StageOneFragment.txtStepDesc.setText("");
+                StageOneFragment.txtStageDescTimer.setText("");
                 break;
             case 2:
                 StageTwoFragment.shot1.setVisibility(View.INVISIBLE);
@@ -202,10 +212,8 @@ class MediaPlayerSingleton {
                 StageTwoFragment.target2.setVisibility(View.VISIBLE);
                 StageTwoFragment.target1Highlight.setVisibility(View.INVISIBLE);
                 StageTwoFragment.target2Highlight.setVisibility(View.INVISIBLE);
-                //StageTwoFragment.imageView1.setBackgroundResource(0);
-                //StageTwoFragment.imageView1.setPadding(0,0,0,0);
-                //StageTwoFragment.imageView2.setBackgroundResource(0);
-                //StageTwoFragment.imageView2.setPadding(0,0,0,0);
+                StageTwoFragment.txtStepDesc.setText("");
+                StageTwoFragment.txtStageDescTimer.setText("");
                 break;
             case 3:
                 StageThreeFragment.shot1.setVisibility(View.INVISIBLE);
@@ -218,12 +226,14 @@ class MediaPlayerSingleton {
                 StageThreeFragment.shot8.setVisibility(View.INVISIBLE);
                 StageThreeFragment.shot9.setVisibility(View.INVISIBLE);
                 StageThreeFragment.shot10.setVisibility(View.INVISIBLE);
-                StageThreeFragment.target1.setBackgroundResource(0);
-                StageThreeFragment.target1.setPadding(0,0,0,0);
-                StageThreeFragment.target2.setBackgroundResource(0);
-                StageThreeFragment.target2.setPadding(0,0,0,0);
-                StageThreeFragment.target3.setBackgroundResource(0);
-                StageThreeFragment.target3.setPadding(0,0,0,0);
+                StageThreeFragment.target1.setVisibility(View.VISIBLE);
+                StageThreeFragment.target2.setVisibility(View.VISIBLE);
+                StageThreeFragment.target3.setVisibility(View.VISIBLE);
+                StageThreeFragment.target1Highlight.setVisibility(View.INVISIBLE);
+                StageThreeFragment.target2Highlight.setVisibility(View.INVISIBLE);
+                StageThreeFragment.target3Highlight.setVisibility(View.INVISIBLE);
+                StageThreeFragment.txtStepDesc.setText("");
+                StageThreeFragment.txtStageDescTimer.setText("");
                 break;
             case 4:
                 StageFourFragment.shot1.setVisibility(View.INVISIBLE);
@@ -244,29 +254,10 @@ class MediaPlayerSingleton {
                 StageFourFragment.target2Highlight.setVisibility(View.INVISIBLE);
                 StageFourFragment.target3Highlight.setVisibility(View.INVISIBLE);
                 StageFourFragment.target4Highlight.setVisibility(View.INVISIBLE);
-                break;
-        }
-
-        switch (stage) {
-            case 1:
-                StageOneFragment.txtStageDescTimer.setText("");
-                StageOneFragment.txtStepDesc.setText("");
-                break;
-            case 2:
-                StageTwoFragment.txtStageDescTimer.setText("");
-                StageTwoFragment.txtStepDesc.setText("");
-                break;
-            case 3:
-                StageThreeFragment.txtStageDescTimer.setText("");
-                StageThreeFragment.txtStepDesc.setText("");
-                break;
-            case 4:
-                StageFourFragment.txtStageDescTimer.setText("");
                 StageFourFragment.txtStepDesc.setText("");
+                StageFourFragment.txtStageDescTimer.setText("");
                 break;
-
         }
-
         MediaPlayerSingleton.getInstance().play(context,0,null,null,true);
         currentStep=MainActivity.STEP_BEGIN;
     }

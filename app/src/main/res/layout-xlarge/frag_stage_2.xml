@@ -73,167 +73,157 @@
 
     <ImageView
         android:id="@+id/target1"
-        android:layout_width="152dp"
-        android:layout_height="136dp"
+        android:layout_width="234dp"
+        android:layout_height="234dp"
         android:layout_centerHorizontal="true"
-        android:contentDescription="@+id/imgStageTarget"
-        app:srcCompat="@drawable/stage1"
-        app:layout_constraintRight_toLeftOf="@+id/target2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"
         android:layout_marginRight="4dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txtStageDesc" />
+        android:contentDescription="@+id/imgStageTarget"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/target2"
+        app:layout_constraintTop_toBottomOf="@+id/txtStageDesc"
+        app:srcCompat="@drawable/stage1" />
 
     <ImageView
         android:id="@+id/target2"
-        android:layout_width="152dp"
-        android:layout_height="136dp"
+        android:layout_width="234dp"
+        android:layout_height="234dp"
         android:layout_centerHorizontal="true"
-        android:contentDescription="@+id/imgStageTarget"
-        app:srcCompat="@drawable/stage1"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/target1"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txtStageDesc" />
+        android:contentDescription="@+id/imgStageTarget"
+        app:layout_constraintLeft_toRightOf="@+id/target1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtStageDesc"
+        app:srcCompat="@drawable/stage1" />
 
     <ImageView
         android:id="@+id/target1Highlight"
-        android:layout_width="152dp"
-        android:layout_height="136dp"
+        android:layout_width="234dp"
+        android:layout_height="234dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
         android:contentDescription="@+id/imgStageTarget"
         android:paddingBottom="0dp"
         android:paddingTop="0dp"
-        app:srcCompat="@drawable/stage1highlight"
-        android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1"
         app:layout_constraintTop_toTopOf="@+id/target1"
-        android:layout_marginTop="0dp" />
+        app:srcCompat="@drawable/stage1highlight" />
 
     <ImageView
         android:id="@+id/target2Highlight"
-        android:layout_width="152dp"
-        android:layout_height="136dp"
+        android:layout_width="234dp"
+        android:layout_height="234dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:contentDescription="@+id/imgStageTarget"
-        app:srcCompat="@drawable/stage1highlight"
         android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:contentDescription="@+id/imgStageTarget"
         app:layout_constraintLeft_toLeftOf="@+id/target2"
         app:layout_constraintTop_toTopOf="@+id/target2"
-        android:layout_marginTop="0dp" />
+        app:srcCompat="@drawable/stage1highlight" />
 
     <ImageView
         android:id="@+id/shot1"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
-        android:layout_marginTop="99dp"
-        android:layout_marginLeft="32dp"
+        android:layout_marginLeft="192dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1Highlight"
-        android:layout_marginStart="32dp" />
+        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
+        android:layout_marginTop="148dp" />
 
     <ImageView
         android:id="@+id/shot2"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
-        android:layout_marginTop="43dp"
-        android:layout_marginLeft="85dp"
+        android:layout_marginLeft="142dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1Highlight"
-        android:layout_marginStart="85dp" />
+        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
+        android:layout_marginTop="92dp" />
 
     <ImageView
         android:id="@+id/shot3"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
-        android:layout_marginTop="72dp"
-        android:layout_marginLeft="73dp"
+        android:layout_marginLeft="181dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1Highlight"
-        android:layout_marginStart="73dp" />
+        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
+        android:layout_marginTop="72dp" />
 
     <ImageView
         android:id="@+id/shot4"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
-        android:layout_marginTop="43dp"
-        android:layout_marginLeft="32dp"
+        android:layout_marginLeft="87dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1Highlight"
-        android:layout_marginStart="32dp" />
+        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
+        android:layout_marginTop="128dp" />
 
     <ImageView
         android:id="@+id/shot5"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
-        android:layout_marginTop="65dp"
-        android:layout_marginLeft="44dp"
+        android:layout_marginLeft="115dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1Highlight"
-        android:layout_marginStart="44dp" />
+        app:layout_constraintTop_toTopOf="@+id/target1Highlight"
+        android:layout_marginTop="168dp" />
 
     <ImageView
         android:id="@+id/shot6"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="52dp"
         app:layout_constraintLeft_toLeftOf="@+id/target2Highlight"
         app:layout_constraintTop_toTopOf="@+id/target2Highlight"
-        android:layout_marginTop="58dp"
-        android:layout_marginStart="15dp" />
+        android:layout_marginTop="148dp" />
 
     <ImageView
         android:id="@+id/shot7"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        app:layout_constraintTop_toTopOf="@+id/target2Highlight"
-        android:layout_marginTop="72dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="104dp"
         app:layout_constraintLeft_toLeftOf="@+id/target2Highlight"
-        android:layout_marginStart="40dp" />
+        app:layout_constraintTop_toTopOf="@+id/target2Highlight"
+        android:layout_marginTop="77dp" />
 
     <ImageView
         android:id="@+id/shot8"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        app:layout_constraintTop_toTopOf="@+id/target2Highlight"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="145dp"
         app:layout_constraintLeft_toLeftOf="@+id/target2Highlight"
-        android:layout_marginStart="40dp" />
+        app:layout_constraintTop_toTopOf="@+id/target2Highlight"
+        android:layout_marginTop="168dp" />
 
     <ImageView
         android:id="@+id/shot9"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        app:layout_constraintTop_toTopOf="@+id/target2Highlight"
-        android:layout_marginTop="57dp"
-        android:layout_marginLeft="64dp"
+        android:layout_marginLeft="84dp"
         app:layout_constraintLeft_toLeftOf="@+id/target2Highlight"
-        android:layout_marginStart="64dp" />
+        app:layout_constraintTop_toTopOf="@+id/target2Highlight"
+        android:layout_marginTop="52dp" />
 
     <ImageView
         android:id="@+id/shot10"
-        android:layout_width="12dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:srcCompat="@drawable/shot"
-        app:layout_constraintTop_toTopOf="@+id/target2Highlight"
-        android:layout_marginTop="84dp"
-        android:layout_marginLeft="64dp"
+        android:layout_marginLeft="84dp"
         app:layout_constraintLeft_toLeftOf="@+id/target2Highlight"
-        android:layout_marginStart="64dp" />
+        app:layout_constraintTop_toTopOf="@+id/target2Highlight"
+        android:layout_marginTop="112dp" />
 
 </android.support.constraint.ConstraintLayout>

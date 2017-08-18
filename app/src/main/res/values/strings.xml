@@ -24,6 +24,8 @@
     <string name="StepDescCeaseFire">CEASE FIRE</string>
     <string name="btnStartStopStage">Start/Stop Stage</string>
     <string name="imgStageTarget">Stage Target</string>
+    <string name="btnStartStage">START</string>
+    <string name="btnStopStage">STOP</string>
 
     <string-array name="prepTimes">
         <item>30 Seconds</item>
