@@ -1,7 +1,9 @@
 package com.eightywon.aqtrainer;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,14 +80,15 @@ public class StageOneFragment extends Fragment {
             public void onClick(View v) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
-                    //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
                     stageButton.setText(R.string.btnStopStage);
+                    stageButton.setBackgroundResource(R.drawable.button_clicked);
                     MediaPlayerSingleton.setStage(1);
                     MediaPlayerSingleton.setActivity(getActivity());
                     MediaPlayerSingleton.getInstance().play(getContext(),0,false);
                 } else {
                     MediaPlayerSingleton.stopPlaying(getContext());
                     stageButton.setText(R.string.btnStartStage);
+                    stageButton.setBackgroundResource(R.drawable.button);
                 }
             }
         });

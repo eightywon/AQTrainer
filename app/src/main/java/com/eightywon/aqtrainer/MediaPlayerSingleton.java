@@ -3,6 +3,7 @@ package com.eightywon.aqtrainer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -94,7 +95,7 @@ class MediaPlayerSingleton {
 
         switch (stage) {
             case 1:
-                MainActivity.sources[MainActivity.STEP_FIRE_IN_PROGRESS]=R.raw.s30;
+                MainActivity.sources[MainActivity.STEP_FIRE_IN_PROGRESS]=R.raw.s120;
                 break;
             case 2:
                 MainActivity.sources[MainActivity.STEP_FIRE_IN_PROGRESS]=R.raw.s55;
@@ -169,6 +170,7 @@ class MediaPlayerSingleton {
                         currentStep=MainActivity.STEP_BEGIN;
                         //testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_play", "drawable", act.getPackageName()));
                         stageButton.setText(R.string.btnStartStage);
+                        //stageButton.getBackground().setColorFilter(R.color.colorBlack, PorterDuff.Mode.MULTIPLY);
                     }
                 }
             });

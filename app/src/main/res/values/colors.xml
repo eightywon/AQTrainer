@@ -9,4 +9,5 @@
     <color name="colorStatusBar">#000000</color>
     <color name="colorNavBar">#202020</color>
     <color name="colorPageBar">#ffcc0000</color>
+    <color name="colorButtonBody">#333333</color>
 </resources>

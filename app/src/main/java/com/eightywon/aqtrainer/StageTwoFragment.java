@@ -85,15 +85,15 @@ public class StageTwoFragment extends Fragment {
             public void onClick(View v) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
-                    //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_stop","drawable",getActivity().getPackageName()));
                     stageButton.setText(R.string.btnStopStage);
+                    stageButton.setBackgroundResource(R.drawable.button_clicked);
                     MediaPlayerSingleton.setStage(2);
                     MediaPlayerSingleton.setActivity(getActivity());
                     MediaPlayerSingleton.getInstance().play(getContext(),0,false);
                 } else {
                     MediaPlayerSingleton.stopPlaying(getContext());
-                    //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getActivity().getPackageName()));
                     stageButton.setText(R.string.btnStartStage);
+                    stageButton.setBackgroundResource(R.drawable.button);
                 }
             }
         });
