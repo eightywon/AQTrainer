@@ -13,7 +13,7 @@
     <ListPreference
         android:defaultValue="30"
         android:dependency="chkpPlayPrep"
-        android:entries="@array/prepTimes"
+        android:entries="@array/prepTimeLabels"
         android:entryValues="@array/prepTimes"
         android:key="lpSettingsPrepTime"
         android:title="@string/settingsPrepTime"
@@ -26,7 +26,7 @@
     <ListPreference
         android:defaultValue="5"
         android:dependency="chkpStageTimerAnnounce"
-        android:entries="@array/announceInterval"
+        android:entries="@array/announceIntervalLabels"
         android:entryValues="@array/announceInterval"
         android:key="lpSettingsAnnounceInterval"
         android:summary="%s"

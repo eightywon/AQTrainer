@@ -1,19 +1,15 @@
 package com.eightywon.aqtrainer;
 
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class StageOneFragment extends Fragment {
-    //public ImageButton testButton;
     public Button stageButton;
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
@@ -36,7 +32,6 @@ public class StageOneFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.frag_stage_1, container,
                 false);
 
-        //testButton=(ImageButton) rootView.findViewById(R.id.btnStage1Play);
         stageButton=(Button) rootView.findViewById(R.id.btnStage1Play);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
@@ -101,9 +96,5 @@ public class StageOneFragment extends Fragment {
 
     void setTxtStepDesc(String desc) {
         txtStepDesc.setText(desc);
-    }
-
-    public int getFragId() {
-        return this.getId();
     }
 }

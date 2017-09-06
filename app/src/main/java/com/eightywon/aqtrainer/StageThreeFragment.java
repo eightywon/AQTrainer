@@ -6,12 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class StageThreeFragment extends Fragment {
-    //public ImageButton testButton;
     public Button stageButton;
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
@@ -39,7 +37,6 @@ public class StageThreeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.frag_stage_3, container,
                 false);
 
-        //testButton=(ImageButton) rootView.findViewById(R.id.btnStage3Play);
         stageButton=(Button) rootView.findViewById(R.id.btnStage3Play);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);

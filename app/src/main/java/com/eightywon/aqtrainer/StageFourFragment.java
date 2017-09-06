@@ -6,12 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class StageFourFragment extends Fragment {
-    //public ImageButton testButton;
     public Button stageButton;
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
@@ -44,7 +42,6 @@ public class StageFourFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.frag_stage_4, container,
                 false);
 
-        //testButton=(ImageButton) rootView.findViewById(R.id.btnStage4Play);
         stageButton=(Button) rootView.findViewById(R.id.btnStage4Play);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
@@ -93,9 +90,6 @@ public class StageFourFragment extends Fragment {
 
         shot10=(ImageView) rootView.findViewById(R.id.shot10);
         shot10.setVisibility(View.INVISIBLE);
-
-
-        //rootView.setLayoutParams();
 
 
         stageButton.setOnClickListener(new View.OnClickListener() {

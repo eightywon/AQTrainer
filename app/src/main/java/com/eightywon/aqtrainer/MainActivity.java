@@ -1,14 +1,15 @@
 package com.eightywon.aqtrainer;
 
 import android.app.ActivityManager;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
@@ -24,7 +25,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,11 +48,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     ViewPager aqtViewPager;
     public int previousPage;
-    //public ImageButton testButton;
     Button stageButton;
 
     public static TextToSpeech textToSpeech;
-    //textToSpeech = new TextToSpeech(getActivity(),this);
 
     static int lastSec=0;
     public static boolean firstTime=false;
@@ -79,11 +77,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         setSupportActionBar(toolbar);
         instance=this;
 
-        Toast.makeText(this.getBaseContext(), MainActivity.getSizeName(this), Toast.LENGTH_LONG).show();
-
         aqtViewPager=(ViewPager) findViewById(R.id.container);
         aqtViewPager.setAdapter(new AQTPagerAdapter(
                 getSupportFragmentManager()));
+
+        UiModeManager uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
+        if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         aqtViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -97,37 +100,33 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     case 0:
                         if (isPlaying) {
                             MediaPlayerSingleton.stopPlaying(getContext());
-                            //testButton=(ImageButton) findViewById(R.id.btnStage1Play);
                             stageButton=(Button) findViewById(R.id.btnStage1Play);
-                            //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
-                            stageButton.setText(R.string.btnStopStage);
+                            stageButton.setText(R.string.btnStartStage);
+                            stageButton.setBackgroundResource(R.drawable.button);
                         }
                         break;
                     case 1:
                         if (isPlaying) {
                             MediaPlayerSingleton.stopPlaying(getContext());
-                            //testButton=(ImageButton) findViewById(R.id.btnStage2Play);
-                            //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                             stageButton=(Button) findViewById(R.id.btnStage2Play);
-                            stageButton.setText(R.string.btnStopStage);
+                            stageButton.setText(R.string.btnStartStage);
+                            stageButton.setBackgroundResource(R.drawable.button);
                         }
                         break;
                     case 2:
                         if (isPlaying) {
                             MediaPlayerSingleton.stopPlaying(getContext());
-                            //testButton=(ImageButton) findViewById(R.id.btnStage3Play);
-                            //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                             stageButton=(Button) findViewById(R.id.btnStage3Play);
-                            stageButton.setText(R.string.btnStopStage);
+                            stageButton.setText(R.string.btnStartStage);
+                            stageButton.setBackgroundResource(R.drawable.button);
                         }
                         break;
                     case 3:
                         if (isPlaying) {
                             MediaPlayerSingleton.stopPlaying(getContext());
-                            //testButton=(ImageButton) findViewById(R.id.btnStage4Play);
-                            //testButton.setImageResource(getResources().getIdentifier("@android:drawable/ic_media_play","drawable",getPackageName()));
                             stageButton=(Button) findViewById(R.id.btnStage4Play);
-                            stageButton.setText(R.string.btnStopStage);
+                            stageButton.setText(R.string.btnStartStage);
+                            stageButton.setBackgroundResource(R.drawable.button);
                         }
                         break;
                 }
@@ -139,6 +138,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
         textToSpeech = new TextToSpeech(MainActivity.this,this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        aqtViewPager.requestLayout();
     }
 
     public static Context getContext() {
@@ -199,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
             Intent intent=new Intent(this,DisplaySettings.class);
             startActivity(intent);
             return true;
@@ -221,36 +225,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public static int getPrepTime() {
         SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
         String prepTime=prefs.getString("lpSettingsPrepTime","");
-        prepTime=prepTime.substring(0,prepTime.indexOf(" "));
         return Integer.parseInt(prepTime);
     }
 
     public static boolean getAnnounceStageTime() {
         SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
-        return prefs.getBoolean("chkpStageTimerAnnounce",true);
+        return prefs.getBoolean("chkpStageTimerAnnounce",false);
     }
 
     public static boolean getRedAlertMode() {
         SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
         return prefs.getBoolean("chkpRedAlertMode",false);
-    }
-
-    public static String getSizeName(Context context) {
-        int screenLayout = context.getResources().getConfiguration().screenLayout;
-        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
-
-        switch (screenLayout) {
-            case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                return "small";
-            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                return "normal";
-            case Configuration.SCREENLAYOUT_SIZE_LARGE:
-                return "large";
-            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
-                return "xlarge";
-            default:
-                return "undefined";
-        }
     }
 
     public static Runnable countDownPrepStage = new Runnable() {
@@ -315,7 +300,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 String announceInterval;
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
                 announceInterval = prefs.getString("lpSettingsAnnounceInterval", "");
-                announceInterval = announceInterval.substring(0, announceInterval.indexOf(" "));
                 MainActivity.countDownFireStageInterval = Integer.parseInt(announceInterval);
             }
 
@@ -466,7 +450,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     } else if (remaining==2) {
                         imageView1.setVisibility(View.VISIBLE);
                         imageView2.setVisibility(View.INVISIBLE);
-                        //imageView1.setBackgroundResource(0);
                         imageView1.setPadding(0, 0, 0, 0);
                         StageOneFragment.shot9.setVisibility(View.VISIBLE);
                         break;
@@ -477,10 +460,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     break;
                 case 2:
                     if (remaining==14) {
-                        //imageView1.setBackgroundResource(R.color.colorRed);
                         imageView3.setVisibility(View.VISIBLE);
                         imageView1.setVisibility(View.INVISIBLE);
-                        //imageView1.setPadding(1, 1, 1, 1);
                     } else if (remaining==13) {
                         StageTwoFragment.shot1.setVisibility(View.VISIBLE);
                     } else if (remaining==12) {
@@ -492,17 +473,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     } else if (remaining==9) {
                         StageTwoFragment.shot5.setVisibility(View.VISIBLE);
                     } else if (remaining==8) {
-                        //imageView1.setBackgroundResource(0);
                         imageView1.setVisibility(View.VISIBLE);
                         imageView3.setVisibility(View.INVISIBLE);
                         imageView4.setVisibility(View.VISIBLE);
                         imageView2.setVisibility(View.INVISIBLE);
-                        //imageView1.setPadding(0,0,0,0);
                     } else if (remaining==7) {
-                        //imageView2.setBackgroundResource(R.color.colorRed);
-                        //imageView1.setVisibility(View.VISIBLE);
-                        //imageView3.setVisibility(View.INVISIBLE);
-                        //imageView2.setPadding(1,1,1,1);
                         StageTwoFragment.shot6.setVisibility(View.VISIBLE);
                     } else if (remaining==6) {
                         imageView4.setVisibility(View.VISIBLE);
@@ -514,8 +489,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         StageTwoFragment.shot9.setVisibility(View.VISIBLE);
                     } else if (remaining==3) {
                         StageTwoFragment.shot10.setVisibility(View.VISIBLE);
-                        //imageView2.setBackgroundResource(0);
-                        //imageView2.setPadding(0,0,0,0);
                     } else if (remaining==2) {
                         imageView2.setVisibility(View.VISIBLE);
                         imageView4.setVisibility(View.INVISIBLE);
@@ -523,15 +496,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     break;
                 case 3:
                     if (remaining==18) {
-                        //imageView1.setBackgroundResource(R.color.colorRed);
                         imageView4.setVisibility(View.VISIBLE);
                         imageView1.setVisibility(View.INVISIBLE);
-                        //imageView1.setPadding(1, 1, 1, 1);
                     } else if (remaining==12) {
-                        //imageView1.setBackgroundResource(0);
                         imageView1.setVisibility(View.VISIBLE);
                         imageView4.setVisibility(View.INVISIBLE);
-                        //imageView1.setPadding(0, 0, 0, 0);
                     } else if (remaining==17) {
                         StageThreeFragment.shot1.setVisibility(View.VISIBLE);
                     } else if (remaining==16) {
@@ -539,8 +508,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     } else if (remaining==13) {
                         StageThreeFragment.shot3.setVisibility(View.VISIBLE);
                     } else if (remaining==10) {
-                        //imageView2.setBackgroundResource(R.color.colorRed);
-                        //imageView2.setPadding(1, 1, 1, 1);
                         imageView5.setVisibility(View.VISIBLE);
                         imageView2.setVisibility(View.INVISIBLE);
                         StageThreeFragment.shot4.setVisibility(View.VISIBLE);
@@ -549,13 +516,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     } else if (remaining==8) {
                         StageThreeFragment.shot6.setVisibility(View.VISIBLE);
                     } else if (remaining==7) {
-                        //imageView2.setBackgroundResource(0);
-                        //imageView2.setPadding(0, 0, 0, 0);
                         imageView2.setVisibility(View.VISIBLE);
                         imageView5.setVisibility(View.INVISIBLE);
                     } else if (remaining==6) {
-                        //imageView3.setBackgroundResource(R.color.colorRed);
-                        //imageView3.setPadding(1, 1, 1, 1);
                         imageView6.setVisibility(View.VISIBLE);
                         imageView3.setVisibility(View.INVISIBLE);
                         StageThreeFragment.shot7.setVisibility(View.VISIBLE);
@@ -564,8 +527,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     } else if (remaining==4) {
                         StageThreeFragment.shot9.setVisibility(View.VISIBLE);
                     } else if (remaining==3) {
-                        //imageView3.setBackgroundResource(0);
-                        //imageView3.setPadding(0, 0, 0, 0);
                         StageThreeFragment.shot10.setVisibility(View.VISIBLE);
                     } else if (remaining==2) {
                         imageView3.setVisibility(View.VISIBLE);
@@ -592,7 +553,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         imageView5.setVisibility(View.INVISIBLE);
                         imageView2.setVisibility(View.VISIBLE);
                         imageView6.setVisibility(View.INVISIBLE);
-
                         imageView7.setVisibility(View.VISIBLE);
                         imageView3.setVisibility(View.INVISIBLE);
                         imageView8.setVisibility(View.VISIBLE);

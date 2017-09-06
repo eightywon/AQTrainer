@@ -2,15 +2,9 @@ package com.eightywon.aqtrainer;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 class MediaPlayerSingleton {
     private static MediaPlayerSingleton mediaPlayerSingleton;
@@ -18,7 +12,6 @@ class MediaPlayerSingleton {
     private static MediaPlayer mediaPlayer;
     private static int stage;
     private static Activity act;
-    private static ImageButton testButton;
     private static Button stageButton;
 
     static MediaPlayerSingleton getInstance() {
@@ -64,8 +57,17 @@ class MediaPlayerSingleton {
 
             //set in process
             switch (MainActivity.getPrepTime()) {
+                case 5:
+                    MainActivity.sources[MainActivity.STEP_PREP_IN_PROGRESS]=R.raw.s5;
+                    break;
+                case 15:
+                    MainActivity.sources[MainActivity.STEP_PREP_IN_PROGRESS]=R.raw.s15;
+                    break;
                 case 30:
                     MainActivity.sources[MainActivity.STEP_PREP_IN_PROGRESS]=R.raw.s30;
+                    break;
+                case 45:
+                    MainActivity.sources[MainActivity.STEP_PREP_IN_PROGRESS]=R.raw.s45;
                     break;
                 case 60:
                     MainActivity.sources[MainActivity.STEP_PREP_IN_PROGRESS]=R.raw.s60;
@@ -146,15 +148,12 @@ class MediaPlayerSingleton {
                             stageButton=(Button) act.findViewById(R.id.btnStage1Play);
                             break;
                         case 2:
-                            //testButton=(ImageButton) act.findViewById(R.id.btnStage2Play);
                             stageButton=(Button) act.findViewById(R.id.btnStage2Play);
                             break;
                         case 3:
-                            //testButton=(ImageButton) act.findViewById(R.id.btnStage3Play);
                             stageButton=(Button) act.findViewById(R.id.btnStage3Play);
                             break;
                         case 4:
-                            //testButton=(ImageButton) act.findViewById(R.id.btnStage4Play);
                             stageButton=(Button) act.findViewById(R.id.btnStage4Play);
                             break;
                     }
@@ -162,15 +161,14 @@ class MediaPlayerSingleton {
                     if (currentStep!=MainActivity.STEP_DONE) {
                         MediaPlayerSingleton.getInstance().play(context,getNextResId(),null,null,false);
                         if (MediaPlayerSingleton.getPlayingState()) {
-                            //testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_stop", "drawable", act.getPackageName()));
                             stageButton.setText(R.string.btnStopStage);
+                            stageButton.setBackgroundResource(R.drawable.button_clicked);
                         }
                     } else {
                         stopPlaying(context);
                         currentStep=MainActivity.STEP_BEGIN;
-                        //testButton.setImageResource(act.getResources().getIdentifier("@android:drawable/ic_media_play", "drawable", act.getPackageName()));
                         stageButton.setText(R.string.btnStartStage);
-                        //stageButton.getBackground().setColorFilter(R.color.colorBlack, PorterDuff.Mode.MULTIPLY);
+                        stageButton.setBackgroundResource(R.drawable.button);
                     }
                 }
             });

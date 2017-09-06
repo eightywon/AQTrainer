@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/target1"
-        android:layout_width="172dp"
-        android:layout_height="172dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginTop="8dp"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/target1Highlight"
-        android:layout_width="172dp"
-        android:layout_height="172dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1"
@@ -51,20 +51,20 @@
         android:layout_width="12dp"
         android:layout_height="15dp"
         app:srcCompat="@drawable/shot"
-        android:layout_marginLeft="116dp"
+        android:layout_marginLeft="20dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1Highlight"
         app:layout_constraintTop_toTopOf="@+id/target1Highlight"
-        android:layout_marginTop="69dp" />
+        android:layout_marginTop="55dp" />
 
     <ImageView
         android:id="@+id/shot4"
         android:layout_width="12dp"
         android:layout_height="15dp"
         app:srcCompat="@drawable/shot"
-        android:layout_marginLeft="116dp"
+        android:layout_marginLeft="104dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1Highlight"
         app:layout_constraintTop_toTopOf="@+id/target1Highlight"
-        android:layout_marginTop="92dp" />
+        android:layout_marginTop="77dp" />
 
     <ImageView
         android:id="@+id/shot5"
@@ -101,20 +101,20 @@
         android:layout_width="12dp"
         android:layout_height="15dp"
         app:srcCompat="@drawable/shot"
-        android:layout_marginLeft="104dp"
+        android:layout_marginLeft="54dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1Highlight"
         app:layout_constraintTop_toTopOf="@+id/target1Highlight"
-        android:layout_marginTop="130dp" />
+        android:layout_marginTop="27dp" />
 
     <ImageView
         android:id="@+id/shot9"
         android:layout_width="12dp"
         android:layout_height="15dp"
         app:srcCompat="@drawable/shot"
-        android:layout_marginLeft="67dp"
+        android:layout_marginLeft="61dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1Highlight"
         app:layout_constraintTop_toTopOf="@+id/target1Highlight"
-        android:layout_marginTop="115dp" />
+        android:layout_marginTop="70dp" />
 
     <ImageView
         android:id="@+id/shot10"
@@ -128,36 +128,36 @@
 
     <Button
         android:id="@+id/btnStage1Play"
-        android:layout_width="@dimen/stage_button_width"
-        android:layout_height="@dimen/stage_button_height"
-        android:text="START"
-        android:textColor="@color/colorWhite"
-        android:textSize="30sp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
-        android:background="@drawable/button"
         android:layout_marginTop="16dp"
+        android:background="@drawable/button"
+        android:text="START"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/colorWhite"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtStageDescTimer" />
 
     <TextView
         android:id="@+id/txtStepDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="36sp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtStageDescTimer"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtStageDescTimer" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/txtStageDesc"
-        android:layout_width="360dp"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/target1"
@@ -167,7 +167,7 @@
         android:text="@string/stage1Body"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="18sp"
+        android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -176,19 +176,19 @@
         android:id="@+id/txtStageDescTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-condensed"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="@android:color/holo_red_dark"
-        android:textSize="64sp"
+        android:textSize="32sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
         app:layout_constraintVertical_bias="0.75" />
 
 </android.support.constraint.ConstraintLayout>

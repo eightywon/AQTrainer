@@ -6,12 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class StageTwoFragment extends Fragment {
-    //public ImageButton testButton;
     public Button stageButton;
     static TextView txtStageDescTimer;
     static TextView txtStepDesc;
@@ -31,13 +29,13 @@ public class StageTwoFragment extends Fragment {
     static ImageView shot8;
     static ImageView shot9;
     static ImageView shot10;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.frag_stage_2, container,
                 false);
 
-        //testButton=(ImageButton) rootView.findViewById(R.id.btnStage2Play);
         stageButton=(Button) rootView.findViewById(R.id.btnStage2Play);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);

@@ -2,20 +2,20 @@
     <string name="app_name">AQTrainer</string>
     <string name="action_settings">Settings</string>
     <string name="stage1header">Stage 1</string>
-    <string name="stage1Body">Stage 1: Standing. 10 rounds in 2 minutes, placed in the 100 yard target</string>
     <string name="stage2Header">Stage 2</string>
     <string name="stage3Header">Stage 3</string>
     <string name="stage4Header">Stage 4</string>
-    <string name="stage2Body">Stage 2: Standing, transition to sitting. 10 rounds in 55 seconds, 5 placed in each of the 200 yard targets, with magazine change</string>
+    <string name="stage1Body">Stage 1: Standing. 10 rounds in 2 minutes, placed in the 100 yard target</string>
+    <string name="stage2Body">Stage 2: Standing, transition to seated. 10 rounds in 55 seconds, 5 placed in each of the 200 yard targets, with magazine change</string>
     <string name="stage3Body">Stage 3: Standing, transition to prone. 10 rounds in 65 seconds, 3 rounds placed in each left and middle, 4 rounds in right, in the 300 yard targets, with magazine change</string>
     <string name="stage4Body">Stage 4: Prone. 10 rounds in 5 minutes, 2 rounds placed in each left 400 yard target, 3 rounds placed in each right 400 yard target</string>
     <string name="settingsPlayStageDesc">Play Stage Description</string>
-    <string name="settingsPlayPrep">Play Preparation Announcements</string>
+    <string name="settingsPlayPrep">Allow Prep Time</string>
     <string name="settingsAnnounceStageTime">Announce Stage Time</string>
     <string name="settingsAnnounceInterval">Interval</string>
     <string name="settingsPrepTime">Prep Time</string>
-    <string name="settingsPlayStageDescBody">Play stage details prior to each stage, including shooting position number of rounds and magazines, and course of fire</string>
-    <string name="settingsPlayPrepBody">Play preparation announcements prior to each stage and optionally allow prep time</string>
+    <string name="settingsPlayStageDescBody">Play stage details prior to each stage, including shooting position, number of rounds and magazines, and course of fire</string>
+    <string name="settingsPlayPrepBody">Allow preparation time prior to stage</string>
     <string name="settingsAnnounceStageTimeBody">Announce remaining time of current stage, at set interval</string>
     <string name="settingsRedAlertMode">Red Alert Mode</string>
     <string name="settingsRedAlertModeBody">Count down last 10 seconds of stage out loud</string>
@@ -27,13 +27,27 @@
     <string name="btnStartStage">START</string>
     <string name="btnStopStage">STOP</string>
 
-    <string-array name="prepTimes">
+    <string-array name="prepTimeLabels">
+        <item>5 Seconds</item>
+        <item>15 Seconds</item>
         <item>30 Seconds</item>
+        <item>45 Seconds</item>
         <item>60 Seconds</item>
         <item>90 Seconds</item>
         <item>120 Seconds</item>
     </string-array>
-    <string-array name="announceInterval">
+
+    <string-array name="prepTimes">
+        <item>5</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
+
+    <string-array name="announceIntervalLabels">
         <item>5 Seconds</item>
         <item>10 Seconds</item>
         <item>15 Seconds</item>
@@ -41,6 +55,16 @@
         <item>30 Seconds</item>
         <item>60 Seconds</item>
     </string-array>
+
+    <string-array name="announceInterval">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+
     <string-array name="listArray">
         <item>Headings</item>
         <item>Headings and Details</item>
