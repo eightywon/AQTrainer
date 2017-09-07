@@ -51,8 +51,7 @@ class Utils {
         public void run() {
             View view=activity.findViewById(previousPage);
             TextView txtStageDescTimer = (TextView) view.findViewById(R.id.txtStageDescTimer);
-            MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
-            int remaining=mediaPlayer.getRemaining();
+            int remaining=MediaPlayerSingleton.getInstance().getRemaining();
 
             int secs=0;
             int mins=0;
@@ -91,7 +90,6 @@ class Utils {
     Runnable countDownFireStage = new Runnable() {
         @Override
         public void run() {
-            //Utils utils=new Utils();
             if (getAnnounceStageTime(context)) {
                 String announceInterval;
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -101,8 +99,7 @@ class Utils {
 
             View view=activity.findViewById(previousPage);
             TextView txtStageDescTimer = (TextView) view.findViewById(R.id.txtStageDescTimer);
-            MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
-            int remaining=mediaPlayer.getRemaining();
+            int remaining=MediaPlayerSingleton.getInstance().getRemaining();
 
             boolean redAlertMode=getRedAlertMode(context);
             int secs=0;
@@ -177,8 +174,7 @@ class Utils {
             ImageView shot9=(ImageView) view.findViewById(R.id.shot9);
             ImageView shot10=(ImageView) view.findViewById(R.id.shot10);
 
-            MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
-            int remaining=mediaPlayer.getRemaining();
+            int remaining=MediaPlayerSingleton.getInstance().getRemaining();
 
             switch (MediaPlayerSingleton.getStage()) {
                 case 1:

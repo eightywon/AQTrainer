@@ -3,17 +3,19 @@ package com.eightywon.aqtrainer;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 class MediaPlayerSingleton {
     private static MediaPlayerSingleton mediaPlayerSingleton;
     private static int currentStep;
     private static MediaPlayer mediaPlayer;
     private static int stage;
-    private static Button stageButton;
+    private Button stageButton;
     private Activity mainAct;
     private int previousPage;
 
@@ -21,7 +23,7 @@ class MediaPlayerSingleton {
 
     static MediaPlayerSingleton getInstance() {
         if (mediaPlayerSingleton==null) {
-            mediaPlayerSingleton=new MediaPlayerSingleton();
+            mediaPlayerSingleton=new MediaPlayerSingleton(instance);
         }
         return mediaPlayerSingleton;
     }
@@ -30,7 +32,7 @@ class MediaPlayerSingleton {
         return Math.round(((float)(mediaPlayer.getDuration()-mediaPlayer.getCurrentPosition())/(float) 1000));
     }
 
-    void play(Context context, int resId, boolean stop, Activity activity, int page) {
+    void play(Context context, boolean stop, Activity activity, int page) {
 
         utils=new Utils(activity, page, context);
 
@@ -122,21 +124,13 @@ class MediaPlayerSingleton {
 
         MainActivity.sources[MainActivity.STEP_FIRE_END]=R.raw.cease;
 
-
-        resId=getNextResId();
-        play(context, resId, null, null, stop, activity, page);
+        int resId = getNextResId();
+        play(context, resId, null, stop, activity, page);
     }
 
-    public void play(Context context, int resId, MediaPlayer.OnCompletionListener completionListener) {
-        play(context, resId, completionListener, null, false, null, 0);
-    }
-
-    public void play(Context context, int resId, MediaPlayer.OnErrorListener errorListener) {
-        play(context, resId, null, errorListener, false, null, 0);
-    }
-
-    private void play(final Context context, int resId, MediaPlayer.OnCompletionListener completionListener, MediaPlayer.OnErrorListener errorListener, boolean stop,
+    private void play(final Context context, int resId, MediaPlayer.OnErrorListener errorListener, boolean stop,
                       final Activity activity, final int previousPage) {
+
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
@@ -157,7 +151,7 @@ class MediaPlayerSingleton {
                     View view=activity.findViewById(previousPage);
                     stageButton=(Button) view.findViewById(R.id.btnStagePlay);
                     if (currentStep!=MainActivity.STEP_DONE) {
-                        MediaPlayerSingleton.getInstance().play(context,getNextResId(),null,null,false, activity, previousPage);
+                        play(context,getNextResId(),null,false, activity, previousPage);
                         if (MediaPlayerSingleton.getPlayingState()) {
                             stageButton.setText(R.string.btnStopStage);
                             stageButton.setBackgroundResource(R.drawable.button_clicked);
@@ -173,7 +167,12 @@ class MediaPlayerSingleton {
         }
     }
 
-    void stopPlaying(final Context context) {
+    void stopPlaying(Context context) {
+        if (utils==null) {
+            Toast.makeText(context, "Utils is nll", Toast.LENGTH_SHORT).show();
+            Log.d("AQTRAINER: ", "Utils is null ");
+        }
+
         utils.hCountDownFireStage.removeCallbacks(utils.countDownFireStage);
         utils.hCountDownPrepStage.removeCallbacks(utils.countDownPrepStage);
         utils.hCountDownDescStage.removeCallbacks(utils.countDownDescStage);
@@ -246,16 +245,19 @@ class MediaPlayerSingleton {
                 target4Highlight.setVisibility(View.INVISIBLE);
                 break;
         }
-        MediaPlayerSingleton.getInstance().play(context,0,null,null,true, null, 0);
+        play(context,0,null,true, null, 0);
         currentStep=MainActivity.STEP_BEGIN;
     }
 
     static boolean getPlayingState() {
+        return mediaPlayer != null && mediaPlayer.isPlaying();
+        /*
         if (mediaPlayer != null) {
             return mediaPlayer.isPlaying();
         } else {
             return false;
         }
+        */
     }
 
     static void setStage(int s) {
@@ -345,13 +347,9 @@ class MediaPlayerSingleton {
             utils.firstTime=true;
             utils.lastSec=0;
             utils.hCountDownPrepStage.post(utils.countDownPrepStage);
-
-            //txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
             txtStepDesc.setText(R.string.StepDescPreparing);
         } else if (currentStep==MainActivity.STEP_PREP_END) {
             utils.hCountDownPrepStage.removeCallbacks(utils.countDownPrepStage);
-            //txtStageDescTimer=(TextView) view.findViewById(R.id.txtStageDescTimer);
-            //txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
             txtStageDescTimer.setText("");
             txtStepDesc.setText("");
         }
@@ -359,18 +357,20 @@ class MediaPlayerSingleton {
             utils.firstTime=true;
             utils.lastSec=0;
             utils.hCountDownFireStage.post(utils.countDownFireStage);
-            //txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
             txtStepDesc.setText(R.string.StepDescFireInProgress);
         } else if (currentStep==MainActivity.STEP_FIRE_END) {
             utils.hCountDownFireStage.removeCallbacks(utils.countDownFireStage);
-            //txtStageDescTimer=(TextView) view.findViewById(R.id.txtStageDescTimer);
             txtStageDescTimer.setText(R.string.StepDescCeaseFire);
         } else if (currentStep==MainActivity.STEP_DONE){
-            //txtStageDescTimer=(TextView) view.findViewById(R.id.txtStageDescTimer);
-            //txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
             txtStageDescTimer.setText("");
             txtStepDesc.setText("");
         }
         return MainActivity.sources[currentStep];
+    }
+
+    private static Context instance;
+
+    private MediaPlayerSingleton(Context context){
+        instance = context;
     }
 }

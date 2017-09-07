@@ -41,8 +41,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     final static int STEP_DONE=12;
 
     ViewPager aqtViewPager;
-    public int previousPage;
-    Button stageButton;
+    int previousPage;
 
     public static TextToSpeech textToSpeech;
     static int[] sources=new int[100];
@@ -80,11 +79,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             public void onPageSelected(int position) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 View view=findViewById(previousPage+1);
-                stageButton=(Button) view.findViewById(R.id.btnStagePlay);
+                Button stageButton=(Button) view.findViewById(R.id.btnStagePlay);
                 switch (previousPage) {
                     case 0:
                         if (isPlaying) {
-                            //stageButton=(Button) StageOneFragment.fragView.findViewById(R.id.btnStagePlay);
                             stageButton.setText(R.string.btnStartStage);
                             stageButton.setBackgroundResource(R.drawable.button);
                             MediaPlayerSingleton.getInstance().stopPlaying(getContext());
@@ -92,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         break;
                     case 1:
                         if (isPlaying) {
-                            //stageButton=(Button) StageTwoFragment.fragView.findViewById(R.id.btnStagePlay);
                             stageButton.setText(R.string.btnStartStage);
                             stageButton.setBackgroundResource(R.drawable.button);
                             MediaPlayerSingleton.getInstance().stopPlaying(getContext());
@@ -100,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         break;
                     case 2:
                         if (isPlaying) {
-                            //stageButton=(Button) StageThreeFragment.fragView.findViewById(R.id.btnStagePlay);
                             stageButton.setText(R.string.btnStartStage);
                             stageButton.setBackgroundResource(R.drawable.button);
                             MediaPlayerSingleton.getInstance().stopPlaying(getContext());
@@ -108,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         break;
                     case 3:
                         if (isPlaying) {
-                            //stageButton=(Button) StageFourFragment.fragView.findViewById(R.id.btnStagePlay);
                             stageButton.setText(R.string.btnStartStage);
                             stageButton.setBackgroundResource(R.drawable.button);
                             MediaPlayerSingleton.getInstance().stopPlaying(getContext());
@@ -132,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     public Context getContext() {
-        //return instance.getApplicationContext();
         return getApplication().getApplicationContext();
     }
 

@@ -90,11 +90,10 @@ public class StageThreeFragment extends Fragment {
             public void onClick(View v) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
-                    //MainActivity.fragView=rootView;
                     stageButton.setText(R.string.btnStopStage);
                     stageButton.setBackgroundResource(R.drawable.button_clicked);
                     MediaPlayerSingleton.setStage(3);
-                    MediaPlayerSingleton.getInstance().play(getContext(),0,false,getActivity(),3);
+                    MediaPlayerSingleton.getInstance().play(getContext(), false, getActivity(), 3);
                 } else {
                     MediaPlayerSingleton.getInstance().stopPlaying(getContext());
                     stageButton.setText(R.string.btnStartStage);
