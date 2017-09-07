@@ -1,6 +1,8 @@
 package com.eightywon.aqtrainer;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,28 +13,33 @@ import android.widget.TextView;
 
 public class StageOneFragment extends Fragment {
     public Button stageButton;
-    static TextView txtStageDescTimer;
-    static TextView txtStepDesc;
-    static ImageView target1;
-    static ImageView target1Highlight;
-    static ImageView shot1;
-    static ImageView shot2;
-    static ImageView shot3;
-    static ImageView shot4;
-    static ImageView shot5;
-    static ImageView shot6;
-    static ImageView shot7;
-    static ImageView shot8;
-    static ImageView shot9;
-    static ImageView shot10;
+    TextView txtStageDescTimer;
+    TextView txtStepDesc;
+
+    ImageView target1;
+    ImageView target1Highlight;
+    ImageView shot1;
+    ImageView shot2;
+    ImageView shot3;
+    ImageView shot4;
+    ImageView shot5;
+    ImageView shot6;
+    ImageView shot7;
+    ImageView shot8;
+    ImageView shot9;
+    ImageView shot10;
+
+    static public View fragView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.frag_stage_1, container,
+        final View rootView = inflater.inflate(R.layout.frag_stage_1, container,
                 false);
 
-        stageButton=(Button) rootView.findViewById(R.id.btnStage1Play);
+        fragView=rootView;
+
+        stageButton=(Button) rootView.findViewById(R.id.btnStagePlay);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
         target1=(ImageView) rootView.findViewById(R.id.target1);
@@ -75,26 +82,19 @@ public class StageOneFragment extends Fragment {
             public void onClick(View v) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
+                    MainActivity.fragView=rootView;
                     stageButton.setText(R.string.btnStopStage);
                     stageButton.setBackgroundResource(R.drawable.button_clicked);
                     MediaPlayerSingleton.setStage(1);
                     MediaPlayerSingleton.setActivity(getActivity());
                     MediaPlayerSingleton.getInstance().play(getContext(),0,false);
                 } else {
-                    MediaPlayerSingleton.stopPlaying(getContext());
+                    MediaPlayerSingleton.getInstance().stopPlaying(getContext());
                     stageButton.setText(R.string.btnStartStage);
                     stageButton.setBackgroundResource(R.drawable.button);
                 }
             }
         });
         return rootView;
-    }
-
-    void setTxtStageDescTimer(String desc) {
-        txtStageDescTimer.setText(desc);
-    }
-
-    void setTxtStepDesc(String desc) {
-        txtStepDesc.setText(desc);
     }
 }

@@ -6,7 +6,7 @@
     tools:context="com.eightywon.aqtrainer.StageThreeFragment">
 
     <Button
-        android:id="@+id/btnStage3Play"
+        android:id="@+id/btnStagePlay"
         android:layout_width="@dimen/stage_button_width"
         android:layout_height="@dimen/stage_button_height"
         android:text="START"
@@ -57,7 +57,7 @@
         android:id="@+id/txtStageDescTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnStage3Play"
+        android:layout_above="@+id/btnStagePlay"
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-condensed"
         android:textAlignment="center"

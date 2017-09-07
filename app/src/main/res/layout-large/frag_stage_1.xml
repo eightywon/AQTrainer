@@ -14,7 +14,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtStageDesc"
-        app:srcCompat="@drawable/stage1" />
+        app:srcCompat="@drawable/stage1"
+        android:contentDescription="@+id/txtStageDesc" />
 
     <ImageView
         android:id="@+id/target1Highlight"
@@ -24,7 +25,8 @@
         android:layout_marginTop="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/target1"
         app:layout_constraintTop_toTopOf="@+id/target1"
-        app:srcCompat="@drawable/stage1highlight" />
+        app:srcCompat="@drawable/stage1highlight"
+        android:contentDescription="" />
 
     <ImageView
         android:id="@+id/shot1"
@@ -127,7 +129,7 @@
         android:layout_marginTop="115dp" />
 
     <Button
-        android:id="@+id/btnStage1Play"
+        android:id="@+id/btnStagePlay"
         android:layout_width="@dimen/stage_button_width"
         android:layout_height="@dimen/stage_button_height"
         android:text="START"

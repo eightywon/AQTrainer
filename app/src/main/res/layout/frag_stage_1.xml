@@ -127,7 +127,7 @@
         android:layout_marginTop="92dp" />
 
     <Button
-        android:id="@+id/btnStage1Play"
+        android:id="@+id/btnStagePlay"
         android:layout_width="@dimen/stage_button_width"
         android:layout_height="@dimen/stage_button_height"
         android:text="START"

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 class MediaPlayerSingleton {
     private static MediaPlayerSingleton mediaPlayerSingleton;
@@ -13,6 +15,8 @@ class MediaPlayerSingleton {
     private static int stage;
     private static Activity act;
     private static Button stageButton;
+
+    private Utils utils=new Utils();
 
     static MediaPlayerSingleton getInstance() {
         if (mediaPlayerSingleton==null) {
@@ -33,7 +37,7 @@ class MediaPlayerSingleton {
             i++;
         }
 
-        if (MainActivity.getPlayStageDescription()) {
+        if (utils.getPlayStageDescription(act)) {
             switch (stage) {
                 case 1:
                     MainActivity.sources[MainActivity.STEP_STAGE_DESCRIPTION]=R.raw.descstage1;
@@ -50,13 +54,13 @@ class MediaPlayerSingleton {
             }
         }
 
-        if (MainActivity.getPlayPrepAnnouncements()) {
+        if (utils.getPlayPrepAnnouncements(act)) {
 
             //set begin
             MainActivity.sources[MainActivity.STEP_PREP_START]=R.raw.prepbegin;
 
             //set in process
-            switch (MainActivity.getPrepTime()) {
+            switch (utils.getPrepTime(act)) {
                 case 5:
                     MainActivity.sources[MainActivity.STEP_PREP_IN_PROGRESS]=R.raw.s5;
                     break;
@@ -87,7 +91,7 @@ class MediaPlayerSingleton {
             MainActivity.sources[MainActivity.STEP_SAFTIES_ON_STAND]=R.raw.safetiesonstand;
         }
 
-        if (MainActivity.getPlayPrepAnnouncements() || MainActivity.getPlayStageDescription() || stage==2 || stage==3) {
+        if (utils.getPlayPrepAnnouncements(act) || utils.getPlayStageDescription(act) || stage==2 || stage==3) {
             MainActivity.sources[MainActivity.STEP_PAUSE_1]=R.raw.s2;
         }
 
@@ -143,21 +147,7 @@ class MediaPlayerSingleton {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     currentStep++;
-                    switch (stage) {
-                        case 1:
-                            stageButton=(Button) act.findViewById(R.id.btnStage1Play);
-                            break;
-                        case 2:
-                            stageButton=(Button) act.findViewById(R.id.btnStage2Play);
-                            break;
-                        case 3:
-                            stageButton=(Button) act.findViewById(R.id.btnStage3Play);
-                            break;
-                        case 4:
-                            stageButton=(Button) act.findViewById(R.id.btnStage4Play);
-                            break;
-                    }
-
+                    stageButton=(Button) MainActivity.fragView.findViewById(R.id.btnStagePlay);
                     if (currentStep!=MainActivity.STEP_DONE) {
                         MediaPlayerSingleton.getInstance().play(context,getNextResId(),null,null,false);
                         if (MediaPlayerSingleton.getPlayingState()) {
@@ -175,87 +165,76 @@ class MediaPlayerSingleton {
         }
     }
 
-    static void stopPlaying(final Context context) {
-        MainActivity.hCountDownFireStage.removeCallbacks(MainActivity.countDownFireStage);
-        MainActivity.hCountDownPrepStage.removeCallbacks(MainActivity.countDownPrepStage);
-        MainActivity.hCountDownDescStage.removeCallbacks(MainActivity.countDownDescStage);
+    void stopPlaying(final Context context) {
+        utils.hCountDownFireStage.removeCallbacks(utils.countDownFireStage);
+        utils.hCountDownPrepStage.removeCallbacks(utils.countDownPrepStage);
+        utils.hCountDownDescStage.removeCallbacks(utils.countDownDescStage);
+
+        TextView txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
+        TextView txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+
+        ImageView shot1=(ImageView) MainActivity.fragView.findViewById(R.id.shot1);
+        ImageView shot2=(ImageView) MainActivity.fragView.findViewById(R.id.shot2);
+        ImageView shot3=(ImageView) MainActivity.fragView.findViewById(R.id.shot3);
+        ImageView shot4=(ImageView) MainActivity.fragView.findViewById(R.id.shot4);
+        ImageView shot5=(ImageView) MainActivity.fragView.findViewById(R.id.shot5);
+        ImageView shot6=(ImageView) MainActivity.fragView.findViewById(R.id.shot6);
+        ImageView shot7=(ImageView) MainActivity.fragView.findViewById(R.id.shot7);
+        ImageView shot8=(ImageView) MainActivity.fragView.findViewById(R.id.shot8);
+        ImageView shot9=(ImageView) MainActivity.fragView.findViewById(R.id.shot9);
+        ImageView shot10=(ImageView) MainActivity.fragView.findViewById(R.id.shot10);
+
+        ImageView target1=(ImageView) MainActivity.fragView.findViewById(R.id.target1);
+        ImageView target2=(ImageView) MainActivity.fragView.findViewById(R.id.target2);
+        ImageView target3=(ImageView) MainActivity.fragView.findViewById(R.id.target3);
+        ImageView target4=(ImageView) MainActivity.fragView.findViewById(R.id.target4);
+        ImageView target1Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target1Highlight);
+        ImageView target2Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target2Highlight);
+        ImageView target3Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target3Highlight);
+        ImageView target4Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target4Highlight);
+
+        shot1.setVisibility(View.INVISIBLE);
+        shot2.setVisibility(View.INVISIBLE);
+        shot3.setVisibility(View.INVISIBLE);
+        shot4.setVisibility(View.INVISIBLE);
+        shot5.setVisibility(View.INVISIBLE);
+        shot6.setVisibility(View.INVISIBLE);
+        shot7.setVisibility(View.INVISIBLE);
+        shot8.setVisibility(View.INVISIBLE);
+        shot9.setVisibility(View.INVISIBLE);
+        shot10.setVisibility(View.INVISIBLE);
+
+        txtStepDesc.setText("");
+        txtStageDescTimer.setText("");
 
         switch (stage) {
             case 1:
-                StageOneFragment.shot1.setVisibility(View.INVISIBLE);
-                StageOneFragment.shot2.setVisibility(View.INVISIBLE);
-                StageOneFragment.shot3.setVisibility(View.INVISIBLE);
-                StageOneFragment.shot4.setVisibility(View.INVISIBLE);
-                StageOneFragment.shot5.setVisibility(View.INVISIBLE);
-                StageOneFragment.shot6.setVisibility(View.INVISIBLE);
-                StageOneFragment.shot7.setVisibility(View.INVISIBLE);
-                StageOneFragment.shot8.setVisibility(View.INVISIBLE);
-                StageOneFragment.shot9.setVisibility(View.INVISIBLE);
-                StageOneFragment.shot10.setVisibility(View.INVISIBLE);
-                StageOneFragment.target1.setVisibility(View.VISIBLE);
-                StageOneFragment.target1Highlight.setVisibility(View.INVISIBLE);
-                StageOneFragment.txtStepDesc.setText("");
-                StageOneFragment.txtStageDescTimer.setText("");
+                target1.setVisibility(View.VISIBLE);
+                target1Highlight.setVisibility(View.INVISIBLE);
                 break;
             case 2:
-                StageTwoFragment.shot1.setVisibility(View.INVISIBLE);
-                StageTwoFragment.shot2.setVisibility(View.INVISIBLE);
-                StageTwoFragment.shot3.setVisibility(View.INVISIBLE);
-                StageTwoFragment.shot4.setVisibility(View.INVISIBLE);
-                StageTwoFragment.shot5.setVisibility(View.INVISIBLE);
-                StageTwoFragment.shot6.setVisibility(View.INVISIBLE);
-                StageTwoFragment.shot7.setVisibility(View.INVISIBLE);
-                StageTwoFragment.shot8.setVisibility(View.INVISIBLE);
-                StageTwoFragment.shot9.setVisibility(View.INVISIBLE);
-                StageTwoFragment.shot10.setVisibility(View.INVISIBLE);
-                StageTwoFragment.target1.setVisibility(View.VISIBLE);
-                StageTwoFragment.target2.setVisibility(View.VISIBLE);
-                StageTwoFragment.target1Highlight.setVisibility(View.INVISIBLE);
-                StageTwoFragment.target2Highlight.setVisibility(View.INVISIBLE);
-                StageTwoFragment.txtStepDesc.setText("");
-                StageTwoFragment.txtStageDescTimer.setText("");
+                target1.setVisibility(View.VISIBLE);
+                target2.setVisibility(View.VISIBLE);
+                target1Highlight.setVisibility(View.INVISIBLE);
+                target2Highlight.setVisibility(View.INVISIBLE);
                 break;
             case 3:
-                StageThreeFragment.shot1.setVisibility(View.INVISIBLE);
-                StageThreeFragment.shot2.setVisibility(View.INVISIBLE);
-                StageThreeFragment.shot3.setVisibility(View.INVISIBLE);
-                StageThreeFragment.shot4.setVisibility(View.INVISIBLE);
-                StageThreeFragment.shot5.setVisibility(View.INVISIBLE);
-                StageThreeFragment.shot6.setVisibility(View.INVISIBLE);
-                StageThreeFragment.shot7.setVisibility(View.INVISIBLE);
-                StageThreeFragment.shot8.setVisibility(View.INVISIBLE);
-                StageThreeFragment.shot9.setVisibility(View.INVISIBLE);
-                StageThreeFragment.shot10.setVisibility(View.INVISIBLE);
-                StageThreeFragment.target1.setVisibility(View.VISIBLE);
-                StageThreeFragment.target2.setVisibility(View.VISIBLE);
-                StageThreeFragment.target3.setVisibility(View.VISIBLE);
-                StageThreeFragment.target1Highlight.setVisibility(View.INVISIBLE);
-                StageThreeFragment.target2Highlight.setVisibility(View.INVISIBLE);
-                StageThreeFragment.target3Highlight.setVisibility(View.INVISIBLE);
-                StageThreeFragment.txtStepDesc.setText("");
-                StageThreeFragment.txtStageDescTimer.setText("");
+                target1.setVisibility(View.VISIBLE);
+                target2.setVisibility(View.VISIBLE);
+                target3.setVisibility(View.VISIBLE);
+                target1Highlight.setVisibility(View.INVISIBLE);
+                target2Highlight.setVisibility(View.INVISIBLE);
+                target3Highlight.setVisibility(View.INVISIBLE);
                 break;
             case 4:
-                StageFourFragment.shot1.setVisibility(View.INVISIBLE);
-                StageFourFragment.shot2.setVisibility(View.INVISIBLE);
-                StageFourFragment.shot3.setVisibility(View.INVISIBLE);
-                StageFourFragment.shot4.setVisibility(View.INVISIBLE);
-                StageFourFragment.shot5.setVisibility(View.INVISIBLE);
-                StageFourFragment.shot6.setVisibility(View.INVISIBLE);
-                StageFourFragment.shot7.setVisibility(View.INVISIBLE);
-                StageFourFragment.shot8.setVisibility(View.INVISIBLE);
-                StageFourFragment.shot9.setVisibility(View.INVISIBLE);
-                StageFourFragment.shot10.setVisibility(View.INVISIBLE);
-                StageFourFragment.target1.setVisibility(View.VISIBLE);
-                StageFourFragment.target2.setVisibility(View.VISIBLE);
-                StageFourFragment.target3.setVisibility(View.VISIBLE);
-                StageFourFragment.target4.setVisibility(View.VISIBLE);
-                StageFourFragment.target1Highlight.setVisibility(View.INVISIBLE);
-                StageFourFragment.target2Highlight.setVisibility(View.INVISIBLE);
-                StageFourFragment.target3Highlight.setVisibility(View.INVISIBLE);
-                StageFourFragment.target4Highlight.setVisibility(View.INVISIBLE);
-                StageFourFragment.txtStepDesc.setText("");
-                StageFourFragment.txtStageDescTimer.setText("");
+                target1.setVisibility(View.VISIBLE);
+                target2.setVisibility(View.VISIBLE);
+                target3.setVisibility(View.VISIBLE);
+                target4.setVisibility(View.VISIBLE);
+                target1Highlight.setVisibility(View.INVISIBLE);
+                target2Highlight.setVisibility(View.INVISIBLE);
+                target3Highlight.setVisibility(View.INVISIBLE);
+                target4Highlight.setVisibility(View.INVISIBLE);
                 break;
         }
         MediaPlayerSingleton.getInstance().play(context,0,null,null,true);
@@ -280,184 +259,112 @@ class MediaPlayerSingleton {
         act=a;
     }
 
-    private static int getNextResId() {
+    private int getNextResId() {
         while (MainActivity.sources[currentStep]==0) {
             currentStep++;
         }
 
+        TextView txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
+        TextView txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+
+        ImageView shot1=(ImageView) MainActivity.fragView.findViewById(R.id.shot1);
+        ImageView shot2=(ImageView) MainActivity.fragView.findViewById(R.id.shot2);
+        ImageView shot3=(ImageView) MainActivity.fragView.findViewById(R.id.shot3);
+        ImageView shot4=(ImageView) MainActivity.fragView.findViewById(R.id.shot4);
+        ImageView shot5=(ImageView) MainActivity.fragView.findViewById(R.id.shot5);
+        ImageView shot6=(ImageView) MainActivity.fragView.findViewById(R.id.shot6);
+        ImageView shot7=(ImageView) MainActivity.fragView.findViewById(R.id.shot7);
+        ImageView shot8=(ImageView) MainActivity.fragView.findViewById(R.id.shot8);
+        ImageView shot9=(ImageView) MainActivity.fragView.findViewById(R.id.shot9);
+        ImageView shot10=(ImageView) MainActivity.fragView.findViewById(R.id.shot10);
+
+        ImageView target1=(ImageView) MainActivity.fragView.findViewById(R.id.target1);
+        ImageView target2=(ImageView) MainActivity.fragView.findViewById(R.id.target2);
+        ImageView target3=(ImageView) MainActivity.fragView.findViewById(R.id.target3);
+        ImageView target4=(ImageView) MainActivity.fragView.findViewById(R.id.target4);
+        ImageView target1Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target1Highlight);
+        ImageView target2Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target2Highlight);
+        ImageView target3Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target3Highlight);
+        ImageView target4Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target4Highlight);
+
+        shot1.setVisibility(View.INVISIBLE);
+        shot2.setVisibility(View.INVISIBLE);
+        shot3.setVisibility(View.INVISIBLE);
+        shot4.setVisibility(View.INVISIBLE);
+        shot5.setVisibility(View.INVISIBLE);
+        shot6.setVisibility(View.INVISIBLE);
+        shot7.setVisibility(View.INVISIBLE);
+        shot8.setVisibility(View.INVISIBLE);
+        shot9.setVisibility(View.INVISIBLE);
+        shot10.setVisibility(View.INVISIBLE);
+
         if (currentStep==MainActivity.STEP_STAGE_DESCRIPTION) {
-            MainActivity.hCountDownDescStage.post(MainActivity.countDownDescStage);
+            utils.hCountDownDescStage.post(utils.countDownDescStage);
         } else {
-            MainActivity.hCountDownDescStage.removeCallbacks(MainActivity.countDownDescStage);
+            utils.hCountDownDescStage.removeCallbacks(utils.countDownDescStage);
 
             switch (stage) {
                 case 1:
-                    StageOneFragment.shot1.setVisibility(View.INVISIBLE);
-                    StageOneFragment.shot2.setVisibility(View.INVISIBLE);
-                    StageOneFragment.shot3.setVisibility(View.INVISIBLE);
-                    StageOneFragment.shot4.setVisibility(View.INVISIBLE);
-                    StageOneFragment.shot5.setVisibility(View.INVISIBLE);
-                    StageOneFragment.shot6.setVisibility(View.INVISIBLE);
-                    StageOneFragment.shot7.setVisibility(View.INVISIBLE);
-                    StageOneFragment.shot8.setVisibility(View.INVISIBLE);
-                    StageOneFragment.shot9.setVisibility(View.INVISIBLE);
-                    StageOneFragment.shot10.setVisibility(View.INVISIBLE);
-                    StageOneFragment.target1.setVisibility(View.VISIBLE);
-                    StageOneFragment.target1Highlight.setVisibility(View.INVISIBLE);
+                    target1.setVisibility(View.VISIBLE);
+                    target1Highlight.setVisibility(View.INVISIBLE);
                     break;
                 case 2:
-                    StageTwoFragment.shot1.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.shot2.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.shot3.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.shot4.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.shot5.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.shot6.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.shot7.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.shot8.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.shot9.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.shot10.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.target1.setVisibility(View.VISIBLE);
-                    StageTwoFragment.target2.setVisibility(View.VISIBLE);
-                    StageTwoFragment.target1Highlight.setVisibility(View.INVISIBLE);
-                    StageTwoFragment.target2Highlight.setVisibility(View.INVISIBLE);
+                    target1.setVisibility(View.VISIBLE);
+                    target2.setVisibility(View.VISIBLE);
+                    target1Highlight.setVisibility(View.INVISIBLE);
+                    target2Highlight.setVisibility(View.INVISIBLE);
                     break;
                 case 3:
-                    StageThreeFragment.shot1.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.shot2.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.shot3.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.shot4.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.shot5.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.shot6.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.shot7.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.shot8.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.shot9.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.shot10.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.target1.setVisibility(View.VISIBLE);
-                    StageThreeFragment.target2.setVisibility(View.VISIBLE);
-                    StageThreeFragment.target3.setVisibility(View.VISIBLE);
-                    StageThreeFragment.target1Highlight.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.target2Highlight.setVisibility(View.INVISIBLE);
-                    StageThreeFragment.target3Highlight.setVisibility(View.INVISIBLE);
+                    target1.setVisibility(View.VISIBLE);
+                    target2.setVisibility(View.VISIBLE);
+                    target3.setVisibility(View.VISIBLE);
+                    target1Highlight.setVisibility(View.INVISIBLE);
+                    target2Highlight.setVisibility(View.INVISIBLE);
+                    target3Highlight.setVisibility(View.INVISIBLE);
                     break;
                 case 4:
-                    StageFourFragment.shot1.setVisibility(View.INVISIBLE);
-                    StageFourFragment.shot2.setVisibility(View.INVISIBLE);
-                    StageFourFragment.shot3.setVisibility(View.INVISIBLE);
-                    StageFourFragment.shot4.setVisibility(View.INVISIBLE);
-                    StageFourFragment.shot5.setVisibility(View.INVISIBLE);
-                    StageFourFragment.shot6.setVisibility(View.INVISIBLE);
-                    StageFourFragment.shot7.setVisibility(View.INVISIBLE);
-                    StageFourFragment.shot8.setVisibility(View.INVISIBLE);
-                    StageFourFragment.shot9.setVisibility(View.INVISIBLE);
-                    StageFourFragment.shot10.setVisibility(View.INVISIBLE);
-                    StageFourFragment.target1.setVisibility(View.VISIBLE);
-                    StageFourFragment.target2.setVisibility(View.VISIBLE);
-                    StageFourFragment.target3.setVisibility(View.VISIBLE);
-                    StageFourFragment.target4.setVisibility(View.VISIBLE);
-                    StageFourFragment.target1Highlight.setVisibility(View.INVISIBLE);
-                    StageFourFragment.target2Highlight.setVisibility(View.INVISIBLE);
-                    StageFourFragment.target3Highlight.setVisibility(View.INVISIBLE);
-                    StageFourFragment.target4Highlight.setVisibility(View.INVISIBLE);
+                    target1.setVisibility(View.VISIBLE);
+                    target2.setVisibility(View.VISIBLE);
+                    target3.setVisibility(View.VISIBLE);
+                    target4.setVisibility(View.VISIBLE);
+                    target1Highlight.setVisibility(View.INVISIBLE);
+                    target2Highlight.setVisibility(View.INVISIBLE);
+                    target3Highlight.setVisibility(View.INVISIBLE);
+                    target4Highlight.setVisibility(View.INVISIBLE);
                     break;
             }
         }
 
         if (currentStep==MainActivity.STEP_PREP_IN_PROGRESS) {
-            MainActivity.firstTime=true;
-            MainActivity.lastSec=0;
-            MainActivity.hCountDownPrepStage.post(MainActivity.countDownPrepStage);
-            switch (stage) {
-                case 1:
-                    StageOneFragment.txtStepDesc.setText(R.string.StepDescPreparing);
-                    break;
-                case 2:
-                    StageTwoFragment.txtStepDesc.setText(R.string.StepDescPreparing);
-                    break;
-                case 3:
-                    StageThreeFragment.txtStepDesc.setText(R.string.StepDescPreparing);
-                    break;
-                case 4:
-                    StageFourFragment.txtStepDesc.setText(R.string.StepDescPreparing);
-                    break;
-            }
+            utils.firstTime=true;
+            utils.lastSec=0;
+            utils.hCountDownPrepStage.post(utils.countDownPrepStage);
+
+            txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+            txtStepDesc.setText(R.string.StepDescPreparing);
         } else if (currentStep==MainActivity.STEP_PREP_END) {
-            MainActivity.hCountDownPrepStage.removeCallbacks(MainActivity.countDownPrepStage);
-            switch (stage) {
-                case 1:
-                    StageOneFragment.txtStepDesc.setText("");
-                    StageOneFragment.txtStageDescTimer.setText("");
-                    break;
-                case 2:
-                    StageTwoFragment.txtStepDesc.setText("");
-                    StageTwoFragment.txtStageDescTimer.setText("");
-                    break;
-                case 3:
-                    StageThreeFragment.txtStepDesc.setText("");
-                    StageThreeFragment.txtStageDescTimer.setText("");
-                    break;
-                case 4:
-                    StageFourFragment.txtStepDesc.setText("");
-                    StageFourFragment.txtStageDescTimer.setText("");
-                    break;
-            }
+            utils.hCountDownPrepStage.removeCallbacks(utils.countDownPrepStage);
+            txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
+            txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+            txtStageDescTimer.setText("");
+            txtStepDesc.setText("");
         }
         if (currentStep==MainActivity.STEP_FIRE_IN_PROGRESS) {
-            MainActivity.firstTime=true;
-            MainActivity.lastSec=0;
-            MainActivity.hCountDownFireStage.post(MainActivity.countDownFireStage);
-            switch (stage) {
-                case 1:
-                    StageOneFragment.txtStepDesc.setText(R.string.StepDescFireInProgress);
-                    break;
-                case 2:
-                    StageTwoFragment.txtStepDesc.setText(R.string.StepDescFireInProgress);
-                    break;
-                case 3:
-                    StageThreeFragment.txtStepDesc.setText(R.string.StepDescFireInProgress);
-                    break;
-                case 4:
-                    StageFourFragment.txtStepDesc.setText(R.string.StepDescFireInProgress);
-                    break;
-            }
+            utils.firstTime=true;
+            utils.lastSec=0;
+            utils.hCountDownFireStage.post(utils.countDownFireStage);
+            txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+            txtStepDesc.setText(R.string.StepDescFireInProgress);
         } else if (currentStep==MainActivity.STEP_FIRE_END) {
-            MainActivity.hCountDownFireStage.removeCallbacks(MainActivity.countDownFireStage);
-            switch (stage) {
-                case 1:
-                    StageOneFragment.txtStageDescTimer.setText(R.string.StepDescCeaseFire);
-                    break;
-                case 2:
-                    StageTwoFragment.txtStageDescTimer.setText(R.string.StepDescCeaseFire);
-                    break;
-                case 3:
-                    StageThreeFragment.txtStageDescTimer.setText(R.string.StepDescCeaseFire);
-                    break;
-                case 4:
-                    StageFourFragment.txtStageDescTimer.setText(R.string.StepDescCeaseFire);
-                    break;
-
-            }
+            utils.hCountDownFireStage.removeCallbacks(utils.countDownFireStage);
+            txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
+            txtStageDescTimer.setText(R.string.StepDescCeaseFire);
         } else if (currentStep==MainActivity.STEP_DONE){
-            switch (stage) {
-                case 1:
-                    StageOneFragment.txtStageDescTimer.setText("");
-                    StageOneFragment.txtStepDesc.setText("");
-                    break;
-                case 2:
-                    StageTwoFragment.txtStageDescTimer.setText("");
-                    StageTwoFragment.txtStepDesc.setText("");
-                    break;
-                case 3:
-                    StageThreeFragment.txtStageDescTimer.setText("");
-                    StageThreeFragment.txtStepDesc.setText("");
-                    break;
-                case 4:
-                    StageFourFragment.txtStageDescTimer.setText("");
-                    StageFourFragment.txtStepDesc.setText("");
-                    break;
-
-            }
+            txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
+            txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+            txtStageDescTimer.setText("");
+            txtStepDesc.setText("");
         }
-
         return MainActivity.sources[currentStep];
     }
 }

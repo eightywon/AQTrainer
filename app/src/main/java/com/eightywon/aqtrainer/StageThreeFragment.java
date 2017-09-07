@@ -11,33 +11,37 @@ import android.widget.TextView;
 
 public class StageThreeFragment extends Fragment {
     public Button stageButton;
-    static TextView txtStageDescTimer;
-    static TextView txtStepDesc;
-    static ImageView target1;
-    static ImageView target2;
-    static ImageView target3;
-    static ImageView target1Highlight;
-    static ImageView target2Highlight;
-    static ImageView target3Highlight;
+    TextView txtStageDescTimer;
+    TextView txtStepDesc;
 
-    static ImageView shot1;
-    static ImageView shot2;
-    static ImageView shot3;
-    static ImageView shot4;
-    static ImageView shot5;
-    static ImageView shot6;
-    static ImageView shot7;
-    static ImageView shot8;
-    static ImageView shot9;
-    static ImageView shot10;
+    ImageView target1;
+    ImageView target2;
+    ImageView target3;
+    ImageView target1Highlight;
+    ImageView target2Highlight;
+    ImageView target3Highlight;
+
+    ImageView shot1;
+    ImageView shot2;
+    ImageView shot3;
+    ImageView shot4;
+    ImageView shot5;
+    ImageView shot6;
+    ImageView shot7;
+    ImageView shot8;
+    ImageView shot9;
+    ImageView shot10;
+
+    static public View fragView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.frag_stage_3, container,
+        final View rootView = inflater.inflate(R.layout.frag_stage_3, container,
                 false);
 
-        stageButton=(Button) rootView.findViewById(R.id.btnStage3Play);
+        fragView=rootView;
+        stageButton=(Button) rootView.findViewById(R.id.btnStagePlay);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
         txtStepDesc=(TextView) rootView.findViewById(R.id.txtStepDesc);
 
@@ -87,13 +91,14 @@ public class StageThreeFragment extends Fragment {
             public void onClick(View v) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
+                    MainActivity.fragView=rootView;
                     stageButton.setText(R.string.btnStopStage);
                     stageButton.setBackgroundResource(R.drawable.button_clicked);
                     MediaPlayerSingleton.setStage(3);
                     MediaPlayerSingleton.setActivity(getActivity());
                     MediaPlayerSingleton.getInstance().play(getContext(),0,false);
                 } else {
-                    MediaPlayerSingleton.stopPlaying(getContext());
+                    MediaPlayerSingleton.getInstance().stopPlaying(getContext());
                     stageButton.setText(R.string.btnStartStage);
                     stageButton.setBackgroundResource(R.drawable.button);
                 }
