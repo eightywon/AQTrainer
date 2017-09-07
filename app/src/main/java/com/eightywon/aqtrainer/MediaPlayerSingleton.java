@@ -13,10 +13,11 @@ class MediaPlayerSingleton {
     private static int currentStep;
     private static MediaPlayer mediaPlayer;
     private static int stage;
-    private static Activity act;
     private static Button stageButton;
+    private Activity mainAct;
+    private int previousPage;
 
-    private Utils utils=new Utils();
+    private Utils utils;
 
     static MediaPlayerSingleton getInstance() {
         if (mediaPlayerSingleton==null) {
@@ -29,7 +30,12 @@ class MediaPlayerSingleton {
         return Math.round(((float)(mediaPlayer.getDuration()-mediaPlayer.getCurrentPosition())/(float) 1000));
     }
 
-    void play(Context context, int resId, boolean stop) {
+    void play(Context context, int resId, boolean stop, Activity activity, int page) {
+
+        utils=new Utils(activity, page, context);
+
+        mainAct=activity;
+        previousPage=page;
 
         int i=MainActivity.STEP_BEGIN;
         while (i<MainActivity.sources.length) {
@@ -37,7 +43,7 @@ class MediaPlayerSingleton {
             i++;
         }
 
-        if (utils.getPlayStageDescription(act)) {
+        if (utils.getPlayStageDescription(activity)) {
             switch (stage) {
                 case 1:
                     MainActivity.sources[MainActivity.STEP_STAGE_DESCRIPTION]=R.raw.descstage1;
@@ -54,13 +60,13 @@ class MediaPlayerSingleton {
             }
         }
 
-        if (utils.getPlayPrepAnnouncements(act)) {
+        if (utils.getPlayPrepAnnouncements(activity)) {
 
             //set begin
             MainActivity.sources[MainActivity.STEP_PREP_START]=R.raw.prepbegin;
 
             //set in process
-            switch (utils.getPrepTime(act)) {
+            switch (utils.getPrepTime(activity)) {
                 case 5:
                     MainActivity.sources[MainActivity.STEP_PREP_IN_PROGRESS]=R.raw.s5;
                     break;
@@ -91,7 +97,7 @@ class MediaPlayerSingleton {
             MainActivity.sources[MainActivity.STEP_SAFTIES_ON_STAND]=R.raw.safetiesonstand;
         }
 
-        if (utils.getPlayPrepAnnouncements(act) || utils.getPlayStageDescription(act) || stage==2 || stage==3) {
+        if (utils.getPlayPrepAnnouncements(activity) || utils.getPlayStageDescription(activity) || stage==2 || stage==3) {
             MainActivity.sources[MainActivity.STEP_PAUSE_1]=R.raw.s2;
         }
 
@@ -118,18 +124,19 @@ class MediaPlayerSingleton {
 
 
         resId=getNextResId();
-        play(context, resId, null, null, stop);
+        play(context, resId, null, null, stop, activity, page);
     }
 
     public void play(Context context, int resId, MediaPlayer.OnCompletionListener completionListener) {
-        play(context, resId, completionListener, null, false);
+        play(context, resId, completionListener, null, false, null, 0);
     }
 
     public void play(Context context, int resId, MediaPlayer.OnErrorListener errorListener) {
-        play(context, resId, null, errorListener, false);
+        play(context, resId, null, errorListener, false, null, 0);
     }
 
-    private void play(final Context context, int resId, MediaPlayer.OnCompletionListener completionListener, MediaPlayer.OnErrorListener errorListener, boolean stop) {
+    private void play(final Context context, int resId, MediaPlayer.OnCompletionListener completionListener, MediaPlayer.OnErrorListener errorListener, boolean stop,
+                      final Activity activity, final int previousPage) {
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
@@ -147,9 +154,10 @@ class MediaPlayerSingleton {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     currentStep++;
-                    stageButton=(Button) MainActivity.fragView.findViewById(R.id.btnStagePlay);
+                    View view=activity.findViewById(previousPage);
+                    stageButton=(Button) view.findViewById(R.id.btnStagePlay);
                     if (currentStep!=MainActivity.STEP_DONE) {
-                        MediaPlayerSingleton.getInstance().play(context,getNextResId(),null,null,false);
+                        MediaPlayerSingleton.getInstance().play(context,getNextResId(),null,null,false, activity, previousPage);
                         if (MediaPlayerSingleton.getPlayingState()) {
                             stageButton.setText(R.string.btnStopStage);
                             stageButton.setBackgroundResource(R.drawable.button_clicked);
@@ -170,28 +178,29 @@ class MediaPlayerSingleton {
         utils.hCountDownPrepStage.removeCallbacks(utils.countDownPrepStage);
         utils.hCountDownDescStage.removeCallbacks(utils.countDownDescStage);
 
-        TextView txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
-        TextView txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+        View view=mainAct.findViewById(previousPage);
+        TextView txtStageDescTimer=(TextView) view.findViewById(R.id.txtStageDescTimer);
+        TextView txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
 
-        ImageView shot1=(ImageView) MainActivity.fragView.findViewById(R.id.shot1);
-        ImageView shot2=(ImageView) MainActivity.fragView.findViewById(R.id.shot2);
-        ImageView shot3=(ImageView) MainActivity.fragView.findViewById(R.id.shot3);
-        ImageView shot4=(ImageView) MainActivity.fragView.findViewById(R.id.shot4);
-        ImageView shot5=(ImageView) MainActivity.fragView.findViewById(R.id.shot5);
-        ImageView shot6=(ImageView) MainActivity.fragView.findViewById(R.id.shot6);
-        ImageView shot7=(ImageView) MainActivity.fragView.findViewById(R.id.shot7);
-        ImageView shot8=(ImageView) MainActivity.fragView.findViewById(R.id.shot8);
-        ImageView shot9=(ImageView) MainActivity.fragView.findViewById(R.id.shot9);
-        ImageView shot10=(ImageView) MainActivity.fragView.findViewById(R.id.shot10);
+        ImageView shot1=(ImageView) view.findViewById(R.id.shot1);
+        ImageView shot2=(ImageView) view.findViewById(R.id.shot2);
+        ImageView shot3=(ImageView) view.findViewById(R.id.shot3);
+        ImageView shot4=(ImageView) view.findViewById(R.id.shot4);
+        ImageView shot5=(ImageView) view.findViewById(R.id.shot5);
+        ImageView shot6=(ImageView) view.findViewById(R.id.shot6);
+        ImageView shot7=(ImageView) view.findViewById(R.id.shot7);
+        ImageView shot8=(ImageView) view.findViewById(R.id.shot8);
+        ImageView shot9=(ImageView) view.findViewById(R.id.shot9);
+        ImageView shot10=(ImageView) view.findViewById(R.id.shot10);
 
-        ImageView target1=(ImageView) MainActivity.fragView.findViewById(R.id.target1);
-        ImageView target2=(ImageView) MainActivity.fragView.findViewById(R.id.target2);
-        ImageView target3=(ImageView) MainActivity.fragView.findViewById(R.id.target3);
-        ImageView target4=(ImageView) MainActivity.fragView.findViewById(R.id.target4);
-        ImageView target1Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target1Highlight);
-        ImageView target2Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target2Highlight);
-        ImageView target3Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target3Highlight);
-        ImageView target4Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target4Highlight);
+        ImageView target1=(ImageView) view.findViewById(R.id.target1);
+        ImageView target2=(ImageView) view.findViewById(R.id.target2);
+        ImageView target3=(ImageView) view.findViewById(R.id.target3);
+        ImageView target4=(ImageView) view.findViewById(R.id.target4);
+        ImageView target1Highlight=(ImageView) view.findViewById(R.id.target1Highlight);
+        ImageView target2Highlight=(ImageView) view.findViewById(R.id.target2Highlight);
+        ImageView target3Highlight=(ImageView) view.findViewById(R.id.target3Highlight);
+        ImageView target4Highlight=(ImageView) view.findViewById(R.id.target4Highlight);
 
         shot1.setVisibility(View.INVISIBLE);
         shot2.setVisibility(View.INVISIBLE);
@@ -237,7 +246,7 @@ class MediaPlayerSingleton {
                 target4Highlight.setVisibility(View.INVISIBLE);
                 break;
         }
-        MediaPlayerSingleton.getInstance().play(context,0,null,null,true);
+        MediaPlayerSingleton.getInstance().play(context,0,null,null,true, null, 0);
         currentStep=MainActivity.STEP_BEGIN;
     }
 
@@ -255,37 +264,34 @@ class MediaPlayerSingleton {
 
     static int getStage() {return stage;}
 
-    static void setActivity(Activity a) {
-        act=a;
-    }
-
     private int getNextResId() {
         while (MainActivity.sources[currentStep]==0) {
             currentStep++;
         }
 
-        TextView txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
-        TextView txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+        View view=mainAct.findViewById(previousPage);
+        TextView txtStageDescTimer=(TextView) view.findViewById(R.id.txtStageDescTimer);
+        TextView txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
 
-        ImageView shot1=(ImageView) MainActivity.fragView.findViewById(R.id.shot1);
-        ImageView shot2=(ImageView) MainActivity.fragView.findViewById(R.id.shot2);
-        ImageView shot3=(ImageView) MainActivity.fragView.findViewById(R.id.shot3);
-        ImageView shot4=(ImageView) MainActivity.fragView.findViewById(R.id.shot4);
-        ImageView shot5=(ImageView) MainActivity.fragView.findViewById(R.id.shot5);
-        ImageView shot6=(ImageView) MainActivity.fragView.findViewById(R.id.shot6);
-        ImageView shot7=(ImageView) MainActivity.fragView.findViewById(R.id.shot7);
-        ImageView shot8=(ImageView) MainActivity.fragView.findViewById(R.id.shot8);
-        ImageView shot9=(ImageView) MainActivity.fragView.findViewById(R.id.shot9);
-        ImageView shot10=(ImageView) MainActivity.fragView.findViewById(R.id.shot10);
+        ImageView shot1=(ImageView) view.findViewById(R.id.shot1);
+        ImageView shot2=(ImageView) view.findViewById(R.id.shot2);
+        ImageView shot3=(ImageView) view.findViewById(R.id.shot3);
+        ImageView shot4=(ImageView) view.findViewById(R.id.shot4);
+        ImageView shot5=(ImageView) view.findViewById(R.id.shot5);
+        ImageView shot6=(ImageView) view.findViewById(R.id.shot6);
+        ImageView shot7=(ImageView) view.findViewById(R.id.shot7);
+        ImageView shot8=(ImageView) view.findViewById(R.id.shot8);
+        ImageView shot9=(ImageView) view.findViewById(R.id.shot9);
+        ImageView shot10=(ImageView) view.findViewById(R.id.shot10);
 
-        ImageView target1=(ImageView) MainActivity.fragView.findViewById(R.id.target1);
-        ImageView target2=(ImageView) MainActivity.fragView.findViewById(R.id.target2);
-        ImageView target3=(ImageView) MainActivity.fragView.findViewById(R.id.target3);
-        ImageView target4=(ImageView) MainActivity.fragView.findViewById(R.id.target4);
-        ImageView target1Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target1Highlight);
-        ImageView target2Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target2Highlight);
-        ImageView target3Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target3Highlight);
-        ImageView target4Highlight=(ImageView) MainActivity.fragView.findViewById(R.id.target4Highlight);
+        ImageView target1=(ImageView) view.findViewById(R.id.target1);
+        ImageView target2=(ImageView) view.findViewById(R.id.target2);
+        ImageView target3=(ImageView) view.findViewById(R.id.target3);
+        ImageView target4=(ImageView) view.findViewById(R.id.target4);
+        ImageView target1Highlight=(ImageView) view.findViewById(R.id.target1Highlight);
+        ImageView target2Highlight=(ImageView) view.findViewById(R.id.target2Highlight);
+        ImageView target3Highlight=(ImageView) view.findViewById(R.id.target3Highlight);
+        ImageView target4Highlight=(ImageView) view.findViewById(R.id.target4Highlight);
 
         shot1.setVisibility(View.INVISIBLE);
         shot2.setVisibility(View.INVISIBLE);
@@ -340,12 +346,12 @@ class MediaPlayerSingleton {
             utils.lastSec=0;
             utils.hCountDownPrepStage.post(utils.countDownPrepStage);
 
-            txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+            //txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
             txtStepDesc.setText(R.string.StepDescPreparing);
         } else if (currentStep==MainActivity.STEP_PREP_END) {
             utils.hCountDownPrepStage.removeCallbacks(utils.countDownPrepStage);
-            txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
-            txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+            //txtStageDescTimer=(TextView) view.findViewById(R.id.txtStageDescTimer);
+            //txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
             txtStageDescTimer.setText("");
             txtStepDesc.setText("");
         }
@@ -353,15 +359,15 @@ class MediaPlayerSingleton {
             utils.firstTime=true;
             utils.lastSec=0;
             utils.hCountDownFireStage.post(utils.countDownFireStage);
-            txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+            //txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
             txtStepDesc.setText(R.string.StepDescFireInProgress);
         } else if (currentStep==MainActivity.STEP_FIRE_END) {
             utils.hCountDownFireStage.removeCallbacks(utils.countDownFireStage);
-            txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
+            //txtStageDescTimer=(TextView) view.findViewById(R.id.txtStageDescTimer);
             txtStageDescTimer.setText(R.string.StepDescCeaseFire);
         } else if (currentStep==MainActivity.STEP_DONE){
-            txtStageDescTimer=(TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
-            txtStepDesc=(TextView) MainActivity.fragView.findViewById(R.id.txtStepDesc);
+            //txtStageDescTimer=(TextView) view.findViewById(R.id.txtStageDescTimer);
+            //txtStepDesc=(TextView) view.findViewById(R.id.txtStepDesc);
             txtStageDescTimer.setText("");
             txtStepDesc.setText("");
         }

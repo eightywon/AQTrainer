@@ -1,5 +1,6 @@
 package com.eightywon.aqtrainer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -48,7 +49,8 @@ class Utils {
     Runnable countDownPrepStage = new Runnable() {
         @Override
         public void run() {
-            TextView txtStageDescTimer = (TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
+            View view=activity.findViewById(previousPage);
+            TextView txtStageDescTimer = (TextView) view.findViewById(R.id.txtStageDescTimer);
             MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
             int remaining=mediaPlayer.getRemaining();
 
@@ -89,19 +91,20 @@ class Utils {
     Runnable countDownFireStage = new Runnable() {
         @Override
         public void run() {
-            Utils utils=new Utils();
-            if (utils.getAnnounceStageTime(MainActivity.instance)) {
+            //Utils utils=new Utils();
+            if (getAnnounceStageTime(context)) {
                 String announceInterval;
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.instance);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 announceInterval = prefs.getString("lpSettingsAnnounceInterval", "");
-                utils.countDownFireStageInterval = Integer.parseInt(announceInterval);
+                countDownFireStageInterval = Integer.parseInt(announceInterval);
             }
 
-            TextView txtStageDescTimer = (TextView) MainActivity.fragView.findViewById(R.id.txtStageDescTimer);
+            View view=activity.findViewById(previousPage);
+            TextView txtStageDescTimer = (TextView) view.findViewById(R.id.txtStageDescTimer);
             MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
             int remaining=mediaPlayer.getRemaining();
 
-            boolean redAlertMode=getRedAlertMode(MainActivity.instance);
+            boolean redAlertMode=getRedAlertMode(context);
             int secs=0;
             int mins=0;
             String howLong;
@@ -137,8 +140,8 @@ class Utils {
                         }
                     }
                 }
-                if ((remaining<=10 && redAlertMode) || (getAnnounceStageTime(MainActivity.instance) && remaining%countDownFireStageInterval==0) || firstTime) {
-                    if ((secs!=lastSec || firstTime) && remaining>0 && (getAnnounceStageTime(MainActivity.instance) || (redAlertMode && remaining<=10))) {
+                if ((remaining<=10 && redAlertMode) || (getAnnounceStageTime(context) && remaining%countDownFireStageInterval==0) || firstTime) {
+                    if ((secs!=lastSec || firstTime) && remaining>0 && (getAnnounceStageTime(context) || (redAlertMode && remaining<=10))) {
                         MainActivity.textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
                     }
                 }
@@ -153,25 +156,26 @@ class Utils {
         @Override
         public void run() {
 
-            ImageView imageView1=(ImageView) MainActivity.fragView.findViewById(R.id.target1);
-            ImageView imageView2=(ImageView) MainActivity.fragView.findViewById(R.id.target2);
-            ImageView imageView3=(ImageView) MainActivity.fragView.findViewById(R.id.target3);
-            ImageView imageView4=(ImageView) MainActivity.fragView.findViewById(R.id.target4);
-            ImageView imageView5=(ImageView) MainActivity.fragView.findViewById(R.id.target1Highlight);
-            ImageView imageView6=(ImageView) MainActivity.fragView.findViewById(R.id.target2Highlight);
-            ImageView imageView7=(ImageView) MainActivity.fragView.findViewById(R.id.target3Highlight);
-            ImageView imageView8=(ImageView) MainActivity.fragView.findViewById(R.id.target4Highlight);
+            View view=activity.findViewById(previousPage);
+            ImageView imageView1=(ImageView) view.findViewById(R.id.target1);
+            ImageView imageView2=(ImageView) view.findViewById(R.id.target2);
+            ImageView imageView3=(ImageView) view.findViewById(R.id.target3);
+            ImageView imageView4=(ImageView) view.findViewById(R.id.target4);
+            ImageView imageViewh1=(ImageView) view.findViewById(R.id.target1Highlight);
+            ImageView imageViewh2=(ImageView) view.findViewById(R.id.target2Highlight);
+            ImageView imageViewh3=(ImageView) view.findViewById(R.id.target3Highlight);
+            ImageView imageViewh4=(ImageView) view.findViewById(R.id.target4Highlight);
 
-            ImageView shot1=(ImageView) MainActivity.fragView.findViewById(R.id.shot1);
-            ImageView shot2=(ImageView) MainActivity.fragView.findViewById(R.id.shot2);
-            ImageView shot3=(ImageView) MainActivity.fragView.findViewById(R.id.shot3);
-            ImageView shot4=(ImageView) MainActivity.fragView.findViewById(R.id.shot4);
-            ImageView shot5=(ImageView) MainActivity.fragView.findViewById(R.id.shot5);
-            ImageView shot6=(ImageView) MainActivity.fragView.findViewById(R.id.shot6);
-            ImageView shot7=(ImageView) MainActivity.fragView.findViewById(R.id.shot7);
-            ImageView shot8=(ImageView) MainActivity.fragView.findViewById(R.id.shot8);
-            ImageView shot9=(ImageView) MainActivity.fragView.findViewById(R.id.shot9);
-            ImageView shot10=(ImageView) MainActivity.fragView.findViewById(R.id.shot10);
+            ImageView shot1=(ImageView) view.findViewById(R.id.shot1);
+            ImageView shot2=(ImageView) view.findViewById(R.id.shot2);
+            ImageView shot3=(ImageView) view.findViewById(R.id.shot3);
+            ImageView shot4=(ImageView) view.findViewById(R.id.shot4);
+            ImageView shot5=(ImageView) view.findViewById(R.id.shot5);
+            ImageView shot6=(ImageView) view.findViewById(R.id.shot6);
+            ImageView shot7=(ImageView) view.findViewById(R.id.shot7);
+            ImageView shot8=(ImageView) view.findViewById(R.id.shot8);
+            ImageView shot9=(ImageView) view.findViewById(R.id.shot9);
+            ImageView shot10=(ImageView) view.findViewById(R.id.shot10);
 
             MediaPlayerSingleton mediaPlayer=MediaPlayerSingleton.getInstance();
             int remaining=mediaPlayer.getRemaining();
@@ -194,7 +198,7 @@ class Utils {
                         shot5.setVisibility(View.VISIBLE);
                         break;
                     } else if (remaining==5) {
-                        imageView2.setVisibility(View.VISIBLE);
+                        imageViewh1.setVisibility(View.VISIBLE);
                         imageView1.setVisibility(View.INVISIBLE);
                         imageView1.setPadding(1, 1, 1, 1);
                         shot6.setVisibility(View.VISIBLE);
@@ -207,7 +211,7 @@ class Utils {
                         break;
                     } else if (remaining==2) {
                         imageView1.setVisibility(View.VISIBLE);
-                        imageView2.setVisibility(View.INVISIBLE);
+                        imageViewh1.setVisibility(View.INVISIBLE);
                         imageView1.setPadding(0, 0, 0, 0);
                         shot9.setVisibility(View.VISIBLE);
                         break;
@@ -218,7 +222,7 @@ class Utils {
                     break;
                 case 2:
                     if (remaining==14) {
-                        imageView3.setVisibility(View.VISIBLE);
+                        imageViewh1.setVisibility(View.VISIBLE);
                         imageView1.setVisibility(View.INVISIBLE);
                     } else if (remaining==13) {
                         shot1.setVisibility(View.VISIBLE);
@@ -232,13 +236,13 @@ class Utils {
                         shot5.setVisibility(View.VISIBLE);
                     } else if (remaining==8) {
                         imageView1.setVisibility(View.VISIBLE);
-                        imageView3.setVisibility(View.INVISIBLE);
-                        imageView4.setVisibility(View.VISIBLE);
+                        imageViewh1.setVisibility(View.INVISIBLE);
+                        imageViewh2.setVisibility(View.VISIBLE);
                         imageView2.setVisibility(View.INVISIBLE);
                     } else if (remaining==7) {
                         shot6.setVisibility(View.VISIBLE);
                     } else if (remaining==6) {
-                        imageView4.setVisibility(View.VISIBLE);
+                        imageViewh2.setVisibility(View.VISIBLE);
                         imageView2.setVisibility(View.INVISIBLE);
                         shot7.setVisibility(View.VISIBLE);
                     } else if (remaining==5) {
@@ -249,16 +253,16 @@ class Utils {
                         shot10.setVisibility(View.VISIBLE);
                     } else if (remaining==2) {
                         imageView2.setVisibility(View.VISIBLE);
-                        imageView4.setVisibility(View.INVISIBLE);
+                        imageViewh2.setVisibility(View.INVISIBLE);
                     }
                     break;
                 case 3:
                     if (remaining==18) {
-                        imageView4.setVisibility(View.VISIBLE);
+                        imageViewh1.setVisibility(View.VISIBLE);
                         imageView1.setVisibility(View.INVISIBLE);
                     } else if (remaining==12) {
                         imageView1.setVisibility(View.VISIBLE);
-                        imageView4.setVisibility(View.INVISIBLE);
+                        imageViewh1.setVisibility(View.INVISIBLE);
                     } else if (remaining==17) {
                         shot1.setVisibility(View.VISIBLE);
                     } else if (remaining==16) {
@@ -266,7 +270,7 @@ class Utils {
                     } else if (remaining==13) {
                         shot3.setVisibility(View.VISIBLE);
                     } else if (remaining==10) {
-                        imageView5.setVisibility(View.VISIBLE);
+                        imageViewh2.setVisibility(View.VISIBLE);
                         imageView2.setVisibility(View.INVISIBLE);
                         shot4.setVisibility(View.VISIBLE);
                     } else if (remaining==9) {
@@ -275,9 +279,9 @@ class Utils {
                         shot6.setVisibility(View.VISIBLE);
                     } else if (remaining==7) {
                         imageView2.setVisibility(View.VISIBLE);
-                        imageView5.setVisibility(View.INVISIBLE);
+                        imageViewh2.setVisibility(View.INVISIBLE);
                     } else if (remaining==6) {
-                        imageView6.setVisibility(View.VISIBLE);
+                        imageViewh3.setVisibility(View.VISIBLE);
                         imageView3.setVisibility(View.INVISIBLE);
                         shot7.setVisibility(View.VISIBLE);
                     } else if (remaining==5) {
@@ -288,14 +292,14 @@ class Utils {
                         shot10.setVisibility(View.VISIBLE);
                     } else if (remaining==2) {
                         imageView3.setVisibility(View.VISIBLE);
-                        imageView6.setVisibility(View.INVISIBLE);
+                        imageViewh3.setVisibility(View.INVISIBLE);
                     }
                     break;
                 case 4:
                     if (remaining==13) {
-                        imageView5.setVisibility(View.VISIBLE);
+                        imageViewh1.setVisibility(View.VISIBLE);
                         imageView1.setVisibility(View.INVISIBLE);
-                        imageView6.setVisibility(View.VISIBLE);
+                        imageViewh2.setVisibility(View.VISIBLE);
                         imageView2.setVisibility(View.INVISIBLE);
                     } else if (remaining==12) {
                         shot1.setVisibility(View.VISIBLE);
@@ -308,12 +312,12 @@ class Utils {
                     } else if (remaining==8) {
                         shot5.setVisibility(View.VISIBLE);
                         imageView1.setVisibility(View.VISIBLE);
-                        imageView5.setVisibility(View.INVISIBLE);
+                        imageViewh1.setVisibility(View.INVISIBLE);
                         imageView2.setVisibility(View.VISIBLE);
-                        imageView6.setVisibility(View.INVISIBLE);
-                        imageView7.setVisibility(View.VISIBLE);
+                        imageViewh2.setVisibility(View.INVISIBLE);
+                        imageViewh3.setVisibility(View.VISIBLE);
                         imageView3.setVisibility(View.INVISIBLE);
-                        imageView8.setVisibility(View.VISIBLE);
+                        imageViewh4.setVisibility(View.VISIBLE);
                         imageView4.setVisibility(View.INVISIBLE);
                     } else if (remaining==7) {
                         shot6.setVisibility(View.VISIBLE);
@@ -327,13 +331,23 @@ class Utils {
                         shot10.setVisibility(View.VISIBLE);
                     } else if (remaining==2) {
                         imageView3.setVisibility(View.VISIBLE);
-                        imageView7.setVisibility(View.INVISIBLE);
+                        imageViewh3.setVisibility(View.INVISIBLE);
                         imageView4.setVisibility(View.VISIBLE);
-                        imageView8.setVisibility(View.INVISIBLE);
+                        imageViewh4.setVisibility(View.INVISIBLE);
                     }
                     break;
             }
             hCountDownDescStage.postDelayed(countDownDescStage,200);
         }
     };
+
+    private Activity activity;
+    private int previousPage;
+    private Context context;
+
+    Utils(Activity _activity, int previousPage, Context context){
+        this.activity = _activity;
+        this.previousPage = previousPage;
+        this.context = context;
+    }
 }

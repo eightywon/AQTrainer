@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     public static TextToSpeech textToSpeech;
     static int[] sources=new int[100];
-    public static Context instance;
-    public static View fragView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        instance=this;
 
         aqtViewPager=(ViewPager) findViewById(R.id.container);
         aqtViewPager.setAdapter(new AQTPagerAdapter(
@@ -82,10 +79,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             @Override
             public void onPageSelected(int position) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
+                View view=findViewById(previousPage+1);
+                stageButton=(Button) view.findViewById(R.id.btnStagePlay);
                 switch (previousPage) {
                     case 0:
                         if (isPlaying) {
-                            stageButton=(Button) StageOneFragment.fragView.findViewById(R.id.btnStagePlay);
+                            //stageButton=(Button) StageOneFragment.fragView.findViewById(R.id.btnStagePlay);
                             stageButton.setText(R.string.btnStartStage);
                             stageButton.setBackgroundResource(R.drawable.button);
                             MediaPlayerSingleton.getInstance().stopPlaying(getContext());
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         break;
                     case 1:
                         if (isPlaying) {
-                            stageButton=(Button) StageTwoFragment.fragView.findViewById(R.id.btnStagePlay);
+                            //stageButton=(Button) StageTwoFragment.fragView.findViewById(R.id.btnStagePlay);
                             stageButton.setText(R.string.btnStartStage);
                             stageButton.setBackgroundResource(R.drawable.button);
                             MediaPlayerSingleton.getInstance().stopPlaying(getContext());
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         break;
                     case 2:
                         if (isPlaying) {
-                            stageButton=(Button) StageThreeFragment.fragView.findViewById(R.id.btnStagePlay);
+                            //stageButton=(Button) StageThreeFragment.fragView.findViewById(R.id.btnStagePlay);
                             stageButton.setText(R.string.btnStartStage);
                             stageButton.setBackgroundResource(R.drawable.button);
                             MediaPlayerSingleton.getInstance().stopPlaying(getContext());
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         break;
                     case 3:
                         if (isPlaying) {
-                            stageButton=(Button) StageFourFragment.fragView.findViewById(R.id.btnStagePlay);
+                            //stageButton=(Button) StageFourFragment.fragView.findViewById(R.id.btnStagePlay);
                             stageButton.setText(R.string.btnStartStage);
                             stageButton.setBackgroundResource(R.drawable.button);
                             MediaPlayerSingleton.getInstance().stopPlaying(getContext());

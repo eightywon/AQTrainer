@@ -29,15 +29,14 @@ public class StageOneFragment extends Fragment {
     ImageView shot9;
     ImageView shot10;
 
-    static public View fragView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.frag_stage_1, container,
                 false);
 
-        fragView=rootView;
+
+        rootView.setId(1);
 
         stageButton=(Button) rootView.findViewById(R.id.btnStagePlay);
         txtStageDescTimer=(TextView) rootView.findViewById(R.id.txtStageDescTimer);
@@ -82,12 +81,11 @@ public class StageOneFragment extends Fragment {
             public void onClick(View v) {
                 boolean isPlaying=MediaPlayerSingleton.getPlayingState();
                 if (!isPlaying) {
-                    MainActivity.fragView=rootView;
+                    //MainActivity.fragView=rootView;
                     stageButton.setText(R.string.btnStopStage);
                     stageButton.setBackgroundResource(R.drawable.button_clicked);
                     MediaPlayerSingleton.setStage(1);
-                    MediaPlayerSingleton.setActivity(getActivity());
-                    MediaPlayerSingleton.getInstance().play(getContext(),0,false);
+                    MediaPlayerSingleton.getInstance().play(getContext(),0,false,getActivity(),1);
                 } else {
                     MediaPlayerSingleton.getInstance().stopPlaying(getContext());
                     stageButton.setText(R.string.btnStartStage);
