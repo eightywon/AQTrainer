@@ -100,6 +100,7 @@ class Utils {
             View view=activity.findViewById(previousPage);
             TextView txtStageDescTimer = (TextView) view.findViewById(R.id.txtStageDescTimer);
             int remaining=MediaPlayerSingleton.getInstance().getRemaining();
+            int totalLength=MediaPlayerSingleton.getInstance().getTotalLength();
 
             boolean redAlertMode=getRedAlertMode(context);
             int secs=0;
@@ -137,7 +138,7 @@ class Utils {
                         }
                     }
                 }
-                if ((remaining<=10 && redAlertMode) || (getAnnounceStageTime(context) && remaining%countDownFireStageInterval==0) || firstTime) {
+                if ((remaining<=10 && redAlertMode) || (getAnnounceStageTime(context) && ((totalLength-remaining)%countDownFireStageInterval==0)) || firstTime) {
                     if ((secs!=lastSec || firstTime) && remaining>0 && (getAnnounceStageTime(context) || (redAlertMode && remaining<=10))) {
                         MainActivity.textToSpeech.speak(howLong, TextToSpeech.QUEUE_FLUSH, null, "");
                     }

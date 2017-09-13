@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -197,5 +198,25 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if (status == TextToSpeech.SUCCESS) {
             textToSpeech.setLanguage(Locale.US);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        textToSpeech.stop();
+        textToSpeech.shutdown();
+        textToSpeech=null;
+        if (MediaPlayerSingleton.getPlayingState()) {
+            View view = findViewById(previousPage + 1);
+            Button stageButton = (Button) view.findViewById(R.id.btnStagePlay);
+            stageButton.callOnClick();
+        }
+        MediaPlayerSingleton.destroyMediaPlayerSingleton();
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        textToSpeech = new TextToSpeech(MainActivity.this,this);
+        super.onRestart();
     }
 }

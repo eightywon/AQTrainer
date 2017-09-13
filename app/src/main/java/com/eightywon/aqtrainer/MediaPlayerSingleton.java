@@ -32,6 +32,10 @@ class MediaPlayerSingleton {
         return Math.round(((float)(mediaPlayer.getDuration()-mediaPlayer.getCurrentPosition())/(float) 1000));
     }
 
+    int getTotalLength() {
+        return Math.round(mediaPlayer.getDuration()/(float) 1000);
+    }
+
     void play(Context context, boolean stop, Activity activity, int page) {
 
         utils=new Utils(activity, page, context);
@@ -103,7 +107,10 @@ class MediaPlayerSingleton {
             MainActivity.sources[MainActivity.STEP_PAUSE_1]=R.raw.s2;
         }
 
-        MainActivity.sources[MainActivity.STEP_LOAD]=R.raw.load10;
+        if (stage!=2 && stage!=3) {
+            MainActivity.sources[MainActivity.STEP_LOAD] = R.raw.load10;
+        }
+
         MainActivity.sources[MainActivity.STEP_PAUSE_2]=R.raw.s5;
         MainActivity.sources[MainActivity.STEP_FIRE_START]=R.raw.fire;
 
@@ -135,6 +142,7 @@ class MediaPlayerSingleton {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
+            mediaPlayer.reset();
             mediaPlayer.release();
             mediaPlayer = null;
         }
@@ -168,14 +176,10 @@ class MediaPlayerSingleton {
     }
 
     void stopPlaying(Context context) {
-        if (utils==null) {
-            Toast.makeText(context, "Utils is nll", Toast.LENGTH_SHORT).show();
-            Log.d("AQTRAINER: ", "Utils is null ");
-        }
-
         utils.hCountDownFireStage.removeCallbacks(utils.countDownFireStage);
         utils.hCountDownPrepStage.removeCallbacks(utils.countDownPrepStage);
         utils.hCountDownDescStage.removeCallbacks(utils.countDownDescStage);
+        utils=null;
 
         View view=mainAct.findViewById(previousPage);
         TextView txtStageDescTimer=(TextView) view.findViewById(R.id.txtStageDescTimer);
@@ -251,13 +255,6 @@ class MediaPlayerSingleton {
 
     static boolean getPlayingState() {
         return mediaPlayer != null && mediaPlayer.isPlaying();
-        /*
-        if (mediaPlayer != null) {
-            return mediaPlayer.isPlaying();
-        } else {
-            return false;
-        }
-        */
     }
 
     static void setStage(int s) {
@@ -372,5 +369,9 @@ class MediaPlayerSingleton {
 
     private MediaPlayerSingleton(Context context){
         instance = context;
+    }
+
+    public static void destroyMediaPlayerSingleton(){
+        mediaPlayerSingleton=null;
     }
 }
