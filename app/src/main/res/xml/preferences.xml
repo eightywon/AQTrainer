@@ -36,4 +36,13 @@
         android:key="chkpRedAlertMode"
         android:summary="@string/settingsRedAlertModeBody"
         android:title="@string/settingsRedAlertMode" />
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/announceVoicesLabels"
+        android:entryValues="@array/announceVoices"
+        android:key="lpAnnounceVoices"
+        android:summary="%s"
+        android:title="@string/settingsAnnounceVoices" />
+
 </PreferenceScreen>

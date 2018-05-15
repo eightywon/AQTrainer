@@ -46,6 +46,12 @@ class Utils {
         return prefs.getBoolean("chkpPlayStageDesc",false);
     }
 
+    int getAnnounceVoice(Context cont) {
+        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(cont);
+        String announceVoice=prefs.getString("lpAnnounceVoices","");
+        return Integer.parseInt(announceVoice);
+    }
+
     Runnable countDownPrepStage = new Runnable() {
         @Override
         public void run() {

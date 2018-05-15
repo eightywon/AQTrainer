@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     final static int STEP_FIRE_END=11;
     final static int STEP_DONE=12;
 
+    final static int[] DESC_STAGE_1_AUDIO_FILE = new int[2];
+
     ViewPager aqtViewPager;
     int previousPage;
 
